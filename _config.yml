@@ -7,3 +7,8 @@ plugins:
 
 postcss:
   cache: false
+
+exclude:
+  - package-lock.json
+  - postcss.config.js
+  - tailwind.config.js
