@@ -106,4 +106,6 @@ title: "Happy Jekylling!"
 
 ## You're ready to go!
 
-Start developing your Jekyll website.
+Start developing your Jekyll and Tailwind website.
+
+Find me at [https://github.com/afomi/jekyll-with-tailwind-to-s3-via-github-actions/](https://github.com/afomi/jekyll-with-tailwind-to-s3-via-github-actions/).
