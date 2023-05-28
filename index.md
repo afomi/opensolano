@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Happy Jekylling!"
+title: "OpenSolano"
 ---
 
 <nav class="bg-gray-800">
