@@ -1,0 +1,58 @@
+---
+layout: default
+---
+
+<main class="isolate">
+  <!-- Hero section -->
+  <div
+    class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-indigo-100/20 pt-14"
+  >
+    <div
+      class="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 sm:-mr-80 lg:-mr-96"
+      aria-hidden="true"
+    ></div>
+    <div class="mx-auto max-w-7xl px-6 py-32 sm:py-40 lg:px-8">
+      <div
+        class="mx-auto max-w-2xl lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8"
+      >
+
+      </div>
+
+      <h1>Positions</h1>
+
+      <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <ul
+        role="list"
+        class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+        >
+          {% for position in site.positions %}
+
+          <li class="relative">
+            <a href="/positions/{{ position.slug }}/">
+            <div
+              class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1582053433976-25c00369fc93?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=512&amp;q=80"
+                alt=""
+                class="pointer-events-none object-cover group-hover:opacity-75"
+              />
+              <button type="button" class="absolute inset-0 focus:outline-none">
+                <span class="sr-only">View details for IMG_4985.HEIC</span>
+              </button>
+            </div>
+            <p
+              class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900"
+            >
+                {{ position.label }}
+                {{ position.district }}
+              </p>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</main>
