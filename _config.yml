@@ -2,6 +2,28 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 baseurl: "" # the subpath of your site, e.g. /blog
 title: "" # the name of your site, e.g. ACME Corp.
 
+collections_dir: collections
+
+collections:
+  jurisdictions:
+    output: true
+    permalink: /jurisdictions/:id
+  agencies:
+    output: true
+    permalink: /agencies/:slug
+  bodies:
+    output: true
+    permalink: /bodies/:slug
+  positions:
+    output: true
+    permalink: /positions/:slug
+  people:
+    output: true
+    permalink: /people/:id
+  services:
+    output: true
+    permalink: /services/:id
+
 plugins:
   - jekyll-postcss
 
