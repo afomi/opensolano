@@ -19,3 +19,8 @@ parks, education, public safety, public services, public accountability.
 
 OpenSolano runs this website and holds meetups to get people together to
 discuss local civics and play with technology to shed some light on some of the issues.
+
+Goals for the group include sharing ideas and learning, and building things together.
+I'd like to see many, if not all, aspects of a city's ontology mapped and modeled.
+
+Ultimately, people will come with their own interests, skills, and desires, so we'll see what makes sense, over time.
