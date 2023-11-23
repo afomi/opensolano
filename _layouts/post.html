@@ -11,14 +11,13 @@ title: A single blog post
     </h1>
 
     <p>
-      {{ page.date | date_to_string }}
-      <br>
+      {{ page.date | date_to_long_string }}
       by
-      {{ page.author.name }},
-      {{ page.author.title }}</p>
+      {{ page.author.name }}
+      </p>
 
     <p class="mt-6 text-xl leading-8">
-      {{ content }}
+      {{ content | markdownify }}
     </p>
   </div>
 </div>
