@@ -1,0 +1,9 @@
+# flyctl launch added from .gitignore
+**/.DS_Store
+node_modules
+**/_site
+
+# flyctl launch added from .jekyll-cache/.gitignore
+# ignore everything in this directory
+.jekyll-cache/**/*
+fly.toml

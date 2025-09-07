@@ -1,0 +1,41 @@
+name: Deploy to Fly (foo)
+
+on:
+  push:
+    branches: [ foo ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Set Fly app secrets (basic auth)
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          ORG_ARG=""
+          if [ -n "${{ secrets.FLY_ORG }}" ]; then ORG_ARG="--org '${{ secrets.FLY_ORG }}'"; fi
+          # Set one of: BASIC_AUTH_USER+PASSWORD or BASIC_AUTH_HTPASSWD
+          if [ -n "${{ secrets.BASIC_AUTH_USER }}" ] && [ -n "${{ secrets.BASIC_AUTH_PASSWORD }}" ]; then
+            eval flyctl secrets set BASIC_AUTH_USER='${{ secrets.BASIC_AUTH_USER }}' BASIC_AUTH_PASSWORD='${{ secrets.BASIC_AUTH_PASSWORD }}' --app opensolano-staging $ORG_ARG
+          elif [ -n "${{ secrets.BASIC_AUTH_HTPASSWD }}" ]; then
+            eval flyctl secrets set BASIC_AUTH_HTPASSWD='${{ secrets.BASIC_AUTH_HTPASSWD }}' --app opensolano-staging $ORG_ARG
+          else
+            echo "No BASIC_AUTH_* GitHub secrets provided; add BASIC_AUTH_USER/BASIC_AUTH_PASSWORD or BASIC_AUTH_HTPASSWD." >&2
+            exit 1
+          fi
+
+      - name: Deploy to Fly
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          # Deploy using the config in fly.toml; builds Docker image remotely
+          ORG_ARG=""
+          if [ -n "${{ secrets.FLY_ORG }}" ]; then ORG_ARG="--org '${{ secrets.FLY_ORG }}'"; fi
+          eval flyctl deploy --remote-only --yes $ORG_ARG
