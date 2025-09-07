@@ -20,8 +20,8 @@ Options:
         {%- if city.logo and city.logo != '' -%}
           <img src="{{ city.logo | downcase | relative_url }}" alt="{{ city.name }} logo" class="max-h-20 w-auto object-contain grayscale opacity-70 hover:opacity-100 transition-opacity duration-200">
         {%- else -%}
-          <div class="flex h-20 w-20 items-center justify-center rounded-md bg-gray-100 ring-1 ring-inset ring-gray-200 text-gray-600 font-semibold grayscale opacity-70">
-            {{ city.name | slice: 0,1 }}
+          <div class="flex h-20 w-full items-center justify-center rounded-md bg-gray-100 ring-1 ring-inset ring-gray-200 text-gray-600 font-semibold grayscale opacity-70 px-3">
+            <span class="text-sm text-center">{{ city.name }}</span>
           </div>
         {%- endif -%}
       </div>
