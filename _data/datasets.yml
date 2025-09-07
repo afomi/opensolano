@@ -1,0 +1,39 @@
+- id: solano-county-budget
+  title: "Solano County Annual Budget Data"
+  description: "Multi-year budget data including revenues, expenditures, and fund balances across all county departments and programs"
+  last_updated: "2024-07-15"
+  format: "CSV, JSON"
+  source: "Solano County Administrator's Office"
+  use_case: "Budget transparency analysis, spending trend identification, comparative fiscal analysis"
+
+- id: municipal-impact-fees
+  title: "Development Impact Fees by City"
+  description: "Current impact fee schedules for residential and commercial development across all Solano County municipalities"
+  last_updated: "2024-06-30"
+  format: "CSV"
+  source: "Individual City Planning Departments"
+  use_case: "Housing development cost analysis, comparative fee studies, infrastructure financing research"
+
+- id: property-assessment-data
+  title: "Solano County Assessor Property Records"
+  description: "Property ownership, assessed values, land use classifications, and tax information for all parcels"
+  last_updated: "2024-08-01"
+  format: "GeoJSON, CSV"
+  source: "Solano County Assessor's Office"
+  use_case: "Land use pattern analysis, housing market research, tax burden distribution studies"
+
+- id: municipal-bond-issuances
+  title: "Public Bond Debt and Issuances"
+  description: "Historical and current municipal bond data including debt service schedules, purposes, and repayment sources"
+  last_updated: "2024-05-20"
+  format: "CSV, PDF"
+  source: "Municipal Finance Departments, State Controller's Office"
+  use_case: "Infrastructure financing analysis, debt burden assessment, capital project tracking"
+
+- id: public-meeting-transcripts
+  title: "City Council and Board Meeting Transcripts"
+  description: "Searchable transcripts from public meetings across Solano County jurisdictions with speaker identification and topic tagging"
+  last_updated: "2024-08-30"
+  format: "JSON, Full-text search"
+  source: "Municipal Clerks, OpenSolano transcription project"
+  use_case: "Public policy research, constituent feedback analysis, decision-making process transparency"

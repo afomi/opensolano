@@ -1,0 +1,26 @@
+# Lightweight weekly news highlights for Solano County cities
+# Provide recent items per city. The news include will show the latest item
+# and mark it as "New" if within the recent_days window (defaults to 8 days).
+
+news:
+  - city: vallejo
+    title: Council approves downtown revitalization grant program
+    url: https://www.cityofvallejo.net/news
+    date: 2024-08-28
+    summary: The program supports small business facade improvements and safety upgrades.
+  - city: vacaville
+    title: Vacaville unveils fall parks and recreation schedule
+    url: https://www.ci.vacaville.ca.us/residents/news-archive
+    date: 2024-08-30
+    summary: New classes and community events added for all age groups.
+  - city: fairfield
+    title: Road maintenance set for East Tabor corridor
+    url: https://www.fairfield.ca.gov/our-city/news
+    date: 2024-08-22
+    summary: Expect intermittent lane closures during evening work hours.
+  - city: suisun-city
+    title: Waterfront cleanup day volunteers needed
+    url: https://www.suisun.com/news/
+    date: 2024-08-26
+    summary: Join the city-wide effort to keep the marina beautiful.
+

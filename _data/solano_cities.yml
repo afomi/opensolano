@@ -1,0 +1,46 @@
+# List of incorporated cities in Solano County, CA
+# Logos and feeds are optional; includes render sensible placeholders.
+
+cities:
+  - slug: benicia
+    name: Benicia
+    website: https://www.ci.benicia.ca.us/
+    logo: /assets/images/benicia-logo.webp
+    newsroom: https://www.ci.benicia.ca.us/news
+    feed:
+  - slug: dixon
+    name: Dixon
+    website: https://www.cityofdixon.us/
+    logo: /assets/images/dixon-logo.png
+    newsroom: https://www.cityofdixon.us/27/News
+    feed:
+  - slug: fairfield
+    name: Fairfield
+    website: https://www.fairfield.ca.gov/
+    logo: /assets/images/fairfield-logo.png
+    newsroom: https://www.fairfield.ca.gov/our-city/news
+    feed:
+  - slug: riovista
+    name: Rio Vista
+    website: https://www.riovistacity.com/
+    logo:
+    newsroom: https://www.riovistacity.com/news
+    feed:
+  - slug: suisun-city
+    name: Suisun City
+    website: https://www.suisun.com/
+    logo: /assets/images/suisun-city-logo.png
+    newsroom: https://www.suisun.com/news/
+    feed:
+  - slug: vacaville
+    name: Vacaville
+    website: https://www.ci.vacaville.ca.us/
+    logo: /assets/images/vacaville-logo.png
+    newsroom: https://www.ci.vacaville.ca.us/residents/news-archive
+    feed:
+  - slug: vallejo
+    name: Vallejo
+    website: https://www.cityofvallejo.net/
+    logo: /assets/images/vallejo-logo.gif
+    newsroom: https://www.cityofvallejo.net/news
+    feed:

@@ -26,9 +26,12 @@ collections:
 
 plugins:
   - jekyll-postcss
+  - jekyll-datapage-generator
 
 postcss:
   cache: false
+
+# page_gen:
 
 exclude:
   - package.json

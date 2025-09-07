@@ -1,0 +1,247 @@
+<div id="tax-flow-sankey" style="width: 100%; height: 500px;"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<script>
+// Tax Collection to Spending Sankey Diagram
+(function() {
+  // Sample data showing flow from tax sources through budget categories to spending
+  const data = {
+    nodes: [
+      // Tax Sources (0-4)
+      { id: 0, name: "Property Tax", category: "source" },
+      { id: 1, name: "Sales Tax", category: "source" },
+      { id: 2, name: "State Transfers", category: "source" },
+      { id: 3, name: "Federal Grants", category: "source" },
+      { id: 4, name: "Fees & Licenses", category: "source" },
+      
+      // Budget Categories (5-12)
+      { id: 5, name: "General Fund", category: "budget" },
+      { id: 6, name: "Special Revenue", category: "budget" },
+      { id: 7, name: "Capital Projects", category: "budget" },
+      { id: 8, name: "Debt Service", category: "budget" },
+      
+      // Spending Areas (9-16)
+      { id: 9, name: "Public Safety", category: "spending" },
+      { id: 10, name: "Education", category: "spending" },
+      { id: 11, name: "Infrastructure", category: "spending" },
+      { id: 12, name: "Health Services", category: "spending" },
+      { id: 13, name: "Parks & Recreation", category: "spending" },
+      { id: 14, name: "Administration", category: "spending" },
+      { id: 15, name: "Economic Development", category: "spending" },
+      { id: 16, name: "Debt Payments", category: "spending" }
+    ],
+    links: [
+      // Tax Sources to Budget Categories
+      { source: 0, target: 5, value: 180 }, // Property Tax -> General Fund
+      { source: 1, target: 5, value: 95 },  // Sales Tax -> General Fund
+      { source: 2, target: 6, value: 120 }, // State Transfers -> Special Revenue
+      { source: 3, target: 6, value: 80 },  // Federal Grants -> Special Revenue
+      { source: 4, target: 5, value: 45 },  // Fees -> General Fund
+      { source: 0, target: 7, value: 65 },  // Property Tax -> Capital Projects
+      { source: 1, target: 8, value: 35 },  // Sales Tax -> Debt Service
+      
+      // Budget Categories to Spending
+      { source: 5, target: 9, value: 140 },  // General Fund -> Public Safety
+      { source: 5, target: 10, value: 110 }, // General Fund -> Education
+      { source: 5, target: 14, value: 55 },  // General Fund -> Administration
+      { source: 5, target: 13, value: 25 },  // General Fund -> Parks
+      
+      { source: 6, target: 10, value: 110 }, // Special Revenue -> Education
+      { source: 6, target: 12, value: 85 },  // Special Revenue -> Health
+      { source: 6, target: 15, value: 5 },   // Special Revenue -> Economic Dev
+      
+      { source: 7, target: 11, value: 65 },  // Capital Projects -> Infrastructure
+      { source: 8, target: 16, value: 35 },  // Debt Service -> Debt Payments
+    ]
+  };
+
+  const container = d3.select("#tax-flow-sankey");
+  const containerNode = container.node();
+  const containerWidth = containerNode.getBoundingClientRect().width;
+  
+  const margin = { top: 20, right: 150, bottom: 20, left: 150 };
+  const width = containerWidth - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
+
+  // Clear any existing content
+  container.selectAll("*").remove();
+
+  const svg = container.append("svg")
+    .attr("width", containerWidth)
+    .attr("height", 500);
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Color scale for different categories
+  const colorScale = d3.scaleOrdinal()
+    .domain(["source", "budget", "spending"])
+    .range(["#3b82f6", "#10b981", "#f59e0b"]);
+
+  // Create sankey generator
+  const sankey = d3.sankey()
+    .nodeId(d => d.id)
+    .nodeAlign(d3.sankeyJustify)
+    .nodeWidth(15)
+    .nodePadding(10)
+    .extent([[1, 5], [width - 1, height - 5]]);
+
+  // Generate the sankey diagram
+  const { nodes, links } = sankey({
+    nodes: data.nodes.map(d => Object.assign({}, d)),
+    links: data.links.map(d => Object.assign({}, d))
+  });
+
+  // Draw links
+  const link = g.append("g")
+    .selectAll("path")
+    .data(links)
+    .join("path")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", d => {
+      const sourceCategory = d.source.category;
+      const targetCategory = d.target.category;
+      if (sourceCategory === "source") return colorScale("source");
+      if (sourceCategory === "budget") return colorScale("budget");
+      return colorScale("spending");
+    })
+    .attr("stroke-opacity", 0.5)
+    .attr("stroke-width", d => Math.max(1, d.width))
+    .attr("fill", "none")
+    .on("mouseover", function(event, d) {
+      d3.select(this).attr("stroke-opacity", 0.8);
+      
+      const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "rgba(0,0,0,0.8)")
+        .style("color", "white")
+        .style("padding", "12px")
+        .style("border-radius", "4px")
+        .style("font-size", "14px")
+        .style("pointer-events", "none")
+        .html(`
+          <strong>${d.source.name} → ${d.target.name}</strong><br/>
+          Amount: $${d.value}M
+        `);
+      
+      tooltip
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px");
+    })
+    .on("mouseout", function(event, d) {
+      d3.select(this).attr("stroke-opacity", 0.5);
+      d3.selectAll(".tooltip").remove();
+    });
+
+  // Draw nodes
+  const node = g.append("g")
+    .selectAll("rect")
+    .data(nodes)
+    .join("rect")
+    .attr("x", d => d.x0)
+    .attr("y", d => d.y0)
+    .attr("height", d => d.y1 - d.y0)
+    .attr("width", d => d.x1 - d.x0)
+    .attr("fill", d => colorScale(d.category))
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 1)
+    .on("mouseover", function(event, d) {
+      const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "rgba(0,0,0,0.8)")
+        .style("color", "white")
+        .style("padding", "12px")
+        .style("border-radius", "4px")
+        .style("font-size", "14px")
+        .style("pointer-events", "none")
+        .html(`
+          <strong>${d.name}</strong><br/>
+          Total: $${d.value}M
+        `);
+      
+      tooltip
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px");
+    })
+    .on("mouseout", function() {
+      d3.selectAll(".tooltip").remove();
+    });
+
+  // Add node labels
+  g.append("g")
+    .selectAll("text")
+    .data(nodes)
+    .join("text")
+    .attr("x", d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+    .attr("y", d => (d.y1 + d.y0) / 2)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
+    .style("font-size", "12px")
+    .style("font-weight", "500")
+    .style("fill", "#374151")
+    .text(d => d.name);
+
+  // Add category labels
+  const categories = [
+    { name: "Tax Collection", x: 0, y: -10, color: colorScale("source") },
+    { name: "Budget Categories", x: width / 2, y: -10, color: colorScale("budget") },
+    { name: "Spending Areas", x: width, y: -10, color: colorScale("spending") }
+  ];
+
+  g.selectAll(".category-label")
+    .data(categories)
+    .join("text")
+    .attr("class", "category-label")
+    .attr("x", d => d.x)
+    .attr("y", d => d.y)
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("font-weight", "bold")
+    .style("fill", d => d.color)
+    .text(d => d.name);
+
+  // Title
+  svg.append("text")
+    .attr("x", containerWidth / 2)
+    .attr("y", 20)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .style("fill", "#111827")
+    .text("Tax Collection Flow to Public Spending");
+
+  // Legend
+  const legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", `translate(20, 40)`);
+
+  const legendData = [
+    { label: "Tax Sources", color: colorScale("source") },
+    { label: "Budget Categories", color: colorScale("budget") },
+    { label: "Spending Areas", color: colorScale("spending") }
+  ];
+
+  const legendItems = legend.selectAll(".legend-item")
+    .data(legendData)
+    .enter().append("g")
+    .attr("class", "legend-item")
+    .attr("transform", (d, i) => `translate(0, ${i * 20})`);
+
+  legendItems.append("rect")
+    .attr("width", 15)
+    .attr("height", 15)
+    .attr("fill", d => d.color)
+    .attr("rx", 2);
+
+  legendItems.append("text")
+    .attr("x", 22)
+    .attr("y", 12)
+    .style("font-size", "12px")
+    .style("fill", "#374151")
+    .text(d => d.label);
+
+})();
+</script>

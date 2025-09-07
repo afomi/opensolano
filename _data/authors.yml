@@ -1,0 +1,95 @@
+# Authors for OpenSolano
+# Supports both traditional contact methods and decentralized identity (DID)
+
+ryan_wold:
+  name: "Ryan Wold"
+  title: "Civic Data Analyst"
+  bio: "Ryan is a civic technologist focused on government transparency and data accessibility. He has been working on open governance initiatives in Solano County since 2020."
+  email: "ryan@civic.studio"
+  twitter: "@ryanwold"
+  website: "https://civic.studio"
+  avatar: "/assets/images/authors/ryan-wold.jpg"
+  avatar_placeholder: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+  location: "Solano County, CA"
+  
+  # Decentralized Identity (DID) support
+  did: "did:web:civic.studio:ryan"
+  did_document_url: "https://civic.studio/.well-known/did.json"
+  
+  # Verifiable credentials and attestations
+  credentials:
+    - type: "CivicAnalystCredential"
+      issuer: "did:web:solano.gov"
+      issued: "2023-01-15"
+    - type: "OpenDataAdvocateCredential" 
+      issuer: "did:web:codeforamerica.org"
+      issued: "2022-08-20"
+  
+  # Social/professional verification
+  keybase: "ryanwold"
+  orcid: "0000-0000-0000-0000"
+
+willis_turner:
+  name: "Willis Turner"
+  title: "Municipal Finance Reporter"
+  bio: "Willis covers local government finance and policy across the Bay Area, with a focus on budget transparency and public accountability."
+  email: "willis.turner@example.org"
+  twitter: "@willisreports"
+  linkedin: "willis-turner-reporter"
+  avatar: "/assets/images/authors/willis-turner.jpg"
+  avatar_placeholder: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+  location: "Fairfield, CA"
+  
+  # Decentralized Identity (DID) support
+  did: "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+  did_document_url: "https://universalresolver.io/1.0/identifiers/did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+  
+  # Professional credentials
+  credentials:
+    - type: "JournalistCredential"
+      issuer: "did:web:spj.org"
+      issued: "2021-03-10"
+    - type: "LocalGovernmentReportingCredential"
+      issuer: "did:web:californiareporters.org"
+      issued: "2023-05-15"
+  
+  # Professional verification
+  press_pass: "CA-REPORTER-2023-1847"
+  society_professional_journalists: "member-2021"
+
+maria_santos:
+  name: "Maria Santos"
+  title: "Community Engagement Coordinator"
+  bio: "Maria works on citizen participation initiatives and community organizing around municipal budget processes. She has a background in public administration and community development."
+  email: "maria.santos@communityvoice.org"
+  twitter: "@mariasantos_ca"
+  instagram: "@solano_community_voice"
+  avatar: "/assets/images/authors/maria-santos.jpg"
+  avatar_placeholder: "https://images.unsplash.com/photo-1494790108755-2616b612b217?w=150&h=150&fit=crop&crop=face"
+  location: "Vallejo, CA"
+  languages: ["English", "Spanish"]
+  
+  # Decentralized Identity (DID) support - using a self-sovereign identity approach
+  did: "did:ion:EiClkZMDxPKqC9c-umQfTkR8vvZ9JPhl_xLDI9Nfk38w5w"
+  did_document_url: "https://beta.discover.did.microsoft.com/1.0/identifiers/did:ion:EiClkZMDxPKqC9c-umQfTkR8vvZ9JPhl_xLDI9Nfk38w5w"
+  
+  # Community and professional credentials
+  credentials:
+    - type: "CommunityOrganizerCredential"
+      issuer: "did:web:nationalcivicleague.org"
+      issued: "2022-11-30"
+    - type: "BudgetAdvocacyTrainingCredential"
+      issuer: "did:web:participatorybudgeting.org"
+      issued: "2023-07-22"
+    - type: "BilingualCommunicatorCredential"
+      issuer: "did:web:solano.gov"
+      issued: "2023-04-18"
+  
+  # Community involvement verification
+  affiliations:
+    - organization: "Solano County Community Budget Coalition"
+      role: "Coordinator"
+      since: "2022-01"
+    - organization: "Vallejo Neighborhood Association"
+      role: "Treasurer"  
+      since: "2021-06"

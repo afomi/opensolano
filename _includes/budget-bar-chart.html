@@ -1,0 +1,187 @@
+<div id="budget-bar-chart" style="width: 100%; height: 400px;"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// 12-Month Budget Bar Chart
+(function() {
+  // Sample data - replace with actual budget data
+  const data = [
+    { month: 'Jan', budget: 45000000, actual: 42000000 },
+    { month: 'Feb', budget: 48000000, actual: 46000000 },
+    { month: 'Mar', budget: 52000000, actual: 51000000 },
+    { month: 'Apr', budget: 49000000, actual: 47000000 },
+    { month: 'May', budget: 51000000, actual: 50000000 },
+    { month: 'Jun', budget: 53000000, actual: 52500000 },
+    { month: 'Jul', budget: 48000000, actual: 46500000 },
+    { month: 'Aug', budget: 50000000, actual: 49000000 },
+    { month: 'Sep', budget: 54000000, actual: 53000000 },
+    { month: 'Oct', budget: 52000000, actual: 51500000 },
+    { month: 'Nov', budget: 49000000, actual: 48000000 },
+    { month: 'Dec', budget: 51000000, actual: 50500000 }
+  ];
+
+  const container = d3.select("#budget-bar-chart");
+  const containerNode = container.node();
+  const containerWidth = containerNode.getBoundingClientRect().width;
+  
+  const margin = { top: 20, right: 80, bottom: 40, left: 60 };
+  const width = containerWidth - margin.left - margin.right;
+  const height = 400 - margin.top - margin.bottom;
+
+  // Clear any existing content
+  container.selectAll("*").remove();
+
+  const svg = container.append("svg")
+    .attr("width", containerWidth)
+    .attr("height", 400);
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Scales
+  const x0 = d3.scaleBand()
+    .domain(data.map(d => d.month))
+    .range([0, width])
+    .padding(0.1);
+
+  const x1 = d3.scaleBand()
+    .domain(['budget', 'actual'])
+    .range([0, x0.bandwidth()])
+    .padding(0.05);
+
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => Math.max(d.budget, d.actual))])
+    .nice()
+    .range([height, 0]);
+
+  const color = d3.scaleOrdinal()
+    .domain(['budget', 'actual'])
+    .range(['#4f46e5', '#10b981']);
+
+  // X axis
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x0))
+    .selectAll("text")
+    .style("font-size", "12px")
+    .style("fill", "#6b7280");
+
+  // Y axis
+  g.append("g")
+    .attr("class", "y-axis")
+    .call(d3.axisLeft(y)
+      .tickFormat(d => `$${(d / 1000000).toFixed(0)}M`))
+    .selectAll("text")
+    .style("font-size", "12px")
+    .style("fill", "#6b7280");
+
+  // Y axis label
+  g.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("fill", "#374151")
+    .text("Amount (Millions USD)");
+
+  // Bars
+  const monthGroups = g.selectAll(".month-group")
+    .data(data)
+    .enter().append("g")
+    .attr("class", "month-group")
+    .attr("transform", d => `translate(${x0(d.month)},0)`);
+
+  // Budget bars
+  monthGroups.append("rect")
+    .attr("class", "budget-bar")
+    .attr("x", x1('budget'))
+    .attr("y", d => y(d.budget))
+    .attr("width", x1.bandwidth())
+    .attr("height", d => height - y(d.budget))
+    .attr("fill", color('budget'))
+    .on("mouseover", function(event, d) {
+      const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "rgba(0,0,0,0.8)")
+        .style("color", "white")
+        .style("padding", "8px")
+        .style("border-radius", "4px")
+        .style("font-size", "12px")
+        .style("pointer-events", "none")
+        .text(`Budget ${d.month}: $${(d.budget / 1000000).toFixed(1)}M`);
+      
+      tooltip
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px");
+    })
+    .on("mouseout", function() {
+      d3.selectAll(".tooltip").remove();
+    });
+
+  // Actual bars
+  monthGroups.append("rect")
+    .attr("class", "actual-bar")
+    .attr("x", x1('actual'))
+    .attr("y", d => y(d.actual))
+    .attr("width", x1.bandwidth())
+    .attr("height", d => height - y(d.actual))
+    .attr("fill", color('actual'))
+    .on("mouseover", function(event, d) {
+      const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "rgba(0,0,0,0.8)")
+        .style("color", "white")
+        .style("padding", "8px")
+        .style("border-radius", "4px")
+        .style("font-size", "12px")
+        .style("pointer-events", "none")
+        .text(`Actual ${d.month}: $${(d.actual / 1000000).toFixed(1)}M`);
+      
+      tooltip
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 10) + "px");
+    })
+    .on("mouseout", function() {
+      d3.selectAll(".tooltip").remove();
+    });
+
+  // Legend
+  const legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", `translate(${width - 60}, 30)`);
+
+  const legendItems = legend.selectAll(".legend-item")
+    .data(['budget', 'actual'])
+    .enter().append("g")
+    .attr("class", "legend-item")
+    .attr("transform", (d, i) => `translate(0, ${i * 20})`);
+
+  legendItems.append("rect")
+    .attr("width", 15)
+    .attr("height", 15)
+    .attr("fill", d => color(d));
+
+  legendItems.append("text")
+    .attr("x", 20)
+    .attr("y", 12)
+    .style("font-size", "12px")
+    .style("fill", "#374151")
+    .text(d => d.charAt(0).toUpperCase() + d.slice(1));
+
+  // Title
+  svg.append("text")
+    .attr("x", containerWidth / 2)
+    .attr("y", 20)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .style("fill", "#111827")
+    .text("Monthly Budget vs Actual Spending");
+
+})();
+</script>

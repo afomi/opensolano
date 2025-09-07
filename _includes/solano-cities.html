@@ -1,0 +1,44 @@
+{%- assign cities = site.data.solano_cities.cities -%}
+<section class="mx-auto max-w-7xl px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl lg:mx-0">
+    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-3">Solano County Cities</h2>
+    <p class="mt-2 text-lg leading-8 text-gray-600">Explore municipalities across Solano County. Logos are placeholders if not provided.</p>
+  </div>
+
+  <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {%- for city in cities -%}
+    <article class="relative rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow bg-white">
+      <div class="flex items-center gap-4">
+        <div class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-gray-100 ring-1 ring-inset ring-gray-200">
+          {%- if city.logo and city.logo != '' -%}
+            <img src="{{ city.logo | downcase | relative_url }}" alt="{{ city.name }} logo" class="h-full w-full object-contain p-2"/>
+          {%- else -%}
+            <span class="text-lg font-semibold text-gray-600">{{ city.name | slice: 0,1 }}</span>
+          {%- endif -%}
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">
+            {%- if city.website -%}
+              <a href="{{ city.website }}" class="hover:text-gray-700" target="_blank" rel="noopener">
+                <span class="absolute inset-0" aria-hidden="true"></span>
+                {{ city.name }}
+              </a>
+            {%- else -%}
+              {{ city.name }}
+            {%- endif -%}
+          </h3>
+          <p class="mt-0.5 text-sm text-gray-600">City of {{ city.name }}</p>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-4">
+        {%- if city.website -%}
+          <a href="{{ city.website }}" target="_blank" rel="noopener" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Website</a>
+        {%- endif -%}
+        {%- if city.newsroom -%}
+          <a href="{{ city.newsroom }}" target="_blank" rel="noopener" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Newsroom</a>
+        {%- endif -%}
+      </div>
+    </article>
+    {%- endfor -%}
+  </div>
+</section>

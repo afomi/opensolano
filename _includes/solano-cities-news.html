@@ -1,0 +1,86 @@
+{%- comment -%}
+Parameters (optional):
+- cities: array of city slugs to include (defaults to all Solano cities)
+- recent_days: integer window to tag items as "New" (default 8)
+- max_items_per_city: number of items per city to show (default 1)
+{%- endcomment -%}
+
+{%- assign all_cities = site.data.solano_cities.cities -%}
+{%- assign selected_cities = include.cities | default: all_cities | map: 'slug' -%}
+{%- assign city_lookup = all_cities | map: 'slug' -%}
+{%- assign recent_days = include.recent_days | default: 8 -%}
+{%- assign max_items_per_city = include.max_items_per_city | default: 1 -%}
+{%- assign now_ts = site.time | date: '%s' -%}
+
+<section class="mx-auto max-w-7xl px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl lg:mx-0">
+    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">City News Highlights</h2>
+    <p class="mt-2 text-lg leading-8 text-gray-600">Latest updates from Solano County cities. Items within {{ recent_days }} days are highlighted as new.</p>
+  </div>
+
+  <div class="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {%- for slug in selected_cities -%}
+      {%- assign city = nil -%}
+      {%- for c in all_cities -%}
+        {%- if c.slug == slug -%}{%- assign city = c -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+
+      <article class="relative rounded-2xl border border-gray-200 p-6 shadow-sm bg-white">
+        <div class="flex items-center gap-4">
+          <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg bg-gray-100 ring-1 ring-inset ring-gray-200">
+            {%- if city.logo and city.logo != '' -%}
+              <img src="{{ city.logo | downcase | relative_url }}" alt="{{ city.name }} logo" class="h-full w-full object-contain p-1"/>
+            {%- else -%}
+              <span class="text-base font-semibold text-gray-600">{{ city.name | slice: 0,1 }}</span>
+            {%- endif -%}
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">
+              {%- if city.website -%}
+                <a href="{{ city.website }}" class="hover:text-gray-700" target="_blank" rel="noopener">{{ city.name }}</a>
+              {%- else -%}
+                {{ city.name }}
+              {%- endif -%}
+            </h3>
+            <p class="mt-0.5 text-sm text-gray-600">Weekly highlights</p>
+          </div>
+        </div>
+
+        {%- assign city_news = site.data.solano_city_news.news | where: 'city', slug -%}
+        {%- assign city_news = city_news | sort: 'date' | reverse -%}
+
+        <div class="mt-4 space-y-3">
+          {%- if city_news and city_news.size > 0 -%}
+            {%- for item in city_news limit: max_items_per_city -%}
+              {%- assign item_ts = item.date | date: '%s' -%}
+              {%- assign diff = now_ts | minus: item_ts -%}
+              {%- assign threshold = recent_days | times: 86400 -%}
+              <div class="rounded-md border border-gray-100 bg-gray-50 p-3">
+                <div class="flex items-center gap-2 text-xs text-gray-500">
+                  <time datetime="{{ item.date | date: '%Y-%m-%d' }}">{{ item.date | date: '%b %e, %Y' }}</time>
+                  {%- if diff <= threshold -%}
+                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700 ring-1 ring-inset ring-green-200">New</span>
+                  {%- endif -%}
+                </div>
+                <h4 class="mt-1 text-sm font-semibold text-gray-900">
+                  <a href="{{ item.url }}" target="_blank" rel="noopener" class="hover:text-indigo-600">{{ item.title }}</a>
+                </h4>
+                {%- if item.summary -%}
+                  <p class="mt-1 text-sm text-gray-600">{{ item.summary }}</p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <p class="text-sm text-gray-500">No recent updates.</p>
+          {%- endif -%}
+        </div>
+
+        {%- if city.newsroom -%}
+          <div class="mt-4">
+            <a href="{{ city.newsroom }}" target="_blank" rel="noopener" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View all {{ city.name }} news →</a>
+          </div>
+        {%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
