@@ -1,9 +1,152 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>{{ page.title }} - {{ site.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="keywords" content="Solano County, civic data, government transparency, municipal budgets, {% if page.title contains 'Public Funds' %}public spending, budget analysis, {% endif %}{% if page.title contains 'Topics' %}housing policy, impact fees, {% endif %}Fairfield, Vallejo, Vacaville, Suisun City, Benicia, Dixon, Rio Vista, California">
+    <meta name="author" content="OpenSolano">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:site_name" content="OpenSolano">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="{{ '/assets/images/logo2.png' | absolute_url }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@opensolano">
+    <meta name="twitter:creator" content="@opensolano">
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="twitter:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="twitter:image" content="{{ '/assets/images/logo2.png' | absolute_url }}">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OpenSolano",
+      "description": "{{ site.description }}",
+      "url": "{{ site.url }}",
+      "logo": "{{ '/assets/images/logo2.png' | absolute_url }}",
+      "sameAs": [
+        "https://x.com/opensolano"
+      ],
+      "areaServed": {
+        "@type": "AdministrativeArea",
+        "name": "Solano County",
+        "containedInPlace": {
+          "@type": "AdministrativeArea",
+          "name": "California"
+        }
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "CA",
+        "addressCountry": "US"
+      }
+    }
+    </script>
+    
+    {% if page.url == "/" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "OpenSolano",
+      "url": "{{ site.url }}",
+      "description": "{{ site.description }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "{{ site.url }}/topics/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% endif %}
+    
+    {% if page.url contains "/topics/" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "{{ page.title }}",
+      "description": "{{ page.description }}",
+      "url": "{{ page.url | absolute_url }}",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "OpenSolano",
+        "url": "{{ site.url }}"
+      },
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Municipal Budgets"
+        },
+        {
+          "@type": "Thing", 
+          "name": "Impact Fees"
+        },
+        {
+          "@type": "Thing",
+          "name": "Government Transparency"
+        }
+      ]
+    }
+    </script>
+    {% endif %}
+    
+    {% if page.url contains "/public-funds/" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "{{ page.url | absolute_url }}",
+      "name": "{{ page.title }}",
+      "description": "{{ page.description }}",
+      "url": "{{ page.url | absolute_url }}",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "OpenSolano",
+        "url": "{{ site.url }}"
+      },
+      "mainEntity": {
+        "@type": "GovernmentService",
+        "name": "Public Funds Tracker",
+        "description": "Track public spending across Solano County municipalities",
+        "provider": {
+          "@type": "Organization",
+          "name": "OpenSolano"
+        },
+        "areaServed": {
+          "@type": "AdministrativeArea",
+          "name": "Solano County, California"
+        }
+      }
+    }
+    </script>
+    {% endif %}
+    
+    <!-- Additional Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="geo.region" content="US-CA">
+    <meta name="geo.placename" content="Solano County, California">
+    <meta name="ICBM" content="38.2444, -121.9681">
+    
     <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
     <script src="/assets/js/jquery.min.js"></script>
   </head>

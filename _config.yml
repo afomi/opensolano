@@ -1,6 +1,7 @@
 url: "https://www.opensolano.org" # the base hostname & protocol for your site, e.g. http://example.com
 baseurl: "" # the subpath of your site, e.g. /blog
-title: "OpenSolano" # the name of your site, e.g. ACME Corp.
+title: "OpenSolano - Civic Data & Government Transparency for Solano County" # the name of your site, e.g. ACME Corp.
+description: "Open-source governance analysis covering Fairfield, Vallejo, Vacaville, Suisun City, Benicia, Dixon, and Rio Vista. Municipal budgets, impact fees, and civic transparency for all Solano County jurisdictions."
 
 collections_dir: collections
 
