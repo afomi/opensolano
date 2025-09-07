@@ -1,0 +1,104 @@
+{% assign topic = include.topic %}
+{% assign posts = site.tags[topic] %}
+{% if posts.size > 0 %}
+
+<div id="{{ topic | slugify }}-topic" class="bg-white border border-gray-200 rounded-2xl p-8 mb-12 scroll-mt-32">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+    
+    <!-- Topic Info Column -->
+    <div class="lg:col-span-2 flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6">
+      <!-- Topic Header -->
+      <div class="text-center mb-6">
+        <div class="flex justify-center mb-4">
+          <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 text-white text-2xl shadow-lg">
+            {% if topic == 'energy' %}⚡
+            {% elsif topic == 'education' %}🎓
+            {% elsif topic == 'healthcare' %}🏥
+            {% elsif topic == 'transportation' %}🚌
+            {% elsif topic == 'housing' %}🏠
+            {% elsif topic == 'environment' %}🌱
+            {% elsif topic == 'economic-development' %}💼
+            {% elsif topic == 'public-safety' %}🚨
+            {% elsif topic == 'agriculture' %}🌾
+            {% elsif topic == 'infrastructure' %}🏗️
+            {% elsif topic == 'parks-recreation' %}🏞️
+            {% elsif topic == 'governance' %}🏛️
+            {% elsif topic == 'budgets' %}💰
+            {% elsif topic == 'development' %}🏘️
+            {% elsif topic == 'impact-fees' %}💵
+            {% elsif topic == 'zoning' %}📋
+            {% elsif topic == 'meetings' %}👥
+            {% elsif topic == 'elections' %}🗳️
+            {% elsif topic == 'data' %}📊
+            {% elsif topic == 'analysis' %}📈
+            {% else %}📄{% endif %}
+          </div>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ topic | capitalize | replace: '-', ' ' }}</h2>
+        <div class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white rounded-full px-3 py-1">
+          <span class="text-indigo-500">📊</span>
+          <span>{{ posts | size }} stor{% if posts.size != 1 %}ies{% else %}y{% endif %}</span>
+        </div>
+      </div>
+
+      <!-- Topic Stats -->
+      {% assign sorted_posts = posts | sort: 'date' %}
+      {% assign first_post = sorted_posts | first %}
+      {% assign latest_post = sorted_posts | last %}
+      <div class="bg-white rounded-lg p-4 mb-6 shadow-sm">
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div class="border-r border-gray-200 pr-4">
+            <div class="text-xs text-gray-500 uppercase tracking-wide mb-1">First Story</div>
+            <div class="text-sm font-medium text-gray-900">{{ first_post.date | date: '%b %Y' }}</div>
+          </div>
+          <div class="pl-4">
+            <div class="text-xs text-gray-500 uppercase tracking-wide mb-1">Latest Story</div>
+            <div class="text-sm font-medium text-gray-900">{{ latest_post.date | date: '%b %Y' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest Post Preview -->
+      <div class="bg-white rounded-lg p-4 mb-6 shadow-sm flex-1">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-green-500 text-sm">🟢</span>
+          <span class="text-xs text-gray-500 uppercase tracking-wide font-medium">Most Recent</span>
+        </div>
+        <h3 class="text-base font-semibold text-gray-900 mb-2 leading-snug">
+          <a href="{{ latest_post.url }}" class="hover:text-indigo-600 transition-colors">{{ latest_post.title }}</a>
+        </h3>
+        <p class="text-xs text-gray-500 mb-3">{{ latest_post.date | date: '%B %-d, %Y' }}</p>
+        {% if latest_post.excerpt %}
+          <p class="text-sm text-gray-700 leading-relaxed">{{ latest_post.excerpt | strip_html | truncatewords: 20 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Action Button -->
+      {% if posts.size > 1 %}
+      <div class="mt-auto">
+        <a href="#{{ topic | slugify }}" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-3 rounded-lg transition-colors shadow-sm">
+          <span>View All {{ posts.size }} Stories</span>
+          <span class="ml-2">→</span>
+        </a>
+      </div>
+      {% else %}
+      <div class="mt-auto">
+        <a href="{{ latest_post.url }}" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-3 rounded-lg transition-colors shadow-sm">
+          <span>Read Story</span>
+          <span class="ml-2">→</span>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Timeline Column -->
+    <div class="lg:col-span-3 flex flex-col">
+      <div class="flex-1">
+        {% include topic-timeline-vertical.html topic=topic years_back=2 %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endif %}

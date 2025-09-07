@@ -1,0 +1,83 @@
+{% assign topic = include.topic %}
+{% assign years_back = include.years_back | default: 2 %}
+{% assign posts = site.tags[topic] %}
+
+{% if posts.size > 0 %}
+  {% assign sorted_posts = posts | sort: 'date' %}
+  {% assign current_year = 'now' | date: '%Y' | plus: 0 %}
+  {% assign start_year = current_year | minus: years_back %}
+
+  <div class="relative">
+    <!-- Vertical Timeline Line (only show if more than 1 entry) -->
+    {% assign timeline_posts_count = 0 %}
+    {% for post in sorted_posts reversed %}
+      {% assign post_year = post.date | date: '%Y' | plus: 0 %}
+      {% if post_year >= start_year %}
+        {% assign timeline_posts_count = timeline_posts_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+    
+    {% if timeline_posts_count > 1 %}
+      <div class="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-indigo-200 via-indigo-300 to-indigo-200"></div>
+    {% endif %}
+    
+    <!-- Timeline Items -->
+    <div class="space-y-6">
+      {% for post in sorted_posts reversed %}
+        {% assign post_year = post.date | date: '%Y' | plus: 0 %}
+        {% if post_year >= start_year %}
+          <div class="relative flex items-start gap-4">
+            <!-- Timeline Dot -->
+            <div class="relative z-10 flex-shrink-0 w-3 h-3 bg-indigo-500 rounded-full ring-4 ring-white shadow-sm mt-2"></div>
+            
+            <!-- Content Card -->
+            <div class="flex-1 bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow min-w-0">
+              <!-- Date Badge -->
+              <div class="flex items-center gap-2 mb-3">
+                <time class="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">
+                  {{ post.date | date: '%b %-d, %Y' }}
+                </time>
+              </div>
+              
+              <!-- Post Title -->
+              <h4 class="text-sm font-semibold text-gray-900 leading-tight">
+                <a href="{{ post.url }}" class="hover:text-indigo-600 transition-colors">
+                  {{ post.title }}
+                </a>
+              </h4>
+              
+              <!-- Tags (if multiple) -->
+              {% if post.tags.size > 1 %}
+                <div class="flex flex-wrap gap-1 mt-3">
+                  {% for tag in post.tags limit: 2 %}
+                    {% unless tag == topic %}
+                      <span class="inline-flex items-center text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                        {{ tag | replace: '-', ' ' }}
+                      </span>
+                    {% endunless %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <!-- Timeline Footer -->
+    {% if sorted_posts.size > 0 %}
+      <div class="mt-8 text-center">
+        <div class="inline-flex items-center gap-2 text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-full">
+          <span class="w-2 h-2 bg-indigo-300 rounded-full"></span>
+          <span>{{ sorted_posts.size }} stor{% if sorted_posts.size != 1 %}ies{% else %}y{% endif %} since {{ sorted_posts.first.date | date: '%Y' }}</span>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% else %}
+  <!-- No Posts State -->
+  <div class="text-center py-8">
+    <div class="text-gray-400 text-4xl mb-3">📝</div>
+    <p class="text-sm text-gray-500">No stories yet for this topic</p>
+  </div>
+{% endif %}
