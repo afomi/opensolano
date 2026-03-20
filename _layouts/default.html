@@ -233,10 +233,11 @@
     <script>
       $(function() {
         $(".sideNavToggleButton").on("click", function() {
-          if( $("#sideNav").is(":visible") === true ) {
-            $("#sideNav").hide()
+          var nav = $("#sideNav");
+          if (nav.attr("hidden") !== undefined) {
+            nav.removeAttr("hidden");
           } else {
-            $("#sideNav").show()
+            nav.attr("hidden", "");
           }
         })
       })
