@@ -1,0 +1,345 @@
+---
+layout: default
+title: "Solano County Map - Jurisdictions & Parks"
+description: "Interactive map of Solano County showing city boundaries, jurisdictions, and parks. Explore geographic civic data for Fairfield, Vallejo, Vacaville, Suisun City, Benicia, Dixon, and Rio Vista."
+permalink: /map/
+---
+
+<main class="isolate pt-28">
+  <!-- Hero section -->
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-emerald-100/20 pt-14">
+  </div>
+
+  <!-- Header -->
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-6">
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg">
+        <svg
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Solano County Map</h1>
+        <p class="mt-2 text-lg leading-8 text-gray-600">Jurisdictions, boundaries, and parks across the county</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map controls -->
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-medium text-gray-700">Layers:</span>
+      </div>
+      <button
+        id="toggle-boundaries"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
+        data-active="true">
+        <span
+          class="h-3 w-3 rounded-sm border-2 border-emerald-600 bg-emerald-200">
+        </span>
+        City Boundaries
+      </button>
+      <button
+        id="toggle-parks"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-3 py-1.5 text-sm font-medium text-green-800 hover:bg-green-100 transition-colors"
+        data-active="true">
+        <span
+          class="h-3 w-3 rounded-full bg-green-500">
+        </span>
+        Parks
+      </button>
+      <button
+        id="toggle-labels"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+        data-active="true">
+        <span
+          class="h-3 w-3 rounded-sm border border-gray-400 bg-white text-[6px] leading-3 text-center font-bold text-gray-500">
+          A
+        </span>
+        Labels
+      </button>
+    </div>
+  </section>
+
+  <!-- Map container -->
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-8">
+    <div
+      id="map"
+      class="w-full rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+      style="height: 600px;">
+    </div>
+  </section>
+
+  <!-- Info panel -->
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
+    <!-- Selected feature info -->
+    <div
+      id="feature-info"
+      class="bg-white border border-gray-200 rounded-2xl p-6 hidden">
+      <h2
+        id="feature-name"
+        class="text-xl font-bold text-gray-900 mb-2">
+      </h2>
+      <div
+        id="feature-details"
+        class="text-gray-600">
+      </div>
+    </div>
+
+    <!-- Legend / stats -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-6">
+      {% for city in site.data.solano_jurisdictions.cities %}
+      <div class="bg-white border border-gray-200 rounded-xl p-4">
+        <div class="flex items-center gap-3 mb-2">
+          <span
+            class="h-3 w-3 rounded-full"
+            style="background-color: {{ city.slug | prepend: '#' | replace: 'benicia', '#6366f1' | replace: 'dixon', '#f59e0b' | replace: 'fairfield', '#3b82f6' | replace: 'riovista', '#14b8a6' | replace: 'suisun-city', '#8b5cf6' | replace: 'vacaville', '#ef4444' | replace: 'vallejo', '#ec4899' }};">
+          </span>
+          <h3 class="font-semibold text-gray-900">{{ city.name }}</h3>
+        </div>
+        <p class="text-sm text-gray-500">Pop. {{ city.population | round }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Data source attribution -->
+    <div class="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
+      <p class="text-xs text-gray-500">
+        Map tiles by <a
+          href="https://www.openstreetmap.org/copyright"
+          class="underline hover:text-gray-700"
+          target="_blank"
+          rel="noopener">OpenStreetMap</a> contributors.
+        Boundary data from <a
+          href="https://jurisdictional.org"
+          class="underline hover:text-gray-700"
+          target="_blank"
+          rel="noopener">Jurisdictional</a>.
+        Parks data: Phase 1 milestone.
+      </p>
+    </div>
+  </section>
+</main>
+
+<!-- Leaflet CSS & JS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin="" />
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin="">
+</script>
+
+<script>
+(function() {
+  // --- City colors ---
+  var CITY_COLORS = {
+    'benicia':     '#6366f1',
+    'dixon':       '#f59e0b',
+    'fairfield':   '#3b82f6',
+    'riovista':    '#14b8a6',
+    'suisun-city': '#8b5cf6',
+    'vacaville':   '#ef4444',
+    'vallejo':     '#ec4899'
+  };
+
+  // --- City data from Jekyll ---
+  var cities = [
+    {% for city in site.data.solano_jurisdictions.cities %}
+    {
+      slug: "{{ city.slug }}",
+      name: "{{ city.name }}",
+      center: [{{ city.center[0] }}, {{ city.center[1] }}],
+      population: {{ city.population }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  // --- County center ---
+  var countyCenter = [{{ site.data.solano_jurisdictions.county.center[0] }}, {{ site.data.solano_jurisdictions.county.center[1] }}];
+
+  // --- Initialize map ---
+  var map = L.map('map', {
+    center: countyCenter,
+    zoom: 10,
+    scrollWheelZoom: true
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // --- Load real boundary GeoJSON from jurisdictional.org ---
+  var GEOJSON_FILES = [
+    { file: 'benicia.geojson', slug: 'benicia', name: 'Benicia', population: 28281 },
+    { file: 'dixon.geojson', slug: 'dixon', name: 'Dixon', population: 21347 },
+    { file: 'fairfield.geojson', slug: 'fairfield', name: 'Fairfield', population: 119881 },
+    { file: 'rio-vista.geojson', slug: 'riovista', name: 'Rio Vista', population: 10211 },
+    { file: 'suisun-city.geojson', slug: 'suisun-city', name: 'Suisun City', population: 29541 },
+    { file: 'vacaville.geojson', slug: 'vacaville', name: 'Vacaville', population: 103590 },
+    { file: 'vallejo.geojson', slug: 'vallejo', name: 'Vallejo', population: 121692 }
+  ];
+
+  var boundaryLayer = L.layerGroup().addTo(map);
+  var cityLayers = [];
+
+  GEOJSON_FILES.forEach(function(city) {
+    fetch('/assets/data/geojson/' + city.file)
+      .then(function(res) { return res.json(); })
+      .then(function(geojson) {
+        geojson.features.forEach(function(f) {
+          f.properties.slug = city.slug;
+          f.properties.name = city.name;
+          f.properties.population = city.population;
+        });
+        var color = CITY_COLORS[city.slug] || '#6b7280';
+        var layer = L.geoJSON(geojson, {
+          style: {
+            color: color,
+            weight: 2,
+            opacity: 0.8,
+            fillColor: color,
+            fillOpacity: 0.15
+          },
+          onEachFeature: function(feature, layer) {
+            layer.on('click', function() {
+              showFeatureInfo(feature.properties);
+            });
+            layer.on('mouseover', function(e) {
+              e.target.setStyle({ fillOpacity: 0.35, weight: 3 });
+            });
+            layer.on('mouseout', function(e) {
+              e.target.setStyle({ fillOpacity: 0.15, weight: 2 });
+            });
+          }
+        });
+        boundaryLayer.addLayer(layer);
+        cityLayers.push(layer);
+
+        // Fit bounds once all cities loaded
+        if (cityLayers.length === GEOJSON_FILES.length) {
+          var group = L.featureGroup(cityLayers);
+          map.fitBounds(group.getBounds().pad(0.1));
+        }
+      });
+  });
+
+  // --- City label markers ---
+  var labelLayer = L.layerGroup();
+  cities.forEach(function(city) {
+    var label = L.marker(city.center, {
+      icon: L.divIcon({
+        className: 'city-label',
+        html: '<span style="background:white;padding:2px 6px;border-radius:4px;font-size:12px;font-weight:600;color:#111827;white-space:nowrap;border:1px solid #d1d5db;box-shadow:0 1px 2px rgba(0,0,0,0.1);">' + city.name + '</span>',
+        iconSize: null,
+        iconAnchor: [30, 10]
+      })
+    });
+    labelLayer.addLayer(label);
+  });
+  labelLayer.addTo(map);
+
+  // --- Parks layer (placeholder - Phase 1 milestone) ---
+  var parksData = {
+    type: "FeatureCollection",
+    features: []
+    // Parks will be populated in Phase 1.
+    // Expected format:
+    // {
+    //   type: "Feature",
+    //   properties: { name: "Allan Witt Park", city: "fairfield", type: "community_park", acres: 50 },
+    //   geometry: { type: "Point", coordinates: [-122.0456, 38.2567] }
+    // }
+  };
+
+  var parksLayer = L.geoJSON(parksData, {
+    pointToLayer: function(feature, latlng) {
+      return L.circleMarker(latlng, {
+        radius: 6,
+        fillColor: '#22c55e',
+        color: '#15803d',
+        weight: 1.5,
+        opacity: 1,
+        fillOpacity: 0.8
+      });
+    },
+    onEachFeature: function(feature, layer) {
+      layer.bindPopup(
+        '<strong>' + feature.properties.name + '</strong><br>' +
+        '<span style="color:#6b7280">' + (feature.properties.city || '') + '</span>' +
+        (feature.properties.acres ? '<br>' + feature.properties.acres + ' acres' : '')
+      );
+    }
+  }).addTo(map);
+
+  // --- Layer toggle controls ---
+  function toggleLayer(btn, layer) {
+    var active = btn.getAttribute('data-active') === 'true';
+    if (active) {
+      map.removeLayer(layer);
+      btn.setAttribute('data-active', 'false');
+      btn.classList.remove('bg-emerald-50', 'border-emerald-300', 'text-emerald-800',
+                           'bg-green-50', 'border-green-300', 'text-green-800');
+      btn.classList.add('bg-gray-100', 'border-gray-300', 'text-gray-400');
+    } else {
+      map.addLayer(layer);
+      btn.setAttribute('data-active', 'true');
+      btn.classList.remove('bg-gray-100', 'text-gray-400');
+      // Re-apply original colors based on button id
+      if (btn.id === 'toggle-boundaries') {
+        btn.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-800');
+      } else if (btn.id === 'toggle-parks') {
+        btn.classList.add('bg-green-50', 'border-green-300', 'text-green-800');
+      }
+    }
+  }
+
+  document.getElementById('toggle-boundaries').addEventListener('click', function() {
+    toggleLayer(this, boundaryLayer);
+  });
+  document.getElementById('toggle-parks').addEventListener('click', function() {
+    toggleLayer(this, parksLayer);
+  });
+  document.getElementById('toggle-labels').addEventListener('click', function() {
+    toggleLayer(this, labelLayer);
+  });
+
+  // --- Feature info panel ---
+  function showFeatureInfo(props) {
+    var infoEl = document.getElementById('feature-info');
+    var nameEl = document.getElementById('feature-name');
+    var detailsEl = document.getElementById('feature-details');
+
+    nameEl.textContent = props.name;
+    var html = '';
+    if (props.population) {
+      html += '<p class="mb-1"><span class="font-medium text-gray-900">Population:</span> ' + props.population.toLocaleString() + '</p>';
+    }
+    if (props.type) {
+      html += '<p class="mb-1"><span class="font-medium text-gray-900">Type:</span> ' + props.type + '</p>';
+    }
+    if (props.acres) {
+      html += '<p class="mb-1"><span class="font-medium text-gray-900">Acres:</span> ' + props.acres + '</p>';
+    }
+    detailsEl.innerHTML = html;
+    infoEl.classList.remove('hidden');
+  }
+
+  // --- Initial bounds set by GeoJSON load callback above ---
+
+})();
+</script>

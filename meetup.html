@@ -23,7 +23,7 @@ permalink: /meetup/
                     stroke-linejoin="round"
                     d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
             </svg>
-            Monday Evenings
+            Next: {{ site.data.meetups[0].date | date: "%A, %B %-d" }} at {{ site.data.meetups[0].time }}
           </span>
         </div>
         <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
@@ -47,67 +47,80 @@ permalink: /meetup/
     <div class="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-white sm:h-32"></div>
   </div>
 
-  <!-- Meeting Details -->
+  <!-- Upcoming Dates -->
+  {% if site.data.meetups.size > 0 %}
   <div class="bg-white py-12 sm:py-16">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto max-w-4xl">
-        <div class="grid gap-6 sm:grid-cols-3">
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center">
-            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
-              <svg class="h-6 w-6 text-amber-600"
-                   fill="none"
-                   viewBox="0 0 24 24"
-                   stroke-width="1.5"
-                   stroke="currentColor">
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-              </svg>
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-8 text-center">Upcoming Meetups</h2>
+        <div class="space-y-4"
+             id="meetup-dates">
+          {% for meetup in site.data.meetups %}
+          <div class="meetup-date rounded-xl border border-gray-200 bg-gray-50 p-6 flex flex-col sm:flex-row sm:items-center gap-4"
+               data-date="{{ meetup.date }}">
+            <div class="flex-shrink-0 text-center sm:text-left sm:w-32">
+              <div class="text-lg font-bold text-gray-900">
+                {{ meetup.date | date: "%b %-d" }}
+              </div>
+              <div class="text-sm text-gray-500">
+                {{ meetup.date | date: "%A" }}
+              </div>
+              <div class="text-sm text-amber-600 font-medium">
+                {{ meetup.time }}
+              </div>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900">When</h3>
-            <p class="mt-2 text-gray-600">Monday Evenings</p>
-          </div>
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center">
-            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
-              <svg class="h-6 w-6 text-amber-600"
-                   fill="none"
-                   viewBox="0 0 24 24"
-                   stroke-width="1.5"
-                   stroke="currentColor">
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-              </svg>
+            <div class="flex-1">
+              <div class="font-medium text-gray-900">{{ meetup.topic }}</div>
+              <div class="mt-1 text-sm text-gray-500 flex items-center gap-1">
+                <svg class="h-4 w-4 text-gray-400"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke-width="1.5"
+                     stroke="currentColor">
+                  <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+                {{ meetup.location }}
+              </div>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900">Where</h3>
-            <p class="mt-2 text-gray-600">
-              Journey Coffee, NavigateRE (downtown), and other spots in Vacaville & Solano County
-            </p>
           </div>
-          <div class="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center">
-            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
-              <svg class="h-6 w-6 text-amber-600"
-                   fill="none"
-                   viewBox="0 0 24 24"
-                   stroke-width="1.5"
-                   stroke="currentColor">
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-900">Who</h3>
-            <p class="mt-2 text-gray-600">
-              Everyone welcome. No tech background needed.
-            </p>
-          </div>
+          {% endfor %}
         </div>
+        <p class="mt-6 text-center text-sm text-gray-500">
+          Everyone welcome. No tech background needed.
+        </p>
       </div>
     </div>
   </div>
+  {% endif %}
+
+  <script>
+  (function() {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var dates = document.querySelectorAll('.meetup-date');
+    var foundNext = false;
+    dates.forEach(function(el) {
+      var parts = el.getAttribute('data-date').split('-');
+      var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      if (d < today) {
+        el.classList.add('opacity-40');
+      } else if (!foundNext) {
+        foundNext = true;
+        el.classList.remove('bg-gray-50', 'border-gray-200');
+        el.classList.add('bg-amber-50', 'border-amber-300', 'ring-2', 'ring-amber-200');
+        var label = document.createElement('span');
+        label.className = 'inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 ml-2';
+        label.textContent = 'Next meetup';
+        el.querySelector('.font-medium').appendChild(label);
+      }
+    });
+  })();
+  </script>
 
   <!-- About Section -->
   <div id="about"
