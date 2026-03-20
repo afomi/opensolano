@@ -2,16 +2,14 @@
   "name": "s3-jekyll",
   "version": "1.0.0",
   "description": "jekyll with tailwind to s3 via github actions",
-  "main": "postcss.config.js",
   "dependencies": {
-    "autoprefixer": "^10.4.21",
-    "cssnano": "^7.1.0",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17"
+    "@tailwindcss/cli": "^4.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:css": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --watch",
+    "dev": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css && (npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --watch & bundle exec jekyll serve --livereload)",
+    "build": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --minify && bundle exec jekyll build"
   },
   "repository": {
     "type": "git",

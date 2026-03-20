@@ -26,16 +26,10 @@ collections:
     permalink: /services/:id
 
 plugins:
-  - jekyll-postcss
   - jekyll-datapage-generator
-
-postcss:
-  cache: false
 
 # page_gen:
 
 exclude:
   - package.json
   - package-lock.json
-  - postcss.config.js
-  - tailwind.config.js

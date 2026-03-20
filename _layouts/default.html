@@ -152,6 +152,7 @@
     <meta name="geo.placename" content="Solano County, California">
     <meta name="ICBM" content="38.2444, -121.9681">
     
+    <link rel="icon" href="{{ "/assets/images/logo2.png" | relative_url }}" type="image/png">
     <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
     <script src="/assets/js/jquery.min.js"></script>
   </head>
@@ -189,60 +190,118 @@
             <a href="#" class="text-sm font-semibold leading-6 text-gray-900" hidden>Log in <span aria-hidden="true">&rarr;</span></a>
           </div>
         </nav>
-        <!-- Mobile menu, show/hide based on menu open state. -->
-        <div id="sideNav" class="lg:hidden" role="dialog" aria-modal="true" hidden>
-          <!-- Background backdrop -->
-          <div class="fixed inset-0 z-50 bg-gray-900/50"></div>
-          <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div class="flex items-center justify-between">
-              <a href="/" class="-m-1.5 p-1.5 flex items-center gap-2 focus:outline-none focus-visible:outline-none">
-                <span class="sr-only">Open Solano</span>
-                <img class="h-10 w-10 rounded-full" src="/assets/images/logo2.png" alt="Open Solano logo">
-                <span class="text-base font-semibold text-gray-900">Open Solano</span>
-              </a>
-              <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700 sideNavToggleButton">
-                <span class="sr-only">Close menu</span>
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div class="mt-6 flow-root">
-              <div class="-my-6 divide-y divide-gray-500/10">
-                <div class="space-y-2 py-6">
-                  <a href="/jurisdictions" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Jurisdictions</a>
-                  <a href="/topics" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Topics</a>
-                  <a href="/public-funds" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Public Funds</a>
-                  <a href="/map" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Map</a>
-                  <a href="/blog" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Blog</a>
-                  <a href="/meetup" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Meetup</a>
-                </div>
-                <div class="py-6">
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" hidden>Log in</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </header>
+
+      <!-- Mobile drawer backdrop -->
+      <div
+        id="sideNavBackdrop"
+        style="position:fixed;inset:0;z-index:50;background:rgba(17,24,39,0.5);opacity:0;pointer-events:none;transition:opacity 300ms;"
+        aria-hidden="true">
+      </div>
+      <!-- Mobile drawer -->
+      <div
+        id="sideNav"
+        style="position:fixed;top:0;right:0;bottom:0;left:auto;z-index:50;width:20rem;max-width:100vw;background:#ffffff;box-shadow:-4px 0 16px rgba(0,0,0,0.1);transform:translateX(100%);transition:transform 300ms ease-in-out;"
+        role="dialog"
+        aria-modal="true">
+        <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-200">
+          <a
+            href="/"
+            class="-m-1.5 p-1.5 flex items-center gap-2 focus:outline-none focus-visible:outline-none">
+            <img
+              class="h-10 w-10 rounded-full"
+              src="/assets/images/logo2.png"
+              alt="Open Solano logo">
+            <span class="text-base font-semibold text-gray-900">Open Solano</span>
+          </a>
+          <button
+            type="button"
+            class="-m-2.5 rounded-md p-2.5 text-gray-700 sideNavToggleButton">
+            <span class="sr-only">Close menu</span>
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <nav class="px-6 py-6">
+          <div class="space-y-1">
+            <a
+              href="/jurisdictions"
+              class="block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">
+              Jurisdictions
+            </a>
+            <a
+              href="/topics"
+              class="block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">
+              Topics
+            </a>
+            <a
+              href="/public-funds"
+              class="block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">
+              Public Funds
+            </a>
+            <a
+              href="/map"
+              class="block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">
+              Map
+            </a>
+            <a
+              href="/blog"
+              class="block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">
+              Blog
+            </a>
+            <a
+              href="/meetup"
+              class="block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">
+              Meetup
+            </a>
+          </div>
+        </nav>
+      </div>
 
       {{ content }}
       
       {% include footer.html %}
     </div>
     <script>
-      document.querySelectorAll(".sideNavToggleButton").forEach(function(btn) {
-        btn.addEventListener("click", function() {
-          var nav = document.getElementById("sideNav");
-          if (nav.hasAttribute("hidden")) {
-            nav.removeAttribute("hidden");
-            document.body.style.overflow = "hidden";
-          } else {
-            nav.setAttribute("hidden", "");
-            document.body.style.overflow = "";
-          }
+      (function() {
+        var nav = document.getElementById("sideNav");
+        var backdrop = document.getElementById("sideNavBackdrop");
+        var isOpen = false;
+
+        function openNav() {
+          isOpen = true;
+          document.body.style.overflow = "hidden";
+          backdrop.style.opacity = "1";
+          backdrop.style.pointerEvents = "auto";
+          nav.style.transform = "translateX(0)";
+        }
+
+        function closeNav() {
+          isOpen = false;
+          document.body.style.overflow = "";
+          backdrop.style.opacity = "0";
+          backdrop.style.pointerEvents = "none";
+          nav.style.transform = "translateX(100%)";
+        }
+
+        document.querySelectorAll(".sideNavToggleButton").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            isOpen ? closeNav() : openNav();
+          });
         });
-      });
+
+        backdrop.addEventListener("click", closeNav);
+      })();
     </script>
   </body>
 </html>
