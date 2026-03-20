@@ -191,8 +191,8 @@
         </nav>
         <!-- Mobile menu, show/hide based on menu open state. -->
         <div id="sideNav" class="lg:hidden" role="dialog" aria-modal="true" hidden>
-          <!-- Background backdrop, show/hide based on slide-over state. -->
-          <div class="fixed inset-0 z-50"></div>
+          <!-- Background backdrop -->
+          <div class="fixed inset-0 z-50 bg-gray-900/50"></div>
           <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div class="flex items-center justify-between">
               <a href="/" class="-m-1.5 p-1.5 flex items-center gap-2 focus:outline-none focus-visible:outline-none">
@@ -231,16 +231,18 @@
       {% include footer.html %}
     </div>
     <script>
-      $(function() {
-        $(".sideNavToggleButton").on("click", function() {
-          var nav = $("#sideNav");
-          if (nav.attr("hidden") !== undefined) {
-            nav.removeAttr("hidden");
+      document.querySelectorAll(".sideNavToggleButton").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var nav = document.getElementById("sideNav");
+          if (nav.hasAttribute("hidden")) {
+            nav.removeAttribute("hidden");
+            document.body.style.overflow = "hidden";
           } else {
-            nav.attr("hidden", "");
+            nav.setAttribute("hidden", "");
+            document.body.style.overflow = "";
           }
-        })
-      })
+        });
+      });
     </script>
   </body>
 </html>
