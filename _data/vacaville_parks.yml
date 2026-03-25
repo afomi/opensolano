@@ -1,0 +1,364 @@
+generated_from: Vacaville-Parks/Parks.shp
+jurisdiction: Vacaville
+count: 40
+parks:
+- slug: alamo-creek-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: AlamoDr. & Buck Ave.
+  acres: 9.5
+  center:
+  - 38.356659
+  - -122.00869
+  park_name: Alamo Creek Park
+- slug: andrews-park
+  jurisdiction: Vacaville
+  type: Community
+  location: Monte Vista Ave. & School Rd.
+  acres: 16.4
+  center:
+  - 38.357547
+  - -121.986071
+  park_name: Andrews Park
+- slug: arbor-oaks-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Arbor Oaks Dr. at Leeward Ct.
+  acres: 2.5
+  center:
+  - 38.347547
+  - -121.937116
+  park_name: Arbor Oaks Park
+- slug: arlington-park
+  jurisdiction: Vacaville
+  type: Community
+  location: Foxboro Pkwy. & Peabody Rd.
+  acres: 18.5
+  center:
+  - 38.323958
+  - -121.967312
+  park_name: Arlington Park
+- slug: brighton-landing-park
+  jurisdiction: Vacaville
+  type: Community
+  location: Sunflower St & Honeysuckle Dr
+  acres: 6.0
+  center:
+  - 38.346846
+  - -121.925171
+  park_name: Brighton Landing Park
+- slug: browns-valley-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Wrentham Dr.
+  acres: 3.8
+  center:
+  - 38.381642
+  - -121.981867
+  park_name: Browns Valley Park
+- slug: cambridge-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Nut Tree Rd. & Cambridge Dr.
+  acres: 3.8
+  center:
+  - 38.331392
+  - -121.950659
+  park_name: Cambridge Park
+- slug: cannon-station-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Nut Tree Rd. & Opal Wy.
+  acres: 6.7
+  center:
+  - 38.323032
+  - -121.953486
+  park_name: Cannon Station Park
+- slug: centennial-park
+  jurisdiction: Vacaville
+  type: Community
+  location: 501 Browns Valley Rd.
+  acres: 32.7
+  center:
+  - 38.373194
+  - -121.971697
+  park_name: Centennial Park
+- slug: city-hall-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Walnut Ave. @ City Hall
+  acres: 1.6
+  center:
+  - 38.351975
+  - -121.995061
+  park_name: City Hall Park
+- slug: cooper-school-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: 830 Christine Dr.
+  acres: 6.6
+  center:
+  - 38.356225
+  - -121.946919
+  park_name: Cooper School Park
+- slug: corderos-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Parkside Dr. (North Village)
+  acres: 7.2
+  center:
+  - 38.399355
+  - -121.935464
+  park_name: Corderos Park
+- slug: fairmont-beelard-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Beelard Dr. & Matthews Ct.
+  acres: 5.3
+  center:
+  - 38.343754
+  - -121.960207
+  park_name: Fairmont-Beelard Park
+- slug: hawkins-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Summerfield Dr. & Newport Cir.
+  acres: 3.6
+  center:
+  - 38.355512
+  - -121.956347
+  park_name: Hawkins Park
+- slug: hemlock-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Eldridge Ave. & Laramie Wy.
+  acres: 4.2
+  center:
+  - 38.366667
+  - -122.001603
+  park_name: Hemlock Park
+- slug: hume-grove-park
+  jurisdiction: Vacaville
+  type: Community
+  location: 4627 Pena Adobe Rd.
+  acres: 1.6
+  center:
+  - 38.339931
+  - -122.01068
+  park_name: Hume Grove Park
+- slug: keating-park
+  jurisdiction: Vacaville
+  type: Community
+  location: Calfornia Dr. & Alamo Dr.
+  acres: 26.2
+  center:
+  - 38.33244
+  - -121.984945
+  park_name: Keating Park
+- slug: lagoon-valley-park
+  jurisdiction: Vacaville
+  type: Regional
+  location: 4627 Pena Adobe Rd.
+  acres: 39.9
+  center:
+  - 38.330743
+  - -122.009732
+  park_name: Lagoon Valley Park
+- slug: larsen-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Alamo Dr. @ Rosewood Dr.
+  acres: 4.3
+  center:
+  - 38.335093
+  - -121.976298
+  park_name: Larsen Park
+- slug: lower-lagoon-valley-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Paradise Valley Rd.
+  acres: 6.5
+  center:
+  - 38.321267
+  - -122.017218
+  park_name: Lower Lagoon Valley Park
+- slug: meadowlands-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Vanden Rd. @ Bluebird
+  acres: 7.9
+  center:
+  - 38.341124
+  - -121.943992
+  park_name: Meadowlands Park
+- slug: nelson-park
+  jurisdiction: Vacaville
+  type: Community
+  location: Nut Tree Rd. & Marshall Rd.
+  acres: 11.3
+  center:
+  - 38.346705
+  - -121.950521
+  park_name: Nelson Park
+- slug: normandy-meadows-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Meadowlark Dr. & Chateau Cir.
+  acres: 0.3
+  center:
+  - 38.337828
+  - -121.93742
+  park_name: Normandy Meadows Park
+- slug: north-orchard-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Orchard Ave. & Crestview Dr.
+  acres: 6.0
+  center:
+  - 38.373724
+  - -122.003556
+  park_name: North Orchard Park
+- slug: padan-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Alonzo Rd. & Padan School Rd.
+  acres: 6.4
+  center:
+  - 38.341768
+  - -121.983363
+  park_name: Padan Park
+- slug: patch-park
+  jurisdiction: Vacaville
+  type: Community
+  location: 1750 Califonia Dr. @ Peabody Rd.
+  acres: 18.7
+  center:
+  - 38.33181
+  - -121.973994
+  park_name: Patch Park
+- slug: patwin-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Elmira Rd. & Leisure Town Rd.
+  acres: 3.3
+  center:
+  - 38.350532
+  - -121.936517
+  park_name: Patwin Park
+- slug: pena-adobe-park
+  jurisdiction: Vacaville
+  type: Regional
+  location: 4699 Pena Adobe Rd.
+  acres: 7.8
+  center:
+  - 38.337698
+  - -122.014331
+  park_name: Pena Adobe Park
+- slug: pheasant-country-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Madison Ave. & Nancy Cir.
+  acres: 7.1
+  center:
+  - 38.329399
+  - -121.965239
+  park_name: Pheasant Country Park
+- slug: pocket-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Elmira Rd. - east of Ralph Ave.
+  acres: 0.9
+  center:
+  - 38.351101
+  - -121.940532
+  park_name: Pocket Park
+- slug: ridgeview-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Tipperary Dr. & Bluewater Dr.
+  acres: 8.0
+  center:
+  - 38.390028
+  - -121.974482
+  park_name: Ridgeview Park
+- slug: sierra-vista-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Greenwich Cir. - West of Bel Air Dr.
+  acres: 7.1
+  center:
+  - 38.339015
+  - -121.95639
+  park_name: Sierra Vista Park
+- slug: southtown-magnolia-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Cogburn Cir.
+  acres: 5.9
+  center:
+  - 38.325875
+  - -121.944882
+  park_name: Southtown Magnolia Park
+- slug: southtown-pocket-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Salisbury Cir. & Turnbridge St.
+  acres: 1.1
+  center:
+  - 38.327438
+  - -121.949803
+  park_name: Southtown Pocket Park
+- slug: southtown-pocket-park-2
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Vanden Rd.
+  acres: 1.0
+  center:
+  - 38.328574
+  - -121.939172
+  park_name: 'Southtown Pocket Park #2'
+- slug: southwood-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Southwood Dr. & Sherwood Ct.
+  acres: 4.7
+  center:
+  - 38.338649
+  - -121.976934
+  park_name: Southwood Park
+- slug: stonegate-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Stonegate Dr. & Stonewood Dr.
+  acres: 6.0
+  center:
+  - 38.36151
+  - -121.938427
+  park_name: Stonegate Park
+- slug: three-oaks-park
+  jurisdiction: Vacaville
+  type: Community
+  location: 1100 Alamo Dr.
+  acres: 10.5
+  center:
+  - 38.340795
+  - -121.9945
+  park_name: Three Oaks Park
+- slug: trower-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: Markham Ave. & Holly Ln.
+  acres: 3.3
+  center:
+  - 38.365181
+  - -121.982066
+  park_name: Trower Park
+- slug: willows-park
+  jurisdiction: Vacaville
+  type: Neighborhood
+  location: South of Catalina Ct. on Ogden Wy.
+  acres: 2.0
+  center:
+  - 38.345533
+  - -121.995263
+  park_name: Willows Park

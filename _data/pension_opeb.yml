@@ -1,0 +1,80 @@
+generated_at: '2026-03-21T06:37:04.151056+00:00'
+jurisdictions:
+- jurisdiction: City of Vacaville
+  fiscal_year_end: '2024-06-30'
+  report_title: City of Vacaville, California Annual Comprehensive Financial Report
+    For the Fiscal Year Ended June 30, 2024
+  pension:
+    plans:
+    - plan_name: CalPERS Miscellaneous
+      total_pension_liability: 316548778
+      plan_fiduciary_net_position: 215749400
+      net_pension_liability: 100799378
+      funded_ratio: 0.6816
+      discount_rate: 0.068
+      inflation_assumption: 0.023
+      salary_growth_assumption: Varies by Entry Age and Service
+      measurement_date: '2023-06-30'
+    - plan_name: CalPERS Safety
+      total_pension_liability: 427703995
+      plan_fiduciary_net_position: 285557778
+      net_pension_liability: 142146217
+      funded_ratio: 0.6677
+      discount_rate: 0.068
+      inflation_assumption: 0.023
+      salary_growth_assumption: Varies by Entry Age and Service
+      measurement_date: '2023-06-30'
+    - plan_name: PARS Miscellaneous
+      total_pension_liability: 68241839
+      plan_fiduciary_net_position: 26326537
+      net_pension_liability: 41915302
+      funded_ratio: 0.3858
+      discount_rate: 0.065
+      inflation_assumption: 0.023
+      salary_growth_assumption: Varies by Entry Age and Service
+      measurement_date: '2023-06-30'
+    - plan_name: PARS Safety
+      total_pension_liability: 2378464
+      plan_fiduciary_net_position: 718796
+      net_pension_liability: 1659668
+      funded_ratio: 0.3022
+      discount_rate: 0.065
+      inflation_assumption: null
+      salary_growth_assumption: Varies by Entry Age and Service
+      measurement_date: '2023-06-30'
+    aggregate:
+      total_net_pension_liability: 286520565
+      employer_contributions_actual: 32262100
+      employer_contributions_required: null
+      deferred_outflows_pensions: 83161689
+      deferred_inflows_pensions: 1019462
+  opeb:
+    total_opeb_liability: 134408388
+    plan_fiduciary_net_position: 60015021
+    net_opeb_liability: 74393367
+    funded_ratio: 0.4465
+    discount_rate: 0.0625
+    funding_method: pre-funded
+    annual_opeb_cost: 9920005
+    employer_contributions_actual: 10525824
+    deferred_outflows_opeb: 30287165
+    deferred_inflows_opeb: 10422106
+    measurement_date: '2023-06-30'
+  general_fund:
+    total_expenditures: 134875323
+    total_revenues: 135629221
+  population: 103328
+  notes: 'City of Vacaville is located in northern Solano County. Population estimate
+    as of January 1, 2024 is 103,328. The City established an irrevocable trust with
+    California Employer''s Retiree Benefit Trust Program (CERBT) in 2009 to prefund
+    retiree health benefits. OPEB is pre-funded through this trust. CalPERS discount
+    rate for both Miscellaneous and Safety plans is 6.80% (6.90% for measurement purposes).
+    PARS discount rate is 6.50% for both plans. The City has four pension plans: CalPERS
+    Miscellaneous, CalPERS Safety, PARS Miscellaneous, and PARS Safety. Measurement
+    date for all plans is June 30, 2023. The City''s net pension liability across
+    all plans totals $286,520,565. The City''s net OPEB liability is $74,393,367 with
+    a funded ratio of 44.65%.'
+  derived:
+    total_unfunded_liability: 360913932
+    unfunded_liability_per_capita: 3493
+    pension_pct_general_fund: 23.9

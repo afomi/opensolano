@@ -1,0 +1,125 @@
+# FY2025 Municipal Budget Data — Solano County Cities
+# Sources: Adopted budget documents from each city's finance department.
+# All figures in millions USD. General fund only unless noted.
+#
+# Last updated: 2026-03-12
+# Note: Rio Vista and Dixon budgets are pending — smaller cities often
+# publish later or in less accessible formats.
+
+fiscal_year: "FY2024-25"
+
+cities:
+  - slug: fairfield
+    name: Fairfield
+    population: 119881
+    general_fund_revenue: 168.2
+    general_fund_expenditure: 165.8
+    total_budget: 432.5
+    top_expenditures:
+      - category: Public Safety
+        amount: 78.4
+        pct_of_general_fund: 47.3
+      - category: Community Development
+        amount: 18.2
+        pct_of_general_fund: 11.0
+      - category: Public Works
+        amount: 16.9
+        pct_of_general_fund: 10.2
+      - category: Parks & Recreation
+        amount: 14.1
+        pct_of_general_fund: 8.5
+      - category: General Government
+        amount: 22.7
+        pct_of_general_fund: 13.7
+    top_revenues:
+      - source: Sales Tax
+        amount: 52.3
+        pct_of_general_fund: 31.1
+      - source: Property Tax
+        amount: 41.8
+        pct_of_general_fund: 24.9
+      - source: Other Taxes
+        amount: 28.6
+        pct_of_general_fund: 17.0
+      - source: Charges for Services
+        amount: 18.9
+        pct_of_general_fund: 11.2
+    source_url: "https://www.fairfield.ca.gov/government/departments/finance"
+    last_updated: "2026-03-12"
+
+  - slug: vallejo
+    name: Vallejo
+    population: 121692
+    general_fund_revenue: 152.7
+    general_fund_expenditure: 158.3
+    total_budget: 389.1
+    top_expenditures:
+      - category: Public Safety
+        amount: 82.1
+        pct_of_general_fund: 51.9
+      - category: Public Works
+        amount: 15.3
+        pct_of_general_fund: 9.7
+      - category: Community Development
+        amount: 11.8
+        pct_of_general_fund: 7.5
+      - category: General Government
+        amount: 19.4
+        pct_of_general_fund: 12.3
+      - category: Parks & Recreation
+        amount: 8.2
+        pct_of_general_fund: 5.2
+    top_revenues:
+      - source: Sales Tax
+        amount: 44.1
+        pct_of_general_fund: 28.9
+      - source: Property Tax
+        amount: 38.6
+        pct_of_general_fund: 25.3
+      - source: Measure B Sales Tax
+        amount: 15.2
+        pct_of_general_fund: 10.0
+      - source: Utility Users Tax
+        amount: 12.8
+        pct_of_general_fund: 8.4
+    source_url: "https://www.cityofvallejo.net/government/departments/finance"
+    last_updated: "2026-03-12"
+    notes: "Vallejo emerged from Chapter 9 bankruptcy in 2011. Budget reflects ongoing fiscal recovery and pension cost pressures."
+
+  - slug: vacaville
+    name: Vacaville
+    population: 103590
+    general_fund_revenue: 131.4
+    general_fund_expenditure: 128.9
+    total_budget: 341.7
+    top_expenditures:
+      - category: Public Safety
+        amount: 61.8
+        pct_of_general_fund: 47.9
+      - category: Community Services
+        amount: 14.7
+        pct_of_general_fund: 11.4
+      - category: Public Works
+        amount: 12.3
+        pct_of_general_fund: 9.5
+      - category: General Government
+        amount: 17.2
+        pct_of_general_fund: 13.3
+      - category: Community Development
+        amount: 9.8
+        pct_of_general_fund: 7.6
+    top_revenues:
+      - source: Sales Tax
+        amount: 45.2
+        pct_of_general_fund: 34.4
+      - source: Property Tax
+        amount: 33.1
+        pct_of_general_fund: 25.2
+      - source: Other Taxes
+        amount: 18.4
+        pct_of_general_fund: 14.0
+      - source: Charges for Services
+        amount: 14.2
+        pct_of_general_fund: 10.8
+    source_url: "https://www.ci.vacaville.ca.us/government/finance"
+    last_updated: "2026-03-12"
