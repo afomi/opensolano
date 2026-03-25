@@ -36,38 +36,66 @@ permalink: /map/
 
   <!-- Map controls -->
   <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-4">
-    <div class="flex flex-wrap items-center gap-3">
-      <div class="flex items-center gap-2">
-        <span class="text-sm font-medium text-gray-700">Layers:</span>
+    <div class="flex flex-wrap items-start gap-6">
+
+      <!-- Boundaries -->
+      <div>
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Boundaries</div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            id="toggle-boundaries"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
+            data-active="true">
+            <span
+              class="h-3 w-3 rounded-sm border-2 border-emerald-600 bg-emerald-200">
+            </span>
+            City Boundaries
+          </button>
+          <button
+            id="toggle-labels"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+            data-active="true">
+            <span
+              class="h-3 w-3 rounded-sm border border-gray-400 bg-white text-[6px] leading-3 text-center font-bold text-gray-500">
+              A
+            </span>
+            Labels
+          </button>
+        </div>
       </div>
-      <button
-        id="toggle-boundaries"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
-        data-active="true">
-        <span
-          class="h-3 w-3 rounded-sm border-2 border-emerald-600 bg-emerald-200">
-        </span>
-        City Boundaries
-      </button>
-      <button
-        id="toggle-parks"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-3 py-1.5 text-sm font-medium text-green-800 hover:bg-green-100 transition-colors"
-        data-active="true">
-        <span
-          class="h-3 w-3 rounded-full bg-green-500">
-        </span>
-        Parks
-      </button>
-      <button
-        id="toggle-labels"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-        data-active="true">
-        <span
-          class="h-3 w-3 rounded-sm border border-gray-400 bg-white text-[6px] leading-3 text-center font-bold text-gray-500">
-          A
-        </span>
-        Labels
-      </button>
+
+      <!-- Parks -->
+      <div>
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Parks</div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            id="toggle-parks"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-3 py-1.5 text-sm font-medium text-green-800 hover:bg-green-100 transition-colors"
+            data-active="true">
+            <span
+              class="h-3 w-3 rounded-full bg-green-500">
+            </span>
+            All Parks
+          </button>
+          <a
+            href="/parks/"
+            class="inline-flex items-center gap-1 rounded-lg border border-green-200 bg-white px-3 py-1.5 text-sm font-medium text-green-700 hover:bg-green-50 transition-colors">
+            Browse list
+            <svg
+              class="h-3.5 w-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -125,7 +153,7 @@ permalink: /map/
           class="underline hover:text-gray-700"
           target="_blank"
           rel="noopener">Jurisdictional</a>.
-        Parks data: Phase 1 milestone.
+        Parks data from City of Vacaville GIS (shapefile converted to GeoJSON).
       </p>
     </div>
   </section>
@@ -253,38 +281,59 @@ permalink: /map/
   });
   labelLayer.addTo(map);
 
-  // --- Parks layer (placeholder - Phase 1 milestone) ---
-  var parksData = {
-    type: "FeatureCollection",
-    features: []
-    // Parks will be populated in Phase 1.
-    // Expected format:
-    // {
-    //   type: "Feature",
-    //   properties: { name: "Allan Witt Park", city: "fairfield", type: "community_park", acres: 50 },
-    //   geometry: { type: "Point", coordinates: [-122.0456, 38.2567] }
-    // }
-  };
+  // --- Parks layer (Vacaville parks from shapefile) ---
+  var parksLayer = L.layerGroup().addTo(map);
 
-  var parksLayer = L.geoJSON(parksData, {
-    pointToLayer: function(feature, latlng) {
-      return L.circleMarker(latlng, {
-        radius: 6,
-        fillColor: '#22c55e',
-        color: '#15803d',
-        weight: 1.5,
-        opacity: 1,
-        fillOpacity: 0.8
-      });
-    },
-    onEachFeature: function(feature, layer) {
-      layer.bindPopup(
-        '<strong>' + feature.properties.name + '</strong><br>' +
-        '<span style="color:#6b7280">' + (feature.properties.city || '') + '</span>' +
-        (feature.properties.acres ? '<br>' + feature.properties.acres + ' acres' : '')
-      );
-    }
-  }).addTo(map);
+  fetch('/assets/data/geojson/vacaville-parks.geojson')
+    .then(function(res) { return res.json(); })
+    .then(function(geojson) {
+      // Deduplicate: track base names we've already added
+      var seen = {};
+
+      L.geoJSON(geojson, {
+        filter: function(feature) {
+          var name = feature.properties.NAME.trim();
+          // Skip unnamed/utility entries
+          if (name === 'NV6' || name === 'NV7' || name === 'Wellsite Bike Rest 2') return false;
+          var baseName = name.replace(/ \(Expansion\)/, '').replace(/ \(Eleanor\)/, '').replace(/ \(Al\)/, '');
+          // Allow multiple polygons for same park (they'll merge visually)
+          return true;
+        },
+        style: {
+          color: '#15803d',
+          weight: 1.5,
+          opacity: 0.9,
+          fillColor: '#22c55e',
+          fillOpacity: 0.35
+        },
+        onEachFeature: function(feature, layer) {
+          var name = feature.properties.NAME.trim();
+          var baseName = name.replace(/ \(Expansion\)/, '').replace(/ \(Eleanor\)/, '').replace(/ \(Al\)/, '');
+          var slug = baseName.toLowerCase().replace(/ /g, '-').replace(/'/g, '').replace(/#/g, '').replace(/--/g, '-');
+          var parkType = feature.properties.TYPE || '';
+          var location = feature.properties.LOCATION || '';
+
+          layer.bindPopup(
+            '<strong><a href="/parks/' + slug + '/" style="color:#15803d;text-decoration:none;">' + baseName + '</a></strong>' +
+            (parkType ? '<br><span style="color:#6b7280;font-size:12px;">' + parkType + ' Park</span>' : '') +
+            (location ? '<br><span style="color:#9ca3af;font-size:11px;">' + location + '</span>' : '')
+          );
+          layer.on('mouseover', function(e) {
+            e.target.setStyle({ fillOpacity: 0.55, weight: 2.5 });
+          });
+          layer.on('mouseout', function(e) {
+            e.target.setStyle({ fillOpacity: 0.35, weight: 1.5 });
+          });
+          layer.on('click', function() {
+            showFeatureInfo({
+              name: baseName,
+              type: parkType + ' Park',
+              location: location
+            });
+          });
+        }
+      }).addTo(parksLayer);
+    });
 
   // --- Layer toggle controls ---
   function toggleLayer(btn, layer) {

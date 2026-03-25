@@ -1,0 +1,179 @@
+---
+layout: default
+title: "Parks — Vacaville"
+description: "All 40 public parks in Vacaville, California. Browse by type, explore on the map, and see acreage for neighborhood, community, and regional parks."
+permalink: /parks/
+---
+
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-green-100/20 pt-14">
+  </div>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-lg">
+        <svg
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Parks</h1>
+        <p class="mt-2 text-lg leading-8 text-gray-600">{{ site.data.vacaville_parks.count }} public parks in Vacaville</p>
+      </div>
+    </div>
+
+    <!-- Summary stats -->
+    <div class="grid gap-4 sm:grid-cols-3 mb-8">
+      {% assign neighborhood_count = 0 %}
+      {% assign community_count = 0 %}
+      {% assign regional_count = 0 %}
+      {% assign total_acres = 0 %}
+      {% for park in site.data.vacaville_parks.parks %}
+        {% if park.type == "Neighborhood" %}
+          {% assign neighborhood_count = neighborhood_count | plus: 1 %}
+        {% elsif park.type == "Community" %}
+          {% assign community_count = community_count | plus: 1 %}
+        {% elsif park.type == "Regional" %}
+          {% assign regional_count = regional_count | plus: 1 %}
+        {% endif %}
+        {% assign total_acres = total_acres | plus: park.acres %}
+      {% endfor %}
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Total Acreage</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">{{ total_acres | round }} acres</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Park Types</div>
+        <div class="mt-1 flex flex-wrap gap-2">
+          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
+            {{ neighborhood_count }} Neighborhood
+          </span>
+          <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+            {{ community_count }} Community
+          </span>
+          <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">
+            {{ regional_count }} Regional
+          </span>
+        </div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Explore</div>
+        <a
+          href="/map/"
+          class="mt-1 inline-flex items-center gap-1.5 text-sm font-medium text-green-700 hover:text-green-800">
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+          </svg>
+          View all parks on the map
+        </a>
+      </div>
+    </div>
+
+    <!-- Filter buttons -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button
+        class="park-filter active inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        data-filter="all">
+        All ({{ site.data.vacaville_parks.count }})
+      </button>
+      <button
+        class="park-filter inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-3 py-1.5 text-sm font-medium text-green-800 hover:bg-green-100 transition-colors"
+        data-filter="Neighborhood">
+        <span class="h-2 w-2 rounded-full bg-green-500"></span>
+        Neighborhood ({{ neighborhood_count }})
+      </button>
+      <button
+        class="park-filter inline-flex items-center gap-1.5 rounded-lg border border-blue-300 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-800 hover:bg-blue-100 transition-colors"
+        data-filter="Community">
+        <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+        Community ({{ community_count }})
+      </button>
+      <button
+        class="park-filter inline-flex items-center gap-1.5 rounded-lg border border-purple-300 bg-purple-50 px-3 py-1.5 text-sm font-medium text-purple-800 hover:bg-purple-100 transition-colors"
+        data-filter="Regional">
+        <span class="h-2 w-2 rounded-full bg-purple-500"></span>
+        Regional ({{ regional_count }})
+      </button>
+    </div>
+
+    <!-- Parks grid -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="parks-grid">
+      {% assign sorted_parks = site.data.vacaville_parks.parks | sort: "park_name" %}
+      {% for park in sorted_parks %}
+      <a
+        href="/parks/{{ park.slug }}/"
+        class="park-card group block bg-white border border-gray-200 rounded-xl p-5 hover:border-green-300 hover:shadow-md transition-all"
+        data-type="{{ park.type }}">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="font-semibold text-gray-900 group-hover:text-green-700 transition-colors">{{ park.park_name }}</h2>
+            {% if park.location and park.location != "" %}
+            <p class="text-sm text-gray-500 mt-0.5">{{ park.location }}</p>
+            {% endif %}
+          </div>
+          <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium shrink-0
+            {% if park.type == 'Regional' %}bg-purple-50 text-purple-700 ring-1 ring-inset ring-purple-700/10
+            {% elsif park.type == 'Community' %}bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-700/10
+            {% else %}bg-green-50 text-green-700 ring-1 ring-inset ring-green-700/10{% endif %}">
+            {{ park.type }}
+          </span>
+        </div>
+        <div class="mt-3 flex items-center gap-3 text-sm text-gray-500">
+          <span>{{ park.acres }} acres</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Attribution -->
+    <div class="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
+      <p class="text-xs text-gray-500">
+        Park data from City of Vacaville GIS (shapefile). Acreage calculated from polygon geometry.
+        <a
+          href="/map/"
+          class="underline hover:text-gray-700">View on map</a>.
+      </p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function() {
+  var filters = document.querySelectorAll('.park-filter');
+  var cards = document.querySelectorAll('.park-card');
+
+  filters.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var filter = this.getAttribute('data-filter');
+
+      filters.forEach(function(b) { b.classList.remove('active', 'ring-2', 'ring-offset-1', 'ring-gray-400'); });
+      this.classList.add('active', 'ring-2', 'ring-offset-1', 'ring-gray-400');
+
+      cards.forEach(function(card) {
+        if (filter === 'all' || card.getAttribute('data-type') === filter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+</script>

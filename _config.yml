@@ -28,7 +28,13 @@ collections:
 plugins:
   - jekyll-datapage-generator
 
-# page_gen:
+page_gen:
+  - data: vacaville_parks.parks
+    template: park
+    name: slug
+    title: park_name
+    dir: parks
+    index_files: true
 
 exclude:
   - package.json
