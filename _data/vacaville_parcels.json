@@ -1,0 +1,225 @@
+{
+  "count": 20,
+  "parcels": [
+    {
+      "slug": "main-st-100",
+      "address": "100 Main St",
+      "city": "Vacaville",
+      "lat": 38.3566,
+      "lng": -121.9877,
+      "description": "Vacant commercial lot in downtown core.",
+      "acres": 0.25,
+      "zoning": "Commercial",
+      "apn": "0000-000-001"
+    },
+    {
+      "slug": "merchant-st-200",
+      "address": "200 Merchant St",
+      "city": "Vacaville",
+      "lat": 38.3558,
+      "lng": -121.9865,
+      "description": "Underutilized parcel adjacent to Town Square.",
+      "acres": 0.18,
+      "zoning": "Mixed Use",
+      "apn": "0000-000-002"
+    },
+    {
+      "slug": "davis-st-310",
+      "address": "310 Davis St",
+      "city": "Vacaville",
+      "lat": 38.3545,
+      "lng": -121.9890,
+      "description": "Former retail site, currently vacant.",
+      "acres": 0.30,
+      "zoning": "Commercial",
+      "apn": "0000-000-003"
+    },
+    {
+      "slug": "buck-ave-450",
+      "address": "450 Buck Ave",
+      "city": "Vacaville",
+      "lat": 38.3530,
+      "lng": -121.9850,
+      "description": "Vacant lot near Creekwalk.",
+      "acres": 0.40,
+      "zoning": "Mixed Use",
+      "apn": "0000-000-004"
+    },
+    {
+      "slug": "e-monte-vista-520",
+      "address": "520 E Monte Vista Ave",
+      "city": "Vacaville",
+      "lat": 38.3575,
+      "lng": -121.9830,
+      "description": "Open parcel on east Monte Vista corridor.",
+      "acres": 0.50,
+      "zoning": "Commercial",
+      "apn": "0000-000-005"
+    },
+    {
+      "slug": "depot-st-115",
+      "address": "115 Depot St",
+      "city": "Vacaville",
+      "lat": 38.3560,
+      "lng": -121.9900,
+      "description": "Lot adjacent to historic depot area.",
+      "acres": 0.22,
+      "zoning": "Mixed Use",
+      "apn": "0000-000-006"
+    },
+    {
+      "slug": "dobbins-st-225",
+      "address": "225 Dobbins St",
+      "city": "Vacaville",
+      "lat": 38.3540,
+      "lng": -121.9870,
+      "description": "Underutilized parcel in central Vacaville.",
+      "acres": 0.35,
+      "zoning": "Residential",
+      "apn": "0000-000-007"
+    },
+    {
+      "slug": "mason-st-330",
+      "address": "330 Mason St",
+      "city": "Vacaville",
+      "lat": 38.3585,
+      "lng": -121.9860,
+      "description": "Vacant corner lot, good visibility.",
+      "acres": 0.28,
+      "zoning": "Commercial",
+      "apn": "0000-000-008"
+    },
+    {
+      "slug": "cernon-st-140",
+      "address": "140 Cernon St",
+      "city": "Vacaville",
+      "lat": 38.3555,
+      "lng": -121.9845,
+      "description": "Small infill parcel near Andrews Park.",
+      "acres": 0.15,
+      "zoning": "Residential",
+      "apn": "0000-000-009"
+    },
+    {
+      "slug": "w-monte-vista-610",
+      "address": "610 W Monte Vista Ave",
+      "city": "Vacaville",
+      "lat": 38.3570,
+      "lng": -121.9920,
+      "description": "Vacant parcel on west Monte Vista corridor.",
+      "acres": 0.45,
+      "zoning": "Commercial",
+      "apn": "0000-000-010"
+    },
+    {
+      "slug": "parker-st-180",
+      "address": "180 Parker St",
+      "city": "Vacaville",
+      "lat": 38.3548,
+      "lng": -121.9855,
+      "description": "Opportunity site near downtown.",
+      "acres": 0.20,
+      "zoning": "Mixed Use",
+      "apn": "0000-000-011"
+    },
+    {
+      "slug": "kendal-st-275",
+      "address": "275 Kendal St",
+      "city": "Vacaville",
+      "lat": 38.3535,
+      "lng": -121.9880,
+      "description": "Vacant residential lot in established neighborhood.",
+      "acres": 0.32,
+      "zoning": "Residential",
+      "apn": "0000-000-012"
+    },
+    {
+      "slug": "main-st-400",
+      "address": "400 Main St",
+      "city": "Vacaville",
+      "lat": 38.3580,
+      "lng": -121.9872,
+      "description": "Large vacant lot on north Main St.",
+      "acres": 0.55,
+      "zoning": "Commercial",
+      "apn": "0000-000-013"
+    },
+    {
+      "slug": "leisure-town-rd-1200",
+      "address": "1200 Leisure Town Rd",
+      "city": "Vacaville",
+      "lat": 38.3490,
+      "lng": -121.9600,
+      "description": "Undeveloped parcel in east Vacaville.",
+      "acres": 1.20,
+      "zoning": "Commercial",
+      "apn": "0000-000-014"
+    },
+    {
+      "slug": "alamo-dr-850",
+      "address": "850 Alamo Dr",
+      "city": "Vacaville",
+      "lat": 38.3615,
+      "lng": -121.9750,
+      "description": "Vacant lot along Alamo corridor.",
+      "acres": 0.60,
+      "zoning": "Mixed Use",
+      "apn": "0000-000-015"
+    },
+    {
+      "slug": "peabody-rd-950",
+      "address": "950 Peabody Rd",
+      "city": "Vacaville",
+      "lat": 38.3450,
+      "lng": -121.9700,
+      "description": "Open parcel near Peabody commercial area.",
+      "acres": 0.75,
+      "zoning": "Commercial",
+      "apn": "0000-000-016"
+    },
+    {
+      "slug": "ulatis-dr-500",
+      "address": "500 Ulatis Dr",
+      "city": "Vacaville",
+      "lat": 38.3420,
+      "lng": -121.9800,
+      "description": "Undeveloped lot in south Vacaville.",
+      "acres": 0.90,
+      "zoning": "Residential",
+      "apn": "0000-000-017"
+    },
+    {
+      "slug": "nut-tree-rd-700",
+      "address": "700 Nut Tree Rd",
+      "city": "Vacaville",
+      "lat": 38.3500,
+      "lng": -121.9650,
+      "description": "Vacant commercial parcel near Nut Tree.",
+      "acres": 0.80,
+      "zoning": "Commercial",
+      "apn": "0000-000-018"
+    },
+    {
+      "slug": "allison-dr-360",
+      "address": "360 Allison Dr",
+      "city": "Vacaville",
+      "lat": 38.3600,
+      "lng": -121.9810,
+      "description": "Infill opportunity in north Vacaville.",
+      "acres": 0.38,
+      "zoning": "Residential",
+      "apn": "0000-000-019"
+    },
+    {
+      "slug": "elmira-rd-1500",
+      "address": "1500 Elmira Rd",
+      "city": "Vacaville",
+      "lat": 38.3380,
+      "lng": -121.9850,
+      "description": "Large undeveloped parcel in south Vacaville.",
+      "acres": 2.10,
+      "zoning": "Mixed Use",
+      "apn": "0000-000-020"
+    }
+  ]
+}

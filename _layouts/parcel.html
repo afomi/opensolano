@@ -1,0 +1,757 @@
+---
+layout: default
+---
+
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-amber-100/20 pt-14">
+  </div>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-lg">
+        <svg
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+        </svg>
+      </div>
+      <div>
+        <nav class="text-sm text-gray-500 mb-1">
+          <a
+            href="/parcels/"
+            class="hover:text-gray-700">
+            Parcels
+          </a>
+          <span class="mx-1">/</span>
+          <span class="text-gray-900">{{ page.address }}</span>
+        </nav>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          {{ page.address }}
+        </h1>
+      </div>
+    </div>
+
+    <!-- Parcel details -->
+    <div class="grid gap-8 lg:grid-cols-3">
+      <div class="lg:col-span-2">
+        <!-- Map -->
+        <div
+          id="parcel-map"
+          class="w-full rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-6"
+          style="height: 400px;">
+        </div>
+
+        <!-- Feedback form -->
+        <div
+          id="feedback-form"
+          class="bg-white border border-gray-200 rounded-2xl p-6">
+          <h2 class="text-xl font-bold text-gray-900 mb-2">
+            Share Your Ideas
+          </h2>
+          <p class="text-sm text-gray-600 mb-6">
+            What would you like to see at {{ page.address }}?
+            We want to hear from you.
+          </p>
+
+          <form
+            id="parcel-feedback"
+            class="space-y-6"
+            novalidate>
+
+            <!-- Q1: question_140 — textarea, required -->
+            <div>
+              <label
+                for="question_140"
+                class="block text-sm font-medium text-gray-900 mb-1">
+                What would you like to see at this location?
+                <span class="text-red-500">*</span>
+              </label>
+              <p class="text-xs text-gray-500 mb-2">
+                e.g., housing, retail, park, community space, restaurant, mixed-use
+              </p>
+              <textarea
+                id="question_140"
+                name="question_140"
+                rows="3"
+                required
+                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                placeholder="I'd love to see..."></textarea>
+            </div>
+
+            <!-- Q2: question_141 — radio, required -->
+            <fieldset>
+              <legend class="block text-sm font-medium text-gray-900 mb-2">
+                What is most important to you for this site?
+                <span class="text-red-500">*</span>
+              </legend>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="affordable_housing"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Affordable housing
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="local_small_business"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Local small business
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="community_gathering_space"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Community gathering space
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="green_space_park"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Green space / park
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="food_dining"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Food / dining
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="mixed_use_development"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Mixed-use development
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_141"
+                    value="other"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Other
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Q3: question_142 — radio, required -->
+            <fieldset>
+              <legend class="block text-sm font-medium text-gray-900 mb-2">
+                Would you like to participate in or contribute to development at this site?
+                <span class="text-red-500">*</span>
+              </legend>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_142"
+                    value="yes"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Yes
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_142"
+                    value="maybe_tell_me_more"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Maybe — tell me more
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_142"
+                    value="no"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  No
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Q4: question_143 — checkbox, optional (conditional) -->
+            <fieldset
+              id="contribution-section"
+              class="hidden">
+              <legend class="block text-sm font-medium text-gray-900 mb-2">
+                How would you like to contribute?
+                <span class="text-xs text-gray-500 font-normal">(select all that apply)</span>
+              </legend>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="question_143"
+                    value="attend_community_meeting"
+                    class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Attend a community meeting
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="question_143"
+                    value="volunteer_time_skills"
+                    class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Volunteer time or skills
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="question_143"
+                    value="invest_contribute_financially"
+                    class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Invest or contribute financially
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="question_143"
+                    value="share_expertise"
+                    class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Share expertise (design, planning, construction, etc.)
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="question_143"
+                    value="help_spread_word"
+                    class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Help spread the word
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="question_143"
+                    value="other"
+                    class="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Other
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Q5: question_144 — radio, required -->
+            <fieldset>
+              <legend class="block text-sm font-medium text-gray-900 mb-2">
+                Are you willing to be contacted for a follow-up conversation?
+                <span class="text-red-500">*</span>
+              </legend>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_144"
+                    value="yes_by_email"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Yes, by email
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_144"
+                    value="yes_by_phone"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Yes, by phone
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_144"
+                    value="yes_either"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  Yes, either email or phone
+                </label>
+                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="question_144"
+                    value="no"
+                    required
+                    class="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500" />
+                  No
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Q6: question_145 — email, optional (conditional) -->
+            <div
+              id="email-section"
+              class="hidden">
+              <label
+                for="question_145"
+                class="block text-sm font-medium text-gray-900 mb-1">
+                Email address
+              </label>
+              <input
+                type="email"
+                id="question_145"
+                name="question_145"
+                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                placeholder="you@example.com" />
+            </div>
+
+            <!-- Q7: question_146 — text (phone), optional (conditional) -->
+            <div
+              id="phone-section"
+              class="hidden">
+              <label
+                for="question_146"
+                class="block text-sm font-medium text-gray-900 mb-1">
+                Phone number
+              </label>
+              <input
+                type="tel"
+                id="question_146"
+                name="question_146"
+                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                placeholder="(707) 555-0123" />
+            </div>
+
+            <!-- Q8: question_147 — text, optional -->
+            <div>
+              <label
+                for="question_147"
+                class="block text-sm font-medium text-gray-900 mb-1">
+                What neighborhood or area of Vacaville do you live in?
+              </label>
+              <input
+                type="text"
+                id="question_147"
+                name="question_147"
+                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+                placeholder="e.g., Downtown, Southtown, Elmira" />
+            </div>
+
+            <!-- Error message -->
+            <div
+              id="form-error"
+              class="hidden rounded-lg bg-red-50 border border-red-200 p-4">
+              <p class="text-sm text-red-700" id="form-error-text"></p>
+            </div>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              id="form-submit-btn"
+              class="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 transition-colors">
+              Submit feedback
+            </button>
+          </form>
+
+          <!-- Success state -->
+          <div
+            id="form-success"
+            class="hidden text-center py-8">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
+              <svg
+                class="h-6 w-6 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Thank you!
+            </h3>
+            <p class="text-sm text-gray-600 mb-6">
+              Your feedback for {{ page.address }} has been submitted.
+              Together we can shape what Vacaville becomes.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="/parcels/"
+                class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                View other parcels
+              </a>
+              <button
+                id="share-after-submit"
+                class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-500 transition-colors">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
+                </svg>
+                Share this parcel
+              </button>
+            </div>
+          </div>
+
+          <noscript>
+            <p class="text-sm text-gray-500">
+              JavaScript is required to load the feedback form.
+            </p>
+          </noscript>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="bg-white border border-gray-200 rounded-2xl p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">
+            Parcel Details
+          </h2>
+          <dl class="space-y-3">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Address</dt>
+              <dd class="text-sm text-gray-900">
+                {{ page.address }}, {{ page.city }}, CA
+              </dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Zoning</dt>
+              <dd class="text-sm text-gray-900">
+                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
+                  {% if page.zoning == 'Commercial' %}bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-700/10
+                  {% elsif page.zoning == 'Mixed Use' %}bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-700/10
+                  {% else %}bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10{% endif %}">
+                  {{ page.zoning }}
+                </span>
+              </dd>
+            </div>
+            {% if page.acres %}
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Acreage</dt>
+              <dd class="text-sm text-gray-900">{{ page.acres }} acres</dd>
+            </div>
+            {% endif %}
+            {% if page.apn %}
+            <div>
+              <dt class="text-sm font-medium text-gray-500">APN</dt>
+              <dd class="text-sm text-gray-900 font-mono">{{ page.apn }}</dd>
+            </div>
+            {% endif %}
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Description</dt>
+              <dd class="text-sm text-gray-900">{{ page.description }}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Share box -->
+        <div class="mt-4 bg-amber-50 border border-amber-200 rounded-2xl p-6">
+          <h3 class="text-base font-semibold text-amber-900 mb-3">
+            Share this parcel
+          </h3>
+          <p class="text-sm text-amber-700 mb-4">
+            Know someone who would have ideas for this site?
+            Spread the word.
+          </p>
+          <div class="flex flex-col gap-2">
+            <a
+              id="share-twitter"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center justify-center gap-2 rounded-lg bg-white border border-amber-300 px-3 py-2 text-sm font-medium text-amber-800 hover:bg-amber-100 transition-colors">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              Post on X
+            </a>
+            <a
+              id="share-facebook"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center justify-center gap-2 rounded-lg bg-white border border-amber-300 px-3 py-2 text-sm font-medium text-amber-800 hover:bg-amber-100 transition-colors">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              </svg>
+              Share on Facebook
+            </a>
+            <a
+              id="share-email"
+              href="#"
+              class="inline-flex items-center justify-center gap-2 rounded-lg bg-white border border-amber-300 px-3 py-2 text-sm font-medium text-amber-800 hover:bg-amber-100 transition-colors">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+              Email a friend
+            </a>
+            <button
+              id="share-copy"
+              class="inline-flex items-center justify-center gap-2 rounded-lg bg-white border border-amber-300 px-3 py-2 text-sm font-medium text-amber-800 hover:bg-amber-100 transition-colors">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.54a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L5.07 8.621" />
+              </svg>
+              Copy link
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigate -->
+        <div class="mt-4">
+          <a
+            href="/parcels/"
+            class="inline-flex items-center gap-1.5 text-sm font-medium text-amber-700 hover:text-amber-800">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to all parcels
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Leaflet -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin="" />
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin="">
+</script>
+
+<script>
+(function() {
+  var ZONING_COLORS = {
+    'Commercial': '#f59e0b',
+    'Mixed Use': '#6366f1',
+    'Residential': '#10b981'
+  };
+
+  var lat = {{ page.lat }};
+  var lng = {{ page.lng }};
+  var zoning = {{ page.zoning | jsonify }};
+  var address = {{ page.address | jsonify }};
+  var color = ZONING_COLORS[zoning] || '#f59e0b';
+
+  // -- Map --
+  var map = L.map('parcel-map', {
+    center: [lat, lng],
+    zoom: 17,
+    scrollWheelZoom: true
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  L.circleMarker([lat, lng], {
+    radius: 14,
+    fillColor: color,
+    color: '#fff',
+    weight: 3,
+    fillOpacity: 0.9
+  }).addTo(map).bindPopup('<strong>' + address + '</strong>').openPopup();
+
+  // -- Share buttons --
+  var pageUrl = encodeURIComponent(window.location.href);
+  var pageTitle = encodeURIComponent('What should go at ' + address + ', Vacaville? Share your ideas.');
+
+  document.getElementById('share-twitter').href =
+    'https://x.com/intent/tweet?url=' + pageUrl + '&text=' + pageTitle;
+  document.getElementById('share-facebook').href =
+    'https://www.facebook.com/sharer/sharer.php?u=' + pageUrl;
+  document.getElementById('share-email').href =
+    'mailto:?subject=' + pageTitle + '&body=' + encodeURIComponent('Check out this parcel in Vacaville and share your ideas: ') + pageUrl;
+
+  function bindCopyButton(id) {
+    var btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      navigator.clipboard.writeText(window.location.href).then(function() {
+        var original = btn.innerHTML;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.innerHTML = original; }, 2000);
+      });
+    });
+  }
+  bindCopyButton('share-copy');
+
+  // -- Conditional form fields --
+  var participateRadios = document.querySelectorAll('input[name="question_142"]');
+  var contributionSection = document.getElementById('contribution-section');
+
+  participateRadios.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      if (this.value === 'yes' || this.value === 'maybe_tell_me_more') {
+        contributionSection.classList.remove('hidden');
+      } else {
+        contributionSection.classList.add('hidden');
+      }
+    });
+  });
+
+  var contactRadios = document.querySelectorAll('input[name="question_144"]');
+  var emailSection = document.getElementById('email-section');
+  var phoneSection = document.getElementById('phone-section');
+
+  contactRadios.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var val = this.value;
+      var showEmail = val === 'yes_by_email' || val === 'yes_either';
+      var showPhone = val === 'yes_by_phone' || val === 'yes_either';
+      emailSection.classList.toggle('hidden', !showEmail);
+      phoneSection.classList.toggle('hidden', !showPhone);
+    });
+  });
+
+  // -- Form submission --
+  var form = document.getElementById('parcel-feedback');
+  var submitBtn = document.getElementById('form-submit-btn');
+  var errorDiv = document.getElementById('form-error');
+  var errorText = document.getElementById('form-error-text');
+  var successDiv = document.getElementById('form-success');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    errorDiv.classList.add('hidden');
+
+    // Gather values
+    var q140 = form.querySelector('[name="question_140"]').value.trim();
+    var q141 = form.querySelector('input[name="question_141"]:checked');
+    var q142 = form.querySelector('input[name="question_142"]:checked');
+    var q144 = form.querySelector('input[name="question_144"]:checked');
+
+    // Validate required fields
+    if (!q140) {
+      showError('Please describe what you\'d like to see at this location.');
+      return;
+    }
+    if (!q141) {
+      showError('Please select what is most important to you.');
+      return;
+    }
+    if (!q142) {
+      showError('Please indicate if you\'d like to participate.');
+      return;
+    }
+    if (!q144) {
+      showError('Please indicate your follow-up preference.');
+      return;
+    }
+
+    // Gather checkbox values
+    var contributions = [];
+    form.querySelectorAll('input[name="question_143"]:checked').forEach(function(cb) {
+      contributions.push(cb.value);
+    });
+
+    // Build form-urlencoded body
+    var params = new URLSearchParams();
+    params.append('submission[question_140]', q140);
+    params.append('submission[question_141]', q141.value);
+    params.append('submission[question_142]', q142.value);
+    if (contributions.length > 0) {
+      params.append('submission[question_143]', contributions.join(','));
+    }
+    params.append('submission[question_144]', q144.value);
+
+    var email = form.querySelector('[name="question_145"]').value.trim();
+    if (email) params.append('submission[question_145]', email);
+
+    var phone = form.querySelector('[name="question_146"]').value.trim();
+    if (phone) params.append('submission[question_146]', phone);
+
+    var neighborhood = form.querySelector('[name="question_147"]').value.trim();
+    if (neighborhood) params.append('submission[question_147]', neighborhood);
+
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    fetch('https://touchpoints.app/api/forms/5ef12d1e-ff7b-407a-9b67-0c7d7ad1d8bd/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    })
+    .then(function(res) {
+      if (!res.ok) {
+        return res.json().then(function(data) {
+          throw new Error(data.message || 'Submission failed. Please try again.');
+        });
+      }
+      return res.json();
+    })
+    .then(function() {
+      form.classList.add('hidden');
+      successDiv.classList.remove('hidden');
+      successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })
+    .catch(function(err) {
+      showError(err.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit feedback';
+    });
+  });
+
+  function showError(msg) {
+    errorText.textContent = msg;
+    errorDiv.classList.remove('hidden');
+    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Share button after submit
+  var shareAfter = document.getElementById('share-after-submit');
+  if (shareAfter) {
+    shareAfter.addEventListener('click', function() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'What should go at ' + address + ', Vacaville?',
+          text: 'Share your ideas for this parcel in Vacaville.',
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(function() {
+          shareAfter.textContent = 'Link copied!';
+          setTimeout(function() { shareAfter.textContent = 'Share this parcel'; }, 2000);
+        });
+      }
+    });
+  }
+})();
+</script>

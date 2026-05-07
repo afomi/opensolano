@@ -35,6 +35,12 @@ page_gen:
     title: park_name
     dir: parks
     index_files: true
+  - data: vacaville_parcels.parcels
+    template: parcel
+    name: slug
+    title: address
+    dir: parcels
+    index_files: true
 
 exclude:
   - package.json
