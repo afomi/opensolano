@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "jekyll with tailwind to s3 via github actions",
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.0"
+    "@tailwindcss/cli": "^4.1.0",
+    "@tailwindcss/typography": "^0.5.19"
   },
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --minify",
