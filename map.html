@@ -7,7 +7,7 @@ permalink: /map/
 
 <main class="isolate pt-28">
   <!-- Hero section -->
-  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-emerald-100/20 pt-14">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-emerald-100/20">
   </div>
 
   <!-- Header -->
@@ -124,10 +124,14 @@ permalink: /map/
       </div>
     </div>
 
-    <!-- Legend / stats -->
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-6">
+    <!-- City cards -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-6">
       {% for city in site.data.solano_jurisdictions.cities %}
-      <div class="bg-white border border-gray-200 rounded-xl p-4">
+      <a
+        href="{{ city.jurisdictional_url }}"
+        target="_blank"
+        rel="noopener"
+        class="block bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-300 hover:shadow-sm transition-all">
         <div class="flex items-center gap-3 mb-2">
           <span
             class="h-3 w-3 rounded-full"
@@ -135,8 +139,25 @@ permalink: /map/
           </span>
           <h3 class="font-semibold text-gray-900">{{ city.name }}</h3>
         </div>
-        <p class="text-sm text-gray-500">Pop. {{ city.population | round }}</p>
-      </div>
+        <dl class="space-y-1 text-sm text-gray-500">
+          <div class="flex justify-between">
+            <dt>Population</dt>
+            <dd class="text-gray-900 font-medium">{{ city.population | round }}</dd>
+          </div>
+          {% if city.agency_count %}
+          <div class="flex justify-between">
+            <dt>Agencies</dt>
+            <dd class="text-gray-900 font-medium">{{ city.agency_count }}</dd>
+          </div>
+          {% endif %}
+          {% if city.phone %}
+          <div class="flex justify-between">
+            <dt>Phone</dt>
+            <dd class="text-gray-900 font-medium">{{ city.phone }}</dd>
+          </div>
+          {% endif %}
+        </dl>
+      </a>
       {% endfor %}
     </div>
 

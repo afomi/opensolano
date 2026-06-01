@@ -1,0 +1,382 @@
+{
+  "_source": "jurisdictional.org",
+  "_updated": "2026-06-01",
+  "_script": "ruby scripts/fetch_jurisdictional.rb",
+  "county": {
+    "center": [
+      38.27,
+      -121.94
+    ],
+    "fips": "06095",
+    "jurisdictional_id": 2532,
+    "jurisdictional_url": "https://jurisdictional.org/jurisdictions/2532",
+    "name": "Solano County"
+  },
+  "cities": [
+    {
+      "agency_count": 7,
+      "center": [
+        38.0494,
+        -122.1586
+      ],
+      "coverage": null,
+      "geoid": "0605290",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 8"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Vallejo"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Benicia"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "Benicia Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 42480,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/42480",
+      "name": "Benicia",
+      "population": 26401,
+      "slug": "benicia"
+    },
+    {
+      "agency_count": 10,
+      "center": [
+        38.4455,
+        -121.8233
+      ],
+      "coverage": null,
+      "geoid": "0619402",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 4"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Dixon"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Dixon"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "Dixon Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 47882,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/47882",
+      "name": "Dixon",
+      "population": 21116,
+      "slug": "dixon"
+    },
+    {
+      "agency_count": 10,
+      "center": [
+        38.2494,
+        -122.04
+      ],
+      "coverage": null,
+      "geoid": "0623182",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 8"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Fairfield-Suisun City"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Fairfield"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "Fairfield-Suisun Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 49599,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/49599",
+      "name": "Fairfield",
+      "population": 122489,
+      "slug": "fairfield"
+    },
+    {
+      "agency_count": 7,
+      "center": [
+        38.1694,
+        -121.6925
+      ],
+      "coverage": null,
+      "geoid": "0660984",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 4"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Rio Vista"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Rio Vista"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "River Delta Joint Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 64989,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/64989",
+      "name": "Rio Vista",
+      "population": 10523,
+      "slug": "riovista"
+    },
+    {
+      "agency_count": 10,
+      "center": [
+        38.2382,
+        -122.0178
+      ],
+      "coverage": null,
+      "geoid": "0675630",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 8"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Fairfield-Suisun City"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Suisun City"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "Fairfield-Suisun Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 68515,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/68515",
+      "name": "Suisun City",
+      "population": 29454,
+      "slug": "suisun-city"
+    },
+    {
+      "agency_count": 13,
+      "center": [
+        38.3566,
+        -121.9877
+      ],
+      "coverage": null,
+      "geoid": "0681554",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 4"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Vacaville"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Vacaville"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "Vacaville Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 70118,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/70118",
+      "name": "Vacaville",
+      "phone": "(707) 449-5100",
+      "population": 103850,
+      "slug": "vacaville"
+    },
+    {
+      "agency_count": 16,
+      "center": [
+        38.1041,
+        -122.2566
+      ],
+      "coverage": null,
+      "geoid": "0681666",
+      "governance_layers": [
+        {
+          "level": "congressional_district",
+          "name": "Congressional District 8"
+        },
+        {
+          "level": "county",
+          "name": "Solano"
+        },
+        {
+          "level": "county_subdivision",
+          "name": "Vallejo"
+        },
+        {
+          "level": "federal",
+          "name": "United States of America"
+        },
+        {
+          "level": "place",
+          "name": "Vallejo"
+        },
+        {
+          "level": "school_district_unified",
+          "name": "Vallejo City Unified School District"
+        },
+        {
+          "level": "state",
+          "name": "California"
+        },
+        {
+          "level": "state_legislative_lower",
+          "name": "Assembly District 11"
+        },
+        {
+          "level": "state_legislative_upper",
+          "name": "State Senate District 3"
+        }
+      ],
+      "jurisdictional_id": 70166,
+      "jurisdictional_url": "https://jurisdictional.org/jurisdictions/70166",
+      "name": "Vallejo",
+      "population": 123287,
+      "slug": "vallejo"
+    }
+  ]
+}

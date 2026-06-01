@@ -37,10 +37,24 @@ This is a working prototype to test whether the format invites participation bef
 
 The feedback forms are live and functional, powered by [Touchpoints](https://touchpoints.app), a federal open-source tool for public input.
 
-## What we need
+## Volunteer: Parcel Photographer
+
+We need someone to walk or bike Vacaville and photograph vacant lots and underutilized sites.
+A vacant lot looks different on a map than from the sidewalk.
+Photos make the parcels real and help residents picture what could be there.
+
+**What you'd do:**
+- Visit parcel locations and capture 1-3 photos each (phone camera is fine, 4:3 ratio preferred)
+- Keep a simple log of which parcels you've photographed
+- Submit photos and help keep parcel records accurate and up to date
+
+No special skills required -- just a phone, comfortable shoes, and curiosity about your city.
+
+**Interested?** Email [ryan@civic.studio](mailto:ryan@civic.studio?subject=Parcel%20Photographer%20Volunteer) or come to a [meetup](/meetup/).
+
+## What else we need
 
 - **Verified parcel data.** Real addresses, real APNs, real zoning designations for vacant and underutilized sites in Vacaville -- especially downtown and the Monte Vista corridor. The county assessor's parcel viewer is a good starting point.
-- **Street-level photos.** A vacant lot looks different on a map than from the sidewalk. If you walk past one of these sites, take a picture.
 - **Feedback submissions.** Visit [/parcels](/parcels/), pick a site, and tell us what you'd like to see. Every response builds a picture of what the community actually wants.
 - **Local context.** Some sites have history -- prior proposals, environmental constraints, ownership complications. If you know the backstory, that's valuable.
 - **Signal amplification.** Share individual parcel pages with neighbors and local business owners.
