@@ -520,6 +520,11 @@ layout: default
               <dt class="text-sm font-medium text-gray-500">Zoning</dt>
               <dd class="flex flex-wrap gap-1.5 mt-1">
                 <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
+                  {% if page.zoning == 'Residential' %}bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10
+                  {% else %}bg-gray-50 text-gray-400 ring-1 ring-inset ring-gray-200{% endif %}">
+                  Residential
+                </span>
+                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
                   {% if page.zoning == 'Commercial' %}bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-700/10
                   {% else %}bg-gray-50 text-gray-400 ring-1 ring-inset ring-gray-200{% endif %}">
                   Commercial
@@ -528,11 +533,6 @@ layout: default
                   {% if page.zoning == 'Mixed Use' %}bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-700/10
                   {% else %}bg-gray-50 text-gray-400 ring-1 ring-inset ring-gray-200{% endif %}">
                   Mixed Use
-                </span>
-                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium
-                  {% if page.zoning == 'Residential' %}bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10
-                  {% else %}bg-gray-50 text-gray-400 ring-1 ring-inset ring-gray-200{% endif %}">
-                  Residential
                 </span>
               </dd>
             </div>
