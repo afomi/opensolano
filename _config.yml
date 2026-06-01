@@ -24,6 +24,9 @@ collections:
   services:
     output: true
     permalink: /services/:id
+  projects:
+    output: true
+    permalink: /projects/:path/
 
 plugins:
   - jekyll-datapage-generator
