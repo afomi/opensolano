@@ -243,172 +243,112 @@ permalink: /public-funds/
       </div>
     </div>
 
-    <!-- Budget Overview Chart -->
+    <!-- City Budget Comparison -->
+    {% if site.data.budgets %}
     <div class="bg-white border border-gray-200 rounded-2xl p-8 mb-16">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Solano County Budget Overview</h2>
-      <p class="text-gray-600 mb-8">
-        Revenue and expenditure trends across the past decade.
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">City Budget Comparison</h2>
+      <p class="text-gray-600 mb-2">
+        General fund revenue and expenditure for {{ site.data.budgets.fiscal_year }}.
       </p>
-      
-      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
-        <div class="flex items-center gap-2">
-          <span class="text-yellow-600">⚠️</span>
-          <p class="text-sm text-yellow-800 font-medium">Note: This chart uses representative stub data for demonstration purposes. Actual budget data is being compiled from multiple sources.</p>
-        </div>
-      </div>
-
-      <div id="budget-chart" class="w-full"></div>
-    </div>
-
-    <!-- Cost Per Citizen Metrics -->
-    <div class="bg-white border border-gray-200 rounded-2xl p-8 mb-16">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Cost Per Citizen</h2>
-      <p class="text-gray-600 mb-8">
-        Annual per-capita spending on key public services across Solano County.
+      <p class="text-xs text-gray-400 mb-8">
+        Last updated: {{ site.data.budgets.cities[0].last_updated }}. Source: adopted budget documents from each city's finance department.
       </p>
-      
-      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
-        <div class="flex items-center gap-2">
-          <span class="text-yellow-600">⚠️</span>
-          <p class="text-sm text-yellow-800 font-medium">Note: These are estimated figures based on available budget documents. Actual costs may vary by jurisdiction.</p>
-        </div>
-      </div>
 
-      <div class="overflow-x-auto">
+      <!-- Summary Table -->
+      <div class="overflow-x-auto mb-12">
         <table class="w-full border-collapse">
           <thead>
             <tr class="border-b-2 border-gray-200">
-              <th class="text-left py-4 px-4 font-semibold text-gray-900">Service Category</th>
-              <th class="text-right py-4 px-4 font-semibold text-gray-900">Annual Cost per Citizen</th>
-              <th class="text-right py-4 px-4 font-semibold text-gray-900">Monthly Cost</th>
-              <th class="text-left py-4 px-4 font-semibold text-gray-600 text-sm">Notes</th>
+              <th class="text-left py-4 px-4 font-semibold text-gray-900">City</th>
+              <th class="text-right py-4 px-4 font-semibold text-gray-900">Population</th>
+              <th class="text-right py-4 px-4 font-semibold text-gray-900">Revenue</th>
+              <th class="text-right py-4 px-4 font-semibold text-gray-900">Expenditure</th>
+              <th class="text-right py-4 px-4 font-semibold text-gray-900">Balance</th>
+              <th class="text-right py-4 px-4 font-semibold text-gray-900">Per Capita</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
+            {% for city in site.data.budgets.cities %}
             <tr class="hover:bg-gray-50">
               <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🎓</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Public Education</div>
-                    <div class="text-sm text-gray-600">K-12 schools, community colleges</div>
-                  </div>
-                </div>
+                <div class="font-medium text-gray-900">{{ city.name }}</div>
               </td>
-              <td class="py-4 px-4 text-right font-semibold text-green-600">$2,340</td>
-              <td class="py-4 px-4 text-right text-gray-600">$195</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Largest single expense</td>
-            </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🚨</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Public Safety</div>
-                    <div class="text-sm text-gray-600">Police, sheriff, courts</div>
-                  </div>
-                </div>
+              <td class="py-4 px-4 text-right text-gray-600">{{ city.population | round }}</td>
+              <td class="py-4 px-4 text-right font-semibold text-green-600">${{ city.general_fund_revenue }}M</td>
+              <td class="py-4 px-4 text-right font-semibold text-red-600">${{ city.general_fund_expenditure }}M</td>
+              {% assign balance = city.general_fund_revenue | minus: city.general_fund_expenditure %}
+              <td class="py-4 px-4 text-right font-semibold {% if balance >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                {% if balance >= 0 %}+{% endif %}${{ balance }}M
               </td>
-              <td class="py-4 px-4 text-right font-semibold text-blue-600">$890</td>
-              <td class="py-4 px-4 text-right text-gray-600">$74</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Varies by city</td>
-            </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🚒</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Fire Protection</div>
-                    <div class="text-sm text-gray-600">Fire departments, emergency services</div>
-                  </div>
-                </div>
+              <td class="py-4 px-4 text-right text-gray-600">
+                ${{ city.general_fund_expenditure | times: 1000000 | divided_by: city.population | round }}
               </td>
-              <td class="py-4 px-4 text-right font-semibold text-red-600">$420</td>
-              <td class="py-4 px-4 text-right text-gray-600">$35</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Mostly special districts</td>
             </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🏥</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Health & Social Services</div>
-                    <div class="text-sm text-gray-600">Public health, social services</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-4 px-4 text-right font-semibold text-purple-600">$680</td>
-              <td class="py-4 px-4 text-right text-gray-600">$57</td>
-              <td class="py-4 px-4 text-sm text-gray-500">County-administered</td>
-            </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🏗️</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Infrastructure</div>
-                    <div class="text-sm text-gray-600">Roads, bridges, public works</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-4 px-4 text-right font-semibold text-orange-600">$320</td>
-              <td class="py-4 px-4 text-right text-gray-600">$27</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Maintenance & capital</td>
-            </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🗑️</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Waste Management</div>
-                    <div class="text-sm text-gray-600">Garbage, recycling, landfills</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-4 px-4 text-right font-semibold text-green-700">$180</td>
-              <td class="py-4 px-4 text-right text-gray-600">$15</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Often fee-based</td>
-            </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">💧</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Water Services</div>
-                    <div class="text-sm text-gray-600">Water supply, treatment, distribution</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-4 px-4 text-right font-semibold text-blue-700">$290</td>
-              <td class="py-4 px-4 text-right text-gray-600">$24</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Multiple districts</td>
-            </tr>
-            <tr class="hover:bg-gray-50">
-              <td class="py-4 px-4">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">⚡</span>
-                  <div>
-                    <div class="font-medium text-gray-900">Utilities</div>
-                    <div class="text-sm text-gray-600">Public power, street lighting</div>
-                  </div>
-                </div>
-              </td>
-              <td class="py-4 px-4 text-right font-semibold text-yellow-600">$150</td>
-              <td class="py-4 px-4 text-right text-gray-600">$13</td>
-              <td class="py-4 px-4 text-sm text-gray-500">Limited public provision</td>
-            </tr>
+            {% endfor %}
           </tbody>
-          <tfoot class="border-t-2 border-gray-300">
-            <tr class="bg-gray-50 font-semibold">
-              <td class="py-4 px-4 text-gray-900">Total Annual Cost</td>
-              <td class="py-4 px-4 text-right text-gray-900">$5,270</td>
-              <td class="py-4 px-4 text-right text-gray-900">$439</td>
-              <td class="py-4 px-4 text-sm text-gray-600">Per citizen estimate</td>
-            </tr>
-          </tfoot>
         </table>
       </div>
+
+      <!-- Per-City Expenditure Breakdown -->
+      <h3 class="text-xl font-bold text-gray-900 mb-6">Where the Money Goes</h3>
+      <div class="grid gap-8 sm:grid-cols-1 lg:grid-cols-3 mb-12">
+        {% for city in site.data.budgets.cities %}
+        <div class="bg-gray-50 rounded-xl p-6">
+          <h4 class="font-semibold text-gray-900 mb-4">{{ city.name }}</h4>
+          <div class="space-y-3">
+            {% for exp in city.top_expenditures %}
+            <div>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-700">{{ exp.category }}</span>
+                <span class="font-medium text-gray-900">${{ exp.amount }}M ({{ exp.pct_of_general_fund }}%)</span>
+              </div>
+              <div class="bg-gray-200 rounded-full h-2">
+                <div class="bg-indigo-500 h-2 rounded-full"
+                  style="width: {{ exp.pct_of_general_fund }}%"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% if city.notes %}
+          <p class="mt-4 text-xs text-gray-500 italic">{{ city.notes }}</p>
+          {% endif %}
+          {% if city.source_url %}
+          <a href="{{ city.source_url }}"
+            target="_blank"
+            class="inline-flex items-center mt-4 text-xs text-indigo-600 hover:text-indigo-500">
+            Source
+            <span class="ml-1">&rarr;</span>
+          </a>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Revenue Breakdown -->
+      <h3 class="text-xl font-bold text-gray-900 mb-6">Where the Money Comes From</h3>
+      <div class="grid gap-8 sm:grid-cols-1 lg:grid-cols-3">
+        {% for city in site.data.budgets.cities %}
+        <div class="bg-gray-50 rounded-xl p-6">
+          <h4 class="font-semibold text-gray-900 mb-4">{{ city.name }}</h4>
+          <div class="space-y-3">
+            {% for rev in city.top_revenues %}
+            <div>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-700">{{ rev.source }}</span>
+                <span class="font-medium text-gray-900">${{ rev.amount }}M ({{ rev.pct_of_general_fund }}%)</span>
+              </div>
+              <div class="bg-gray-200 rounded-full h-2">
+                <div class="bg-green-500 h-2 rounded-full"
+                  style="width: {{ rev.pct_of_general_fund }}%"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
+    {% endif %}
 
     <!-- Related Analysis -->
     <div class="bg-white border border-gray-200 rounded-2xl p-8">
@@ -462,284 +402,3 @@ permalink: /public-funds/
   </section>
 </main>
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script>
-// Stub data for Solano County budget (10 years)
-const budgetData = [
-  { year: 2014, revenue: 280, expenses: 275, population: 425000 },
-  { year: 2015, revenue: 295, expenses: 290, population: 430000 },
-  { year: 2016, revenue: 310, expenses: 305, population: 435000 },
-  { year: 2017, revenue: 325, expenses: 320, population: 440000 },
-  { year: 2018, revenue: 340, expenses: 335, population: 445000 },
-  { year: 2019, revenue: 355, expenses: 350, population: 450000 },
-  { year: 2020, revenue: 330, expenses: 365, population: 455000 }, // COVID impact
-  { year: 2021, revenue: 345, expenses: 370, population: 460000 },
-  { year: 2022, revenue: 380, expenses: 375, population: 465000 },
-  { year: 2023, revenue: 395, expenses: 390, population: 470000 }
-];
-
-let svg, xScale, yScale, width, height, legend;
-
-function createChart() {
-  // Clear any existing chart
-  d3.select('#budget-chart').selectAll('*').remove();
-  
-  // Get container dimensions
-  const container = d3.select('#budget-chart');
-  const containerWidth = container.node().getBoundingClientRect().width;
-  
-  // Chart dimensions - responsive
-  const margin = { 
-    top: 20, 
-    right: window.innerWidth > 768 ? 80 : 40, 
-    bottom: 60, 
-    left: window.innerWidth > 768 ? 80 : 60 
-  };
-  
-  width = Math.max(300, containerWidth - margin.left - margin.right);
-  height = Math.max(250, Math.min(500, width * 0.6));
-
-  // Create SVG
-  svg = d3.select('#budget-chart')
-    .append('svg')
-    .attr('width', '100%')
-    .attr('height', height + margin.top + margin.bottom)
-    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-    .style('max-width', '100%')
-    .style('height', 'auto')
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
-
-  // Scales
-  xScale = d3.scaleLinear()
-    .domain(d3.extent(budgetData, d => d.year))
-    .range([0, width]);
-
-  yScale = d3.scaleLinear()
-    .domain([0, d3.max(budgetData, d => Math.max(d.revenue, d.expenses)) * 1.1])
-    .range([height, 0]);
-
-  // Line generators
-  const revenueLine = d3.line()
-    .x(d => xScale(d.year))
-    .y(d => yScale(d.revenue))
-    .curve(d3.curveMonotoneX);
-
-  const expenseLine = d3.line()
-    .x(d => xScale(d.year))
-    .y(d => yScale(d.expenses))
-    .curve(d3.curveMonotoneX);
-
-  // Add grid lines first (so they appear behind everything)
-  svg.append('g')
-    .attr('class', 'grid')
-    .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(xScale)
-      .tickSize(-height)
-      .tickFormat('')
-      .ticks(Math.min(10, Math.floor(width / 80)))
-    )
-    .style('stroke-dasharray', '3,3')
-    .style('opacity', 0.3);
-
-  svg.append('g')
-    .attr('class', 'grid')
-    .call(d3.axisLeft(yScale)
-      .tickSize(-width)
-      .tickFormat('')
-      .ticks(Math.min(8, Math.floor(height / 40)))
-    )
-    .style('stroke-dasharray', '3,3')
-    .style('opacity', 0.3);
-
-  // Add axes
-  svg.append('g')
-    .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(xScale)
-      .tickFormat(d3.format('d'))
-      .ticks(Math.min(10, Math.floor(width / 80)))
-    )
-    .append('text')
-    .attr('x', width / 2)
-    .attr('y', 40)
-    .style('text-anchor', 'middle')
-    .style('fill', 'black')
-    .style('font-size', window.innerWidth > 768 ? '12px' : '10px')
-    .text('Year');
-
-  svg.append('g')
-    .call(d3.axisLeft(yScale).ticks(Math.min(8, Math.floor(height / 40))))
-    .append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', window.innerWidth > 768 ? -60 : -45)
-    .attr('x', -height / 2)
-    .style('text-anchor', 'middle')
-    .style('fill', 'black')
-    .style('font-size', window.innerWidth > 768 ? '12px' : '10px')
-    .text('Amount (Millions $)');
-
-  // Add revenue line
-  svg.append('path')
-    .datum(budgetData)
-    .attr('fill', 'none')
-    .attr('stroke', '#10b981')
-    .attr('stroke-width', window.innerWidth > 768 ? 3 : 2)
-    .attr('d', revenueLine);
-
-  // Add expense line
-  svg.append('path')
-    .datum(budgetData)
-    .attr('fill', 'none')
-    .attr('stroke', '#ef4444')
-    .attr('stroke-width', window.innerWidth > 768 ? 3 : 2)
-    .attr('d', expenseLine);
-
-  // Add revenue points
-  svg.selectAll('.revenue-point')
-    .data(budgetData)
-    .enter()
-    .append('circle')
-    .attr('class', 'revenue-point')
-    .attr('cx', d => xScale(d.year))
-    .attr('cy', d => yScale(d.revenue))
-    .attr('r', window.innerWidth > 768 ? 4 : 3)
-    .attr('fill', '#10b981')
-    .style('cursor', 'pointer');
-
-  // Add expense points
-  svg.selectAll('.expense-point')
-    .data(budgetData)
-    .enter()
-    .append('circle')
-    .attr('class', 'expense-point')
-    .attr('cx', d => xScale(d.year))
-    .attr('cy', d => yScale(d.expenses))
-    .attr('r', window.innerWidth > 768 ? 4 : 3)
-    .attr('fill', '#ef4444')
-    .style('cursor', 'pointer');
-
-  // Add legend - position responsively
-  const legendX = window.innerWidth > 768 ? width - 120 : 10;
-  const legendY = window.innerWidth > 768 ? 20 : height - 60;
-  
-  legend = svg.append('g')
-    .attr('transform', `translate(${legendX}, ${legendY})`);
-
-  if (window.innerWidth <= 768) {
-    // Horizontal legend for mobile
-    legend.append('line')
-      .attr('x1', 0)
-      .attr('x2', 15)
-      .attr('y1', 0)
-      .attr('y2', 0)
-      .attr('stroke', '#10b981')
-      .attr('stroke-width', 2);
-
-    legend.append('text')
-      .attr('x', 20)
-      .attr('y', 0)
-      .attr('dy', '0.35em')
-      .style('font-size', '10px')
-      .text('Revenue');
-
-    legend.append('line')
-      .attr('x1', 80)
-      .attr('x2', 95)
-      .attr('y1', 0)
-      .attr('y2', 0)
-      .attr('stroke', '#ef4444')
-      .attr('stroke-width', 2);
-
-    legend.append('text')
-      .attr('x', 100)
-      .attr('y', 0)
-      .attr('dy', '0.35em')
-      .style('font-size', '10px')
-      .text('Expenses');
-  } else {
-    // Vertical legend for desktop
-    legend.append('line')
-      .attr('x1', 0)
-      .attr('x2', 20)
-      .attr('y1', 0)
-      .attr('y2', 0)
-      .attr('stroke', '#10b981')
-      .attr('stroke-width', 3);
-
-    legend.append('text')
-      .attr('x', 25)
-      .attr('y', 0)
-      .attr('dy', '0.35em')
-      .style('font-size', '12px')
-      .text('Revenue');
-
-    legend.append('line')
-      .attr('x1', 0)
-      .attr('x2', 20)
-      .attr('y1', 20)
-      .attr('y2', 20)
-      .attr('stroke', '#ef4444')
-      .attr('stroke-width', 3);
-
-    legend.append('text')
-      .attr('x', 25)
-      .attr('y', 20)
-      .attr('dy', '0.35em')
-      .style('font-size', '12px')
-      .text('Expenses');
-  }
-
-  // Add tooltip
-  const tooltip = d3.select('body').selectAll('.budget-tooltip').data([0]);
-  const tooltipEnter = tooltip.enter().append('div')
-    .attr('class', 'budget-tooltip')
-    .style('opacity', 0)
-    .style('position', 'absolute')
-    .style('background', 'rgba(0, 0, 0, 0.9)')
-    .style('color', 'white')
-    .style('padding', '10px')
-    .style('border-radius', '6px')
-    .style('font-size', '12px')
-    .style('pointer-events', 'none')
-    .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.1)')
-    .style('z-index', '100');
-
-  const tooltipMerged = tooltipEnter.merge(tooltip);
-
-  // Add hover interactions
-  svg.selectAll('.revenue-point, .expense-point')
-    .on('mouseover', function(event, d) {
-      const type = d3.select(this).attr('class').includes('revenue') ? 'Revenue' : 'Expenses';
-      const value = type === 'Revenue' ? d.revenue : d.expenses;
-      const color = type === 'Revenue' ? '#10b981' : '#ef4444';
-      
-      d3.select(this).attr('r', window.innerWidth > 768 ? 6 : 5);
-      
-      tooltipMerged.transition().duration(200).style('opacity', .95);
-      tooltipMerged.html(`
-        <div style="font-weight: bold; color: ${color};">${type} ${d.year}</div>
-        <div style="margin-top: 4px;">Amount: $${value}M</div>
-        <div>Population: ${d.population.toLocaleString()}</div>
-        <div style="font-size: 10px; margin-top: 4px; opacity: 0.8;">Per capita: $${Math.round((value * 1000000) / d.population)}</div>
-      `)
-        .style('left', Math.min(event.pageX + 10, window.innerWidth - 200) + 'px')
-        .style('top', (event.pageY - 80) + 'px');
-    })
-    .on('mouseout', function(d) {
-      d3.select(this).attr('r', window.innerWidth > 768 ? 4 : 3);
-      tooltipMerged.transition().duration(500).style('opacity', 0);
-    });
-}
-
-// Initial chart creation
-createChart();
-
-// Responsive resize handler
-let resizeTimer;
-window.addEventListener('resize', function() {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function() {
-    createChart();
-  }, 250);
-});
-</script>

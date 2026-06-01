@@ -1,0 +1,1457 @@
+---
+layout: default
+title: "Checkbook Explorer - OpenSolano"
+description: "Interactive public budget transparency explorer for the April 8, 2026 checkbook file, including totals by vendor, totals by fund, and transaction counts."
+permalink: /public-funds/checkbook/
+---
+
+<style>
+  .checkbook-explorer {
+    --cbx-ink: #132028;
+    --cbx-muted: #5c6b70;
+    --cbx-paper: #fffdf8;
+    --cbx-panel: rgba(255, 255, 255, 0.88);
+    --cbx-line: rgba(19, 32, 40, 0.11);
+    --cbx-accent: #0f766e;
+    --cbx-accent-2: #d97706;
+    --cbx-shadow: 0 18px 50px rgba(19, 32, 40, 0.08);
+    background:
+      radial-gradient(circle at top left, rgba(217, 119, 6, 0.14), transparent 36%),
+      radial-gradient(circle at top right, rgba(15, 118, 110, 0.14), transparent 32%),
+      linear-gradient(180deg, #f5efe3 0, #f8f5ee 26rem, #fff 100%);
+    color: var(--cbx-ink);
+    padding-bottom: 5rem;
+  }
+
+  .cbx-shell {
+    width: min(74rem, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .cbx-hero {
+    overflow: hidden;
+    padding: 7.5rem 0 2rem;
+    position: relative;
+  }
+
+  .cbx-hero::before {
+    background-image:
+      linear-gradient(rgba(19, 32, 40, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(19, 32, 40, 0.045) 1px, transparent 1px);
+    background-position: center;
+    background-size: 28px 28px;
+    content: "";
+    inset: 0;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent);
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .cbx-hero-inner,
+  .cbx-ledger-grid,
+  .cbx-spotlight-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .cbx-hero-inner {
+    align-items: end;
+    grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 0.95fr);
+    position: relative;
+    z-index: 1;
+  }
+
+  .cbx-kicker,
+  .cbx-panel-kicker {
+    color: var(--cbx-accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.6rem;
+    text-transform: uppercase;
+  }
+
+  .cbx-hero h1,
+  .cbx-section-head h2,
+  .cbx-panel-head h3,
+  .cbx-spotlight-title {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+
+  .cbx-hero h1 {
+    font-size: clamp(2.8rem, 5vw, 5.2rem);
+    margin: 0;
+    max-width: 11ch;
+  }
+
+  .cbx-intro,
+  .cbx-section-copy,
+  .cbx-source-copy,
+  .cbx-caption,
+  .cbx-empty {
+    color: var(--cbx-muted);
+    font-size: 1.03rem;
+    line-height: 1.7;
+  }
+
+  .cbx-intro {
+    margin: 1rem 0 0;
+    max-width: 54rem;
+  }
+
+  .cbx-source-card,
+  .cbx-metric-card,
+  .cbx-story-card,
+  .cbx-panel,
+  .cbx-spotlight-card {
+    backdrop-filter: blur(18px);
+    background: var(--cbx-panel);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: var(--cbx-shadow);
+  }
+
+  .cbx-source-card {
+    background:
+      linear-gradient(180deg, rgba(19, 32, 40, 0.96), rgba(19, 32, 40, 0.9)),
+      radial-gradient(circle at top right, rgba(15, 118, 110, 0.35), transparent 35%);
+    border-radius: 1.6rem;
+    color: #eff7f4;
+    padding: 1.5rem;
+  }
+
+  .cbx-source-label {
+    color: rgba(239, 247, 244, 0.72);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .cbx-source-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.8rem;
+    word-break: break-word;
+  }
+
+  .cbx-source-card a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.35);
+    text-underline-offset: 0.2em;
+  }
+
+  .cbx-status {
+    color: rgba(239, 247, 244, 0.72);
+    display: inline-block;
+    font-size: 0.9rem;
+    margin-top: 0.8rem;
+  }
+
+  .cbx-metric-grid,
+  .cbx-story-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cbx-metric-grid {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+
+  .cbx-story-grid {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+
+  .cbx-metric-card,
+  .cbx-story-card,
+  .cbx-spotlight-card {
+    border-radius: 1.4rem;
+    overflow: hidden;
+    padding: 1.2rem 1.2rem 1.1rem;
+  }
+
+  .cbx-metric-label,
+  .cbx-story-label {
+    color: var(--cbx-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.55rem;
+    text-transform: uppercase;
+  }
+
+  .cbx-metric-value,
+  .cbx-story-value {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0 0 0.45rem;
+  }
+
+  .cbx-metric-hint,
+  .cbx-story-copy,
+  .cbx-note {
+    color: var(--cbx-muted);
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cbx-section {
+    padding-top: 1.25rem;
+  }
+
+  .cbx-section-head {
+    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1.4rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .cbx-section-head h2,
+  .cbx-panel-head h3,
+  .cbx-spotlight-title {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    margin: 0;
+  }
+
+  .cbx-ledger-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cbx-panel {
+    border-radius: 1.6rem;
+    overflow: hidden;
+  }
+
+  .cbx-panel-head {
+    align-items: end;
+    border-bottom: 1px solid var(--cbx-line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 1.2rem 1.2rem 1rem;
+  }
+
+  .cbx-panel-title-group p,
+  .cbx-spotlight-card p,
+  .cbx-spotlight-card h3 {
+    margin-top: 0;
+  }
+
+  .cbx-controls {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-end;
+  }
+
+  .cbx-inline-field {
+    align-items: center;
+    color: var(--cbx-muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    font-weight: 600;
+    gap: 0.45rem;
+  }
+
+  .cbx-inline-field input {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(19, 32, 40, 0.16);
+    border-radius: 999px;
+    color: var(--cbx-ink);
+    min-width: 12rem;
+    padding: 0.7rem 0.95rem;
+  }
+
+  .cbx-inline-field input:focus,
+  .cbx-secondary-button:focus,
+  .cbx-toggle button:focus {
+    outline: 2px solid rgba(15, 118, 110, 0.3);
+    outline-offset: 2px;
+  }
+
+  .cbx-toggle {
+    background: rgba(19, 32, 40, 0.06);
+    border-radius: 999px;
+    display: inline-flex;
+    padding: 0.2rem;
+  }
+
+  .cbx-toggle button,
+  .cbx-secondary-button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    color: var(--cbx-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.65rem 0.95rem;
+    transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+  }
+
+  .cbx-toggle button:hover,
+  .cbx-secondary-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .cbx-toggle button.is-active,
+  .cbx-secondary-button {
+    background: rgba(15, 118, 110, 0.12);
+    color: var(--cbx-accent);
+  }
+
+  .cbx-secondary-button {
+    border: 1px solid rgba(15, 118, 110, 0.16);
+  }
+
+  .cbx-table-wrap {
+    max-height: 32rem;
+    overflow: auto;
+  }
+
+  .cbx-table {
+    border-collapse: collapse;
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .cbx-table th,
+  .cbx-table td {
+    border-bottom: 1px solid rgba(19, 32, 40, 0.07);
+    padding: 0.82rem 1rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .cbx-table thead th {
+    background: rgba(248, 245, 238, 0.94);
+    color: var(--cbx-muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    position: sticky;
+    text-transform: uppercase;
+    top: 0;
+    z-index: 1;
+  }
+
+  .cbx-table tbody tr {
+    cursor: pointer;
+    transition: background 120ms ease, transform 120ms ease;
+  }
+
+  .cbx-table tbody tr:hover {
+    background: rgba(15, 118, 110, 0.06);
+  }
+
+  .cbx-table tbody tr.is-active {
+    background: rgba(15, 118, 110, 0.1);
+  }
+
+  .cbx-table tbody tr.is-passive {
+    cursor: default;
+  }
+
+  .cbx-name {
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .cbx-subtle {
+    color: var(--cbx-muted);
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-top: 0.2rem;
+  }
+
+  .cbx-table td[data-type="amount"],
+  .cbx-table td[data-type="count"],
+  .cbx-table td[data-type="share"] {
+    white-space: nowrap;
+  }
+
+  .cbx-table td[data-type="share"] {
+    min-width: 6rem;
+  }
+
+  .cbx-share-chip {
+    background: rgba(217, 119, 6, 0.1);
+    border-radius: 999px;
+    color: var(--cbx-accent-2);
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .cbx-spotlight-head {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .cbx-spotlight-eyebrow {
+    color: var(--cbx-accent);
+    display: inline-flex;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+  }
+
+  .cbx-spotlight-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  }
+
+  .cbx-spotlight-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .cbx-stat-strip {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    margin-bottom: 1rem;
+  }
+
+  .cbx-stat-chip {
+    background: rgba(248, 245, 238, 0.98);
+    border: 1px solid rgba(19, 32, 40, 0.07);
+    border-radius: 1rem;
+    padding: 0.9rem;
+  }
+
+  .cbx-stat-chip .cbx-story-label {
+    margin-bottom: 0.35rem;
+  }
+
+  .cbx-stat-chip .cbx-story-value {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .cbx-breakdown-list {
+    display: grid;
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cbx-breakdown-item {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .cbx-breakdown-topline {
+    align-items: baseline;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+  }
+
+  .cbx-breakdown-topline strong {
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+
+  .cbx-breakdown-bar {
+    background: rgba(19, 32, 40, 0.08);
+    border-radius: 999px;
+    height: 0.5rem;
+    overflow: hidden;
+  }
+
+  .cbx-breakdown-bar span {
+    background: linear-gradient(90deg, var(--cbx-accent), rgba(15, 118, 110, 0.35));
+    border-radius: 999px;
+    display: block;
+    height: 100%;
+  }
+
+  .cbx-empty {
+    margin: 0;
+    padding: 1rem 0 0;
+  }
+
+  .cbx-footnote {
+    color: var(--cbx-muted);
+    font-size: 0.84rem;
+    line-height: 1.6;
+    margin-top: 0.8rem;
+  }
+
+  @media (max-width: 960px) {
+    .cbx-hero-inner,
+    .cbx-ledger-grid,
+    .cbx-spotlight-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cbx-hero {
+      padding-top: 6.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .cbx-shell {
+      width: min(74rem, calc(100% - 1rem));
+    }
+
+    .cbx-panel-head,
+    .cbx-spotlight-card,
+    .cbx-story-card,
+    .cbx-metric-card,
+    .cbx-source-card {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .cbx-inline-field input {
+      min-width: 100%;
+    }
+
+    .cbx-controls {
+      justify-content: stretch;
+      width: 100%;
+    }
+
+    .cbx-table th,
+    .cbx-table td {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+  }
+</style>
+
+<main class="checkbook-explorer">
+  <section class="cbx-hero">
+    <div class="cbx-shell">
+      <div class="cbx-hero-inner">
+        <div>
+          <p class="cbx-kicker">Public Budget Transparency</p>
+          <h1>Follow the checks, not the press release.</h1>
+          <p class="cbx-intro">
+            This explorer reads the April 8, 2026 checkbook export in the browser and turns it into something closer to an operating room than a spreadsheet. Track total dollars by vendor, total dollars by fund, and how transaction volume tells a different story than raw spend.
+          </p>
+        </div>
+
+        <aside class="cbx-source-card">
+          <div class="cbx-source-label">Source file</div>
+          <div class="cbx-source-value">checkbook_data_2026-04-08.csv</div>
+          <p class="cbx-source-copy">
+            Load the raw file, inspect the biggest relationships, and click any row below to spotlight that vendor or fund.
+          </p>
+          <a href="{{ '/checkbook_data_2026-04-08.csv' | relative_url }}">Open the raw CSV</a>
+          <span id="cbx-status" class="cbx-status">Loading data...</span>
+        </aside>
+      </div>
+
+      <div id="cbx-metrics" class="cbx-metric-grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="cbx-shell cbx-section">
+    <div class="cbx-section-head">
+      <div>
+        <p class="cbx-kicker">What Jumps Out</p>
+        <h2>The file has a few different personalities.</h2>
+      </div>
+      <p class="cbx-section-copy">
+        Big capital contracts, utility churn, purchasing-card noise, and a highly concentrated fund mix all live in the same export. The cards below summarize the sharpest contrasts.
+      </p>
+    </div>
+
+    <div id="cbx-insights" class="cbx-story-grid"></div>
+  </section>
+
+  <section class="cbx-shell cbx-section">
+    <div class="cbx-section-head">
+      <div>
+        <p class="cbx-kicker">Leaderboards</p>
+        <h2>Totals by vendor and totals by fund.</h2>
+      </div>
+      <p class="cbx-section-copy">
+        Sort either ledger by total dollars or by number of transactions. Click any row to change the spotlight and transaction table below.
+      </p>
+    </div>
+
+    <div class="cbx-ledger-grid">
+      <section class="cbx-panel" aria-labelledby="cbx-vendors-title">
+        <div class="cbx-panel-head">
+          <div class="cbx-panel-title-group">
+            <p class="cbx-panel-kicker">By Vendor</p>
+            <h3 id="cbx-vendors-title">Vendor totals and transaction counts</h3>
+          </div>
+
+          <div class="cbx-controls">
+            <label class="cbx-inline-field" for="cbx-vendor-search">
+              Search
+              <input id="cbx-vendor-search" type="search" placeholder="Search vendors">
+            </label>
+            <div class="cbx-toggle" role="tablist" aria-label="Vendor ranking mode">
+              <button id="cbx-vendor-sort-amount" type="button" data-sort="amount" class="is-active">Top dollars</button>
+              <button id="cbx-vendor-sort-count" type="button" data-sort="count">Most transactions</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cbx-table-wrap">
+          <table class="cbx-table">
+            <thead>
+              <tr>
+                <th scope="col">Vendor</th>
+                <th scope="col">Total</th>
+                <th scope="col">Txns</th>
+                <th scope="col">Share</th>
+              </tr>
+            </thead>
+            <tbody id="cbx-vendor-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="cbx-panel" aria-labelledby="cbx-funds-title">
+        <div class="cbx-panel-head">
+          <div class="cbx-panel-title-group">
+            <p class="cbx-panel-kicker">By Fund</p>
+            <h3 id="cbx-funds-title">Fund totals and transaction counts</h3>
+          </div>
+
+          <div class="cbx-controls">
+            <label class="cbx-inline-field" for="cbx-fund-search">
+              Search
+              <input id="cbx-fund-search" type="search" placeholder="Search funds">
+            </label>
+            <div class="cbx-toggle" role="tablist" aria-label="Fund ranking mode">
+              <button id="cbx-fund-sort-amount" type="button" data-sort="amount" class="is-active">Top dollars</button>
+              <button id="cbx-fund-sort-count" type="button" data-sort="count">Most transactions</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cbx-table-wrap">
+          <table class="cbx-table">
+            <thead>
+              <tr>
+                <th scope="col">Fund</th>
+                <th scope="col">Total</th>
+                <th scope="col">Txns</th>
+                <th scope="col">Share</th>
+              </tr>
+            </thead>
+            <tbody id="cbx-fund-rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="cbx-shell cbx-section">
+    <div class="cbx-spotlight-head">
+      <div>
+        <span class="cbx-spotlight-eyebrow">Spotlight</span>
+        <h2 class="cbx-spotlight-title">Click a vendor or fund to inspect its shape.</h2>
+      </div>
+
+      <button id="cbx-clear-selection" type="button" class="cbx-secondary-button">Clear spotlight</button>
+    </div>
+
+    <div id="cbx-spotlight"></div>
+  </section>
+
+  <section class="cbx-shell cbx-section">
+    <div class="cbx-section-head">
+      <div>
+        <p class="cbx-kicker">Payment Lines</p>
+        <h2>Transaction detail</h2>
+      </div>
+      <p id="cbx-transactions-caption" class="cbx-section-copy">
+        Showing the largest payment lines in the file.
+      </p>
+    </div>
+
+    <section class="cbx-panel">
+      <div class="cbx-panel-head">
+        <div class="cbx-panel-title-group">
+          <p class="cbx-panel-kicker">Search</p>
+          <h3>Filter the current transaction view</h3>
+        </div>
+
+        <div class="cbx-controls">
+          <label class="cbx-inline-field" for="cbx-transaction-search">
+            Search
+            <input id="cbx-transaction-search" type="search" placeholder="Vendor, fund, check, or date">
+          </label>
+        </div>
+      </div>
+
+      <div class="cbx-table-wrap">
+        <table class="cbx-table">
+          <thead>
+            <tr>
+              <th scope="col">Vendor</th>
+              <th scope="col">Fund</th>
+              <th scope="col">Date</th>
+              <th scope="col">Check</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="cbx-transaction-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+</main>
+
+<script>
+  (() => {
+    const sourceUrl = "{{ '/checkbook_data_2026-04-08.csv' | relative_url }}";
+    const currency = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2
+    });
+    const compactCurrency = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      notation: "compact",
+      maximumFractionDigits: 2
+    });
+    const integer = new Intl.NumberFormat("en-US");
+    const dateFormatter = new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
+
+    const state = {
+      data: null,
+      vendorSort: "amount",
+      fundSort: "amount",
+      vendorQuery: "",
+      fundQuery: "",
+      transactionQuery: "",
+      selectedType: null,
+      selectedKey: null
+    };
+
+    const els = {
+      status: document.getElementById("cbx-status"),
+      metrics: document.getElementById("cbx-metrics"),
+      insights: document.getElementById("cbx-insights"),
+      vendorRows: document.getElementById("cbx-vendor-rows"),
+      fundRows: document.getElementById("cbx-fund-rows"),
+      spotlight: document.getElementById("cbx-spotlight"),
+      transactionsCaption: document.getElementById("cbx-transactions-caption"),
+      transactionRows: document.getElementById("cbx-transaction-rows"),
+      vendorSearch: document.getElementById("cbx-vendor-search"),
+      fundSearch: document.getElementById("cbx-fund-search"),
+      transactionSearch: document.getElementById("cbx-transaction-search"),
+      clearSelection: document.getElementById("cbx-clear-selection"),
+      vendorSortButtons: Array.from(document.querySelectorAll("#cbx-vendor-sort-amount, #cbx-vendor-sort-count")),
+      fundSortButtons: Array.from(document.querySelectorAll("#cbx-fund-sort-amount, #cbx-fund-sort-count"))
+    };
+
+    bindEvents();
+    init();
+
+    async function init() {
+      try {
+        const response = await fetch(sourceUrl);
+        if (!response.ok) {
+          throw new Error(`Request failed with ${response.status}`);
+        }
+
+        const text = await response.text();
+        const rows = normaliseRows(parseCsv(text));
+        state.data = buildData(rows);
+        state.selectedType = "vendor";
+        state.selectedKey = state.data.vendors.byAmount[0] ? state.data.vendors.byAmount[0].name : null;
+        renderAll();
+        els.status.textContent = `Loaded ${integer.format(state.data.transactionCount)} payment lines.`;
+      } catch (error) {
+        els.status.textContent = "Could not load the CSV.";
+        els.metrics.innerHTML = `
+          <article class="cbx-metric-card">
+            <div class="cbx-metric-label">Load error</div>
+            <p class="cbx-metric-value">Check the CSV path</p>
+            <p class="cbx-metric-hint">${escapeHtml(error.message)}</p>
+          </article>
+        `;
+      }
+    }
+
+    function bindEvents() {
+      els.vendorSearch.addEventListener("input", (event) => {
+        state.vendorQuery = event.target.value.trim().toLowerCase();
+        renderVendorTable();
+      });
+
+      els.fundSearch.addEventListener("input", (event) => {
+        state.fundQuery = event.target.value.trim().toLowerCase();
+        renderFundTable();
+      });
+
+      els.transactionSearch.addEventListener("input", (event) => {
+        state.transactionQuery = event.target.value.trim().toLowerCase();
+        renderTransactions();
+      });
+
+      els.vendorSortButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          state.vendorSort = button.dataset.sort;
+          renderVendorTable();
+        });
+      });
+
+      els.fundSortButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          state.fundSort = button.dataset.sort;
+          renderFundTable();
+        });
+      });
+
+      els.vendorRows.addEventListener("click", (event) => {
+        const row = event.target.closest("tr[data-key]");
+        if (!row) {
+          return;
+        }
+        selectEntity("vendor", decodeURIComponent(row.dataset.key));
+      });
+
+      els.fundRows.addEventListener("click", (event) => {
+        const row = event.target.closest("tr[data-key]");
+        if (!row) {
+          return;
+        }
+        selectEntity("fund", decodeURIComponent(row.dataset.key));
+      });
+
+      els.clearSelection.addEventListener("click", () => {
+        state.selectedType = null;
+        state.selectedKey = null;
+        renderSpotlight();
+        renderVendorTable();
+        renderFundTable();
+        renderTransactions();
+      });
+    }
+
+    function parseCsv(text) {
+      const rows = [];
+      let currentRow = [];
+      let currentCell = "";
+      let inQuotes = false;
+
+      for (let index = 0; index < text.length; index += 1) {
+        const char = text[index];
+        const next = text[index + 1];
+
+        if (char === "\"") {
+          if (inQuotes && next === "\"") {
+            currentCell += "\"";
+            index += 1;
+          } else {
+            inQuotes = !inQuotes;
+          }
+          continue;
+        }
+
+        if (char === "," && !inQuotes) {
+          currentRow.push(currentCell);
+          currentCell = "";
+          continue;
+        }
+
+        if ((char === "\n" || char === "\r") && !inQuotes) {
+          if (char === "\r" && next === "\n") {
+            index += 1;
+          }
+          currentRow.push(currentCell);
+          rows.push(currentRow);
+          currentRow = [];
+          currentCell = "";
+          continue;
+        }
+
+        currentCell += char;
+      }
+
+      if (currentCell.length > 0 || currentRow.length > 0) {
+        currentRow.push(currentCell);
+        rows.push(currentRow);
+      }
+
+      return rows.filter((row) => row.some((cell) => cell && cell.trim() !== ""));
+    }
+
+    function normaliseRows(csvRows) {
+      const header = csvRows.shift().map((value) => value.trim());
+      const index = {
+        vendor: header.indexOf("Vendor"),
+        fund: header.indexOf("Fund"),
+        checkNumber: header.indexOf("Check #"),
+        date: header.indexOf("Date"),
+        amount: header.indexOf("Amount")
+      };
+
+      return csvRows
+        .map((row) => ({
+          vendor: (row[index.vendor] || "").trim(),
+          fund: (row[index.fund] || "").trim(),
+          checkNumber: (row[index.checkNumber] || "").trim(),
+          date: (row[index.date] || "").trim(),
+          amount: Number.parseFloat((row[index.amount] || "0").replace(/,/g, "")),
+          searchText: ""
+        }))
+        .filter((row) => row.vendor && row.fund && !Number.isNaN(row.amount))
+        .map((row) => {
+          row.dateOnly = row.date.slice(0, 10);
+          row.searchText = `${row.vendor} ${row.fund} ${row.checkNumber} ${row.dateOnly}`.toLowerCase();
+          return row;
+        });
+    }
+
+    function buildData(rows) {
+      const vendors = new Map();
+      const funds = new Map();
+      const dates = new Map();
+      let totalSpend = 0;
+      let minDate = null;
+      let maxDate = null;
+      let largestLine = null;
+
+      rows.forEach((row) => {
+        totalSpend += row.amount;
+
+        if (!largestLine || row.amount > largestLine.amount) {
+          largestLine = row;
+        }
+
+        if (!minDate || row.dateOnly < minDate) {
+          minDate = row.dateOnly;
+        }
+
+        if (!maxDate || row.dateOnly > maxDate) {
+          maxDate = row.dateOnly;
+        }
+
+        const vendor = ensureEntity(vendors, row.vendor);
+        const fund = ensureEntity(funds, row.fund);
+
+        updateEntity(vendor, row.amount, row.fund, row.dateOnly, row);
+        updateEntity(fund, row.amount, row.vendor, row.dateOnly, row);
+
+        const day = dates.get(row.dateOnly) || { date: row.dateOnly, total: 0, count: 0 };
+        day.total += row.amount;
+        day.count += 1;
+        dates.set(row.dateOnly, day);
+      });
+
+      const vendorList = finaliseEntities(vendors, totalSpend, "funds");
+      const fundList = finaliseEntities(funds, totalSpend, "vendors");
+      const topDates = Array.from(dates.values()).sort((left, right) => right.total - left.total);
+
+      return {
+        rows: rows.slice().sort((left, right) => right.amount - left.amount),
+        totalSpend,
+        transactionCount: rows.length,
+        averageLine: rows.length ? totalSpend / rows.length : 0,
+        vendorCount: vendorList.length,
+        fundCount: fundList.length,
+        dateRange: { min: minDate, max: maxDate },
+        largestLine,
+        busiestVendor: vendorList.slice().sort(compareByCount)[0],
+        busiestFund: fundList.slice().sort(compareByCount)[0],
+        topDate: topDates[0],
+        topDates: topDates.slice(0, 8),
+        vendors: {
+          map: toMapByName(vendorList),
+          byAmount: vendorList.slice().sort(compareByAmount),
+          byCount: vendorList.slice().sort(compareByCount)
+        },
+        funds: {
+          map: toMapByName(fundList),
+          byAmount: fundList.slice().sort(compareByAmount),
+          byCount: fundList.slice().sort(compareByCount)
+        }
+      };
+    }
+
+    function ensureEntity(collection, name) {
+      if (!collection.has(name)) {
+        collection.set(name, {
+          name,
+          total: 0,
+          count: 0,
+          rows: [],
+          counterpartTotals: new Map(),
+          uniqueCounterparts: new Set(),
+          firstDate: null,
+          lastDate: null
+        });
+      }
+      return collection.get(name);
+    }
+
+    function updateEntity(entity, amount, counterpartName, dateOnly, row) {
+      entity.total += amount;
+      entity.count += 1;
+      entity.rows.push(row);
+      entity.uniqueCounterparts.add(counterpartName);
+      entity.counterpartTotals.set(
+        counterpartName,
+        (entity.counterpartTotals.get(counterpartName) || 0) + amount
+      );
+
+      if (!entity.firstDate || dateOnly < entity.firstDate) {
+        entity.firstDate = dateOnly;
+      }
+
+      if (!entity.lastDate || dateOnly > entity.lastDate) {
+        entity.lastDate = dateOnly;
+      }
+    }
+
+    function finaliseEntities(collection, totalSpend, counterpartLabel) {
+      return Array.from(collection.values()).map((entity) => ({
+        ...entity,
+        share: totalSpend ? entity.total / totalSpend : 0,
+        averageLine: entity.count ? entity.total / entity.count : 0,
+        uniqueCounterpartsCount: entity.uniqueCounterparts.size,
+        counterpartLabel,
+        breakdown: Array.from(entity.counterpartTotals.entries())
+          .map(([name, total]) => ({ name, total }))
+          .sort((left, right) => right.total - left.total),
+        rows: entity.rows.slice().sort((left, right) => right.amount - left.amount)
+      }));
+    }
+
+    function toMapByName(list) {
+      return new Map(list.map((item) => [item.name, item]));
+    }
+
+    function compareByAmount(left, right) {
+      if (right.total !== left.total) {
+        return right.total - left.total;
+      }
+      return left.name.localeCompare(right.name);
+    }
+
+    function compareByCount(left, right) {
+      if (right.count !== left.count) {
+        return right.count - left.count;
+      }
+      if (right.total !== left.total) {
+        return right.total - left.total;
+      }
+      return left.name.localeCompare(right.name);
+    }
+
+    function renderAll() {
+      renderMetrics();
+      renderInsights();
+      renderVendorTable();
+      renderFundTable();
+      renderSpotlight();
+      renderTransactions();
+    }
+
+    function renderMetrics() {
+      const { data } = state;
+      const metrics = [
+        {
+          label: "Total spend",
+          value: compactCurrency.format(data.totalSpend),
+          hint: `${currency.format(data.totalSpend)} across all lines`
+        },
+        {
+          label: "Payment lines",
+          value: integer.format(data.transactionCount),
+          hint: "Each row in the exported file"
+        },
+        {
+          label: "Unique vendors",
+          value: integer.format(data.vendorCount),
+          hint: "Distinct payees in the dataset"
+        },
+        {
+          label: "Funds used",
+          value: integer.format(data.fundCount),
+          hint: "Distinct funds represented"
+        },
+        {
+          label: "Date span",
+          value: `${formatDate(data.dateRange.min)} to ${formatDate(data.dateRange.max)}`,
+          hint: "Earliest to latest payment date"
+        },
+        {
+          label: "Average line",
+          value: compactCurrency.format(data.averageLine),
+          hint: `${currency.format(data.averageLine)} per payment line`
+        }
+      ];
+
+      els.metrics.innerHTML = metrics
+        .map(
+          (metric) => `
+            <article class="cbx-metric-card">
+              <div class="cbx-metric-label">${escapeHtml(metric.label)}</div>
+              <p class="cbx-metric-value">${escapeHtml(metric.value)}</p>
+              <p class="cbx-metric-hint">${escapeHtml(metric.hint)}</p>
+            </article>
+          `
+        )
+        .join("");
+    }
+
+    function renderInsights() {
+      const { data } = state;
+      const topVendor = data.vendors.byAmount[0];
+      const topFund = data.funds.byAmount[0];
+      const topTenVendorTotal = sumTotals(data.vendors.byAmount.slice(0, 10));
+      const topTenFundTotal = sumTotals(data.funds.byAmount.slice(0, 10));
+      const busiestVendor = data.busiestVendor;
+      const topDate = data.topDate;
+      const largestLine = data.largestLine;
+
+      const insights = [
+        {
+          label: "Highest dollar vendor",
+          value: compactCurrency.format(topVendor.total),
+          copy: `${topVendor.name} tops the file on just ${integer.format(topVendor.count)} transactions, averaging ${currency.format(topVendor.averageLine)} per line.`
+        },
+        {
+          label: "Most frequent vendor",
+          value: integer.format(busiestVendor.count),
+          copy: `${busiestVendor.name} generated the most payment lines but only ${formatPercent(busiestVendor.share)} of total dollars.`
+        },
+        {
+          label: "Fund concentration",
+          value: formatPercent(topTenFundTotal / data.totalSpend),
+          copy: `The top 10 funds account for ${compactCurrency.format(topTenFundTotal)} of spend. ${topFund.name} is the largest single fund.`
+        },
+        {
+          label: "Vendor concentration",
+          value: formatPercent(topTenVendorTotal / data.totalSpend),
+          copy: `The top 10 vendors collected ${compactCurrency.format(topTenVendorTotal)}, showing how quickly the dollars concentrate.`
+        },
+        {
+          label: "Spike day",
+          value: compactCurrency.format(topDate.total),
+          copy: `${formatDate(topDate.date)} is the highest-spend day in the export, with ${integer.format(topDate.count)} payment lines.`
+        },
+        {
+          label: "Largest single line",
+          value: compactCurrency.format(largestLine.amount),
+          copy: `${largestLine.vendor} on ${formatDate(largestLine.dateOnly)} from ${largestLine.fund}.`
+        }
+      ];
+
+      els.insights.innerHTML = insights
+        .map(
+          (insight) => `
+            <article class="cbx-story-card">
+              <div class="cbx-story-label">${escapeHtml(insight.label)}</div>
+              <p class="cbx-story-value">${escapeHtml(insight.value)}</p>
+              <p class="cbx-story-copy">${escapeHtml(insight.copy)}</p>
+            </article>
+          `
+        )
+        .join("");
+    }
+
+    function renderVendorTable() {
+      const { data, vendorSort, vendorQuery, selectedType, selectedKey } = state;
+      const list = (vendorSort === "count" ? data.vendors.byCount : data.vendors.byAmount)
+        .filter((item) => item.name.toLowerCase().includes(vendorQuery))
+        .slice(0, 30);
+
+      els.vendorSortButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.sort === vendorSort);
+      });
+
+      els.vendorRows.innerHTML = renderEntityRows(list, "vendor", selectedType === "vendor" ? selectedKey : null, "funds");
+    }
+
+    function renderFundTable() {
+      const { data, fundSort, fundQuery, selectedType, selectedKey } = state;
+      const list = (fundSort === "count" ? data.funds.byCount : data.funds.byAmount)
+        .filter((item) => item.name.toLowerCase().includes(fundQuery))
+        .slice(0, 30);
+
+      els.fundSortButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.sort === fundSort);
+      });
+
+      els.fundRows.innerHTML = renderEntityRows(list, "fund", selectedType === "fund" ? selectedKey : null, "vendors");
+    }
+
+    function renderEntityRows(list, type, activeKey, counterpartLabel) {
+      if (!list.length) {
+        return `
+          <tr class="is-passive">
+            <td colspan="4">
+              <span class="cbx-empty">No matches for this filter.</span>
+            </td>
+          </tr>
+        `;
+      }
+
+      return list
+        .map((item) => {
+          const isActive = activeKey === item.name;
+          return `
+            <tr data-key="${encodeURIComponent(item.name)}" class="${isActive ? "is-active" : ""}">
+              <td>
+                <span class="cbx-name">${escapeHtml(item.name)}</span>
+                <span class="cbx-subtle">${integer.format(item.uniqueCounterpartsCount)} ${escapeHtml(counterpartLabel)} touched</span>
+              </td>
+              <td data-type="amount">${escapeHtml(currency.format(item.total))}</td>
+              <td data-type="count">${escapeHtml(integer.format(item.count))}</td>
+              <td data-type="share"><span class="cbx-share-chip">${escapeHtml(formatPercent(item.share))}</span></td>
+            </tr>
+          `;
+        })
+        .join("");
+    }
+
+    function renderSpotlight() {
+      const selected = getSelectedEntity();
+
+      if (!selected) {
+        els.spotlight.innerHTML = `
+          <section class="cbx-panel">
+            <div class="cbx-spotlight-card">
+              <p class="cbx-empty">
+                The spotlight is empty. Click a vendor or fund row above to see a breakdown, top counterpart relationships, and the largest payment lines attached to it.
+              </p>
+            </div>
+          </section>
+        `;
+        return;
+      }
+
+      const label = state.selectedType === "vendor" ? "Vendor" : "Fund";
+      const counterpartLabel = state.selectedType === "vendor" ? "Funds touched" : "Vendors paid";
+      const breakdownLabel = state.selectedType === "vendor" ? "Top funds" : "Top vendors";
+      const leadText =
+        state.selectedType === "vendor"
+          ? `${selected.name} accounts for ${formatPercent(selected.share)} of all dollars in the file across ${integer.format(selected.count)} payment lines.`
+          : `${selected.name} accounts for ${formatPercent(selected.share)} of all dollars in the file and paid ${integer.format(selected.uniqueCounterpartsCount)} vendors.`;
+
+      els.spotlight.innerHTML = `
+        <div class="cbx-spotlight-grid">
+          <section class="cbx-spotlight-card">
+            <p class="cbx-panel-kicker">${escapeHtml(label)} Spotlight</p>
+            <h3>${escapeHtml(selected.name)}</h3>
+            <p class="cbx-note">${escapeHtml(leadText)}</p>
+
+            <div class="cbx-stat-strip">
+              <div class="cbx-stat-chip">
+                <div class="cbx-story-label">Total</div>
+                <p class="cbx-story-value">${escapeHtml(compactCurrency.format(selected.total))}</p>
+              </div>
+              <div class="cbx-stat-chip">
+                <div class="cbx-story-label">Transactions</div>
+                <p class="cbx-story-value">${escapeHtml(integer.format(selected.count))}</p>
+              </div>
+              <div class="cbx-stat-chip">
+                <div class="cbx-story-label">Average line</div>
+                <p class="cbx-story-value">${escapeHtml(compactCurrency.format(selected.averageLine))}</p>
+              </div>
+              <div class="cbx-stat-chip">
+                <div class="cbx-story-label">${escapeHtml(counterpartLabel)}</div>
+                <p class="cbx-story-value">${escapeHtml(integer.format(selected.uniqueCounterpartsCount))}</p>
+              </div>
+            </div>
+
+            <p class="cbx-story-label">${escapeHtml(breakdownLabel)}</p>
+            ${renderBreakdownList(selected.breakdown.slice(0, 8), selected.total)}
+            <p class="cbx-footnote">
+              Date span: ${escapeHtml(formatDate(selected.firstDate))} to ${escapeHtml(formatDate(selected.lastDate))}.
+            </p>
+          </section>
+
+          <section class="cbx-spotlight-card">
+            <p class="cbx-panel-kicker">Largest Attached Lines</p>
+            <h3>Top payment lines</h3>
+            <div class="cbx-table-wrap">
+              <table class="cbx-table">
+                <thead>
+                  <tr>
+                    <th scope="col">${state.selectedType === "vendor" ? "Fund" : "Vendor"}</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Check</th>
+                    <th scope="col">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${renderTopLines(selected.rows.slice(0, 8), state.selectedType === "vendor" ? "fund" : "vendor")}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function renderBreakdownList(items, total) {
+      if (!items.length) {
+        return `<p class="cbx-empty">No counterpart breakdown available.</p>`;
+      }
+
+      return `
+        <ul class="cbx-breakdown-list">
+          ${items
+            .map((item) => {
+              const width = total ? Math.max((item.total / total) * 100, 2) : 0;
+              return `
+                <li class="cbx-breakdown-item">
+                  <div class="cbx-breakdown-topline">
+                    <strong>${escapeHtml(item.name)}</strong>
+                    <span class="cbx-subtle">${escapeHtml(currency.format(item.total))} · ${escapeHtml(formatPercent(total ? item.total / total : 0))}</span>
+                  </div>
+                  <div class="cbx-breakdown-bar" aria-hidden="true">
+                    <span style="width:${width}%"></span>
+                  </div>
+                </li>
+              `;
+            })
+            .join("")}
+        </ul>
+      `;
+    }
+
+    function renderTopLines(rows, labelKey) {
+      if (!rows.length) {
+        return `
+          <tr class="is-passive">
+            <td colspan="4"><span class="cbx-empty">No payment lines available.</span></td>
+          </tr>
+        `;
+      }
+
+      return rows
+        .map(
+          (row) => `
+            <tr class="is-passive">
+              <td><span class="cbx-name">${escapeHtml(row[labelKey])}</span></td>
+              <td>${escapeHtml(formatDate(row.dateOnly))}</td>
+              <td>${escapeHtml(row.checkNumber || "-")}</td>
+              <td data-type="amount">${escapeHtml(currency.format(row.amount))}</td>
+            </tr>
+          `
+        )
+        .join("");
+    }
+
+    function renderTransactions() {
+      const selected = getSelectedEntity();
+      const sourceRows = selected ? selected.rows : state.data.rows;
+      const filtered = sourceRows
+        .filter((row) => row.searchText.includes(state.transactionQuery))
+        .slice(0, 40);
+
+      if (selected) {
+        const label = state.selectedType === "vendor" ? "vendor" : "fund";
+        els.transactionsCaption.textContent = `Showing payment lines for ${label} "${selected.name}".`;
+      } else {
+        els.transactionsCaption.textContent = "Showing the largest payment lines in the file.";
+      }
+
+      if (!filtered.length) {
+        els.transactionRows.innerHTML = `
+          <tr class="is-passive">
+            <td colspan="5"><span class="cbx-empty">No transaction lines match this filter.</span></td>
+          </tr>
+        `;
+        return;
+      }
+
+      els.transactionRows.innerHTML = filtered
+        .map(
+          (row) => `
+            <tr class="is-passive">
+              <td>
+                <span class="cbx-name">${escapeHtml(row.vendor)}</span>
+                <span class="cbx-subtle">${escapeHtml(row.fund)}</span>
+              </td>
+              <td>${escapeHtml(row.fund)}</td>
+              <td>${escapeHtml(formatDate(row.dateOnly))}</td>
+              <td>${escapeHtml(row.checkNumber || "-")}</td>
+              <td data-type="amount">${escapeHtml(currency.format(row.amount))}</td>
+            </tr>
+          `
+        )
+        .join("");
+    }
+
+    function selectEntity(type, key) {
+      state.selectedType = type;
+      state.selectedKey = key;
+      renderSpotlight();
+      renderVendorTable();
+      renderFundTable();
+      renderTransactions();
+    }
+
+    function getSelectedEntity() {
+      if (!state.selectedType || !state.selectedKey || !state.data) {
+        return null;
+      }
+      const collection = state.selectedType === "vendor" ? state.data.vendors.map : state.data.funds.map;
+      return collection.get(state.selectedKey) || null;
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "-";
+      }
+
+      const date = new Date(`${value}T00:00:00`);
+      return Number.isNaN(date.getTime()) ? value : dateFormatter.format(date);
+    }
+
+    function formatPercent(value) {
+      return `${(value * 100).toFixed(1)}%`;
+    }
+
+    function sumTotals(items) {
+      return items.reduce((sum, item) => sum + item.total, 0);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+  })();
+</script>

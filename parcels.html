@@ -126,28 +126,50 @@ permalink: /parcels/
       {% for parcel in sorted_parcels %}
       <a
         href="/parcels/{{ parcel.slug }}/"
-        class="parcel-card group block bg-white border border-gray-200 rounded-xl p-5 hover:border-amber-300 hover:shadow-md transition-all"
+        class="parcel-card group block bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-amber-300 hover:shadow-md transition-all"
         data-zoning="{{ parcel.zoning }}">
-        <div class="flex items-start justify-between gap-3">
-          <div>
-            <h2 class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">
-              {{ parcel.address }}
-            </h2>
-            <p class="text-sm text-gray-500 mt-0.5">
-              {{ parcel.description }}
-            </p>
-          </div>
-          <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium shrink-0
-            {% if parcel.zoning == 'Commercial' %}bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-700/10
-            {% elsif parcel.zoning == 'Mixed Use' %}bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-700/10
-            {% else %}bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10{% endif %}">
-            {{ parcel.zoning }}
-          </span>
+        {% if parcel.image %}
+        <img
+          src="{{ parcel.image }}"
+          alt="Photo of {{ parcel.address }}"
+          class="w-full h-40 object-cover" />
+        {% else %}
+        <div class="w-full h-40 bg-gray-100 flex items-center justify-center">
+          <svg
+            class="h-12 w-12 text-gray-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+          </svg>
         </div>
-        <div class="mt-3 flex items-center gap-3 text-sm text-gray-500">
-          <span>{{ parcel.acres }} acres</span>
-          <span class="text-gray-300">|</span>
-          <span>APN {{ parcel.apn }}</span>
+        {% endif %}
+        <div class="p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h2 class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">
+                {{ parcel.address }}
+              </h2>
+              <p class="text-sm text-gray-500 mt-0.5">
+                {{ parcel.description }}
+              </p>
+            </div>
+            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium shrink-0
+              {% if parcel.zoning == 'Commercial' %}bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-700/10
+              {% elsif parcel.zoning == 'Mixed Use' %}bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-700/10
+              {% else %}bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-700/10{% endif %}">
+              {{ parcel.zoning }}
+            </span>
+          </div>
+          <div class="mt-3 flex items-center gap-3 text-sm text-gray-500">
+            <span>{{ parcel.acres }} acres</span>
+            <span class="text-gray-300">|</span>
+            <span>APN {{ parcel.apn }}</span>
+          </div>
         </div>
       </a>
       {% endfor %}
@@ -206,8 +228,11 @@ permalink: /parcels/
       <p class="text-xs text-gray-500">
         Parcel data is placeholder and will be updated with verified addresses and boundaries.
         <a
+          href="/2026/05/15/vacaville-parcels-activating-dormant-spaces/"
+          class="underline hover:text-gray-700">Read about this project</a> or
+        <a
           href="/map/"
-          class="underline hover:text-gray-700">View county map</a>.
+          class="underline hover:text-gray-700">view the county map</a>.
       </p>
     </div>
   </section>

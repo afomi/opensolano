@@ -10,7 +10,11 @@
       "description": "Vacant commercial lot in downtown core.",
       "acres": 0.25,
       "zoning": "Commercial",
-      "apn": "0000-000-001"
+      "apn": "0000-000-001",
+      "images": [
+        {"alt": "Street view of 100 Main St"},
+        {"alt": "Side view of 100 Main St"}
+      ]
     },
     {
       "slug": "merchant-st-200",
@@ -21,7 +25,10 @@
       "description": "Underutilized parcel adjacent to Town Square.",
       "acres": 0.18,
       "zoning": "Mixed Use",
-      "apn": "0000-000-002"
+      "apn": "0000-000-002",
+      "images": [
+        {"alt": "Street view of 200 Merchant St"}
+      ]
     },
     {
       "slug": "davis-st-310",
@@ -32,7 +39,12 @@
       "description": "Former retail site, currently vacant.",
       "acres": 0.30,
       "zoning": "Commercial",
-      "apn": "0000-000-003"
+      "apn": "0000-000-003",
+      "images": [
+        {"alt": "Street view of 310 Davis St"},
+        {"alt": "Rear view of 310 Davis St"},
+        {"alt": "Detail of 310 Davis St"}
+      ]
     },
     {
       "slug": "buck-ave-450",
@@ -43,7 +55,11 @@
       "description": "Vacant lot near Creekwalk.",
       "acres": 0.40,
       "zoning": "Mixed Use",
-      "apn": "0000-000-004"
+      "apn": "0000-000-004",
+      "images": [
+        {"alt": "Street view of 450 Buck Ave"},
+        {"alt": "Creek side view of 450 Buck Ave"}
+      ]
     },
     {
       "slug": "e-monte-vista-520",
@@ -54,7 +70,10 @@
       "description": "Open parcel on east Monte Vista corridor.",
       "acres": 0.50,
       "zoning": "Commercial",
-      "apn": "0000-000-005"
+      "apn": "0000-000-005",
+      "images": [
+        {"alt": "Street view of 520 E Monte Vista Ave"}
+      ]
     },
     {
       "slug": "depot-st-115",
@@ -65,7 +84,11 @@
       "description": "Lot adjacent to historic depot area.",
       "acres": 0.22,
       "zoning": "Mixed Use",
-      "apn": "0000-000-006"
+      "apn": "0000-000-006",
+      "images": [
+        {"alt": "Street view of 115 Depot St"},
+        {"alt": "Historic depot area near 115 Depot St"}
+      ]
     },
     {
       "slug": "dobbins-st-225",
@@ -76,7 +99,10 @@
       "description": "Underutilized parcel in central Vacaville.",
       "acres": 0.35,
       "zoning": "Residential",
-      "apn": "0000-000-007"
+      "apn": "0000-000-007",
+      "images": [
+        {"alt": "Street view of 225 Dobbins St"}
+      ]
     },
     {
       "slug": "mason-st-330",
@@ -87,7 +113,11 @@
       "description": "Vacant corner lot, good visibility.",
       "acres": 0.28,
       "zoning": "Commercial",
-      "apn": "0000-000-008"
+      "apn": "0000-000-008",
+      "images": [
+        {"alt": "Street view of 330 Mason St"},
+        {"alt": "Corner view of 330 Mason St"}
+      ]
     },
     {
       "slug": "cernon-st-140",
@@ -98,7 +128,10 @@
       "description": "Small infill parcel near Andrews Park.",
       "acres": 0.15,
       "zoning": "Residential",
-      "apn": "0000-000-009"
+      "apn": "0000-000-009",
+      "images": [
+        {"alt": "Street view of 140 Cernon St"}
+      ]
     },
     {
       "slug": "w-monte-vista-610",
@@ -109,7 +142,11 @@
       "description": "Vacant parcel on west Monte Vista corridor.",
       "acres": 0.45,
       "zoning": "Commercial",
-      "apn": "0000-000-010"
+      "apn": "0000-000-010",
+      "images": [
+        {"alt": "Street view of 610 W Monte Vista Ave"},
+        {"alt": "East-facing view of 610 W Monte Vista Ave"}
+      ]
     },
     {
       "slug": "parker-st-180",
@@ -120,7 +157,10 @@
       "description": "Opportunity site near downtown.",
       "acres": 0.20,
       "zoning": "Mixed Use",
-      "apn": "0000-000-011"
+      "apn": "0000-000-011",
+      "images": [
+        {"alt": "Street view of 180 Parker St"}
+      ]
     },
     {
       "slug": "kendal-st-275",
@@ -131,7 +171,11 @@
       "description": "Vacant residential lot in established neighborhood.",
       "acres": 0.32,
       "zoning": "Residential",
-      "apn": "0000-000-012"
+      "apn": "0000-000-012",
+      "images": [
+        {"alt": "Street view of 275 Kendal St"},
+        {"alt": "Yard area of 275 Kendal St"}
+      ]
     },
     {
       "slug": "main-st-400",
@@ -142,7 +186,12 @@
       "description": "Large vacant lot on north Main St.",
       "acres": 0.55,
       "zoning": "Commercial",
-      "apn": "0000-000-013"
+      "apn": "0000-000-013",
+      "images": [
+        {"alt": "Street view of 400 Main St"},
+        {"alt": "North view of 400 Main St"},
+        {"alt": "South view of 400 Main St"}
+      ]
     },
     {
       "slug": "leisure-town-rd-1200",
@@ -153,7 +202,10 @@
       "description": "Undeveloped parcel in east Vacaville.",
       "acres": 1.20,
       "zoning": "Commercial",
-      "apn": "0000-000-014"
+      "apn": "0000-000-014",
+      "images": [
+        {"alt": "Street view of 1200 Leisure Town Rd"}
+      ]
     },
     {
       "slug": "alamo-dr-850",
@@ -164,7 +216,11 @@
       "description": "Vacant lot along Alamo corridor.",
       "acres": 0.60,
       "zoning": "Mixed Use",
-      "apn": "0000-000-015"
+      "apn": "0000-000-015",
+      "images": [
+        {"alt": "Street view of 850 Alamo Dr"},
+        {"alt": "West view of 850 Alamo Dr"}
+      ]
     },
     {
       "slug": "peabody-rd-950",
@@ -175,7 +231,10 @@
       "description": "Open parcel near Peabody commercial area.",
       "acres": 0.75,
       "zoning": "Commercial",
-      "apn": "0000-000-016"
+      "apn": "0000-000-016",
+      "images": [
+        {"alt": "Street view of 950 Peabody Rd"}
+      ]
     },
     {
       "slug": "ulatis-dr-500",
@@ -186,7 +245,11 @@
       "description": "Undeveloped lot in south Vacaville.",
       "acres": 0.90,
       "zoning": "Residential",
-      "apn": "0000-000-017"
+      "apn": "0000-000-017",
+      "images": [
+        {"alt": "Street view of 500 Ulatis Dr"},
+        {"alt": "South view of 500 Ulatis Dr"}
+      ]
     },
     {
       "slug": "nut-tree-rd-700",
@@ -197,7 +260,12 @@
       "description": "Vacant commercial parcel near Nut Tree.",
       "acres": 0.80,
       "zoning": "Commercial",
-      "apn": "0000-000-018"
+      "apn": "0000-000-018",
+      "images": [
+        {"alt": "Street view of 700 Nut Tree Rd"},
+        {"alt": "East view of 700 Nut Tree Rd"},
+        {"alt": "Signage area of 700 Nut Tree Rd"}
+      ]
     },
     {
       "slug": "allison-dr-360",
@@ -208,7 +276,10 @@
       "description": "Infill opportunity in north Vacaville.",
       "acres": 0.38,
       "zoning": "Residential",
-      "apn": "0000-000-019"
+      "apn": "0000-000-019",
+      "images": [
+        {"alt": "Street view of 360 Allison Dr"}
+      ]
     },
     {
       "slug": "elmira-rd-1500",
@@ -219,7 +290,11 @@
       "description": "Large undeveloped parcel in south Vacaville.",
       "acres": 2.10,
       "zoning": "Mixed Use",
-      "apn": "0000-000-020"
+      "apn": "0000-000-020",
+      "images": [
+        {"alt": "Street view of 1500 Elmira Rd"},
+        {"alt": "Open field at 1500 Elmira Rd"}
+      ]
     }
   ]
 }

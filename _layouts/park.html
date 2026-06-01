@@ -48,7 +48,14 @@ layout: default
           style="height: 400px;">
         </div>
 
-
+        <!-- Events -->
+        {% assign park_lat = page.center[0] %}
+        {% assign park_lng = page.center[1] %}
+        {% include park-events.html
+           park_name=page.park_name
+           lat=park_lat
+           lng=park_lng
+        %}
       </div>
 
       <!-- Sidebar -->

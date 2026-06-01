@@ -1,34 +1,158 @@
 ---
 layout: default
-title: Projects
+title: "Projects — OpenSolano"
+description: "Ongoing civic projects in Solano County. Each project is a persistent effort to improve public understanding, participation, or accountability."
 permalink: /projects/
 ---
 
-<main class="isolate">
-  <!-- Hero section -->
-  <div
-    class="relative isolate -z-10 overflow-hidden pt-14"
-  >
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-indigo-100/20 pt-14">
+  </div>
 
-    <div class="bg-white py-24 sm:py-32">
-      <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl lg:mx-0">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Projects
-          </h2>
-          <p class="mt-2 text-lg leading-8 text-gray-600">
-            Many people with shared interests working together to open source governance.
-          </p>
-        </div>
-        <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-
-          {% include project.html %}
-          {% include project.html %}
-          {% include project.html %}
-
-        </div>
-      </div>
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
+    <div class="max-w-2xl mb-10">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        Projects
+      </h1>
+      <p class="mt-4 text-lg leading-8 text-gray-600">
+        Ongoing efforts to make Solano County's civic life more legible, participatory, and accountable.
+        Each project is a living page that links to related posts, data, and opportunities to contribute.
+      </p>
     </div>
 
-  </div>
+    {% assign active_projects = site.projects | where: "status", "active" | sort: "title" %}
+    {% assign proposed_projects = site.projects | where: "status", "proposed" | sort: "title" %}
+    {% assign completed_projects = site.projects | where: "status", "completed" | sort: "title" %}
+
+    {% if active_projects.size > 0 %}
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <span
+          class="inline-flex h-2 w-2 rounded-full bg-green-500">
+        </span>
+        Active
+      </h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in active_projects %}
+        <a
+          href="{{ project.url }}"
+          class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-indigo-300 hover:shadow-md transition-all">
+          <div class="flex items-center gap-2 mb-3">
+            <span
+              class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-[11px] font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+              Active
+            </span>
+            {% for tag in project.tags %}
+            <span
+              class="inline-flex items-center rounded-full bg-gray-50 px-2 py-0.5 text-[11px] font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+              {{ tag }}
+            </span>
+            {% endfor %}
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
+            {{ project.title }}
+          </h3>
+          {% if project.description %}
+          <p class="mt-2 text-sm text-gray-600 line-clamp-3">
+            {{ project.description }}
+          </p>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if proposed_projects.size > 0 %}
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <span
+          class="inline-flex h-2 w-2 rounded-full bg-amber-500">
+        </span>
+        Proposed
+      </h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in proposed_projects %}
+        <a
+          href="{{ project.url }}"
+          class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-amber-300 hover:shadow-md transition-all">
+          <div class="flex items-center gap-2 mb-3">
+            <span
+              class="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+              Proposed
+            </span>
+            {% for tag in project.tags %}
+            <span
+              class="inline-flex items-center rounded-full bg-gray-50 px-2 py-0.5 text-[11px] font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+              {{ tag }}
+            </span>
+            {% endfor %}
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 group-hover:text-amber-600 transition-colors">
+            {{ project.title }}
+          </h3>
+          {% if project.description %}
+          <p class="mt-2 text-sm text-gray-600 line-clamp-3">
+            {{ project.description }}
+          </p>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if completed_projects.size > 0 %}
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <span
+          class="inline-flex h-2 w-2 rounded-full bg-blue-500">
+        </span>
+        Completed
+      </h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in completed_projects %}
+        <a
+          href="{{ project.url }}"
+          class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-blue-300 hover:shadow-md transition-all">
+          <div class="flex items-center gap-2 mb-3">
+            <span
+              class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+              Completed
+            </span>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+            {{ project.title }}
+          </h3>
+          {% if project.description %}
+          <p class="mt-2 text-sm text-gray-600 line-clamp-3">
+            {{ project.description }}
+          </p>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- CTA -->
+    <div class="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="flex-1">
+          <h3 class="text-base font-semibold text-gray-900">
+            Have an idea for a project?
+          </h3>
+          <p class="text-sm text-gray-600 mt-1">
+            OpenSolano is community-driven.
+            If you see a civic issue that deserves sustained attention, bring it to a meetup or get in touch.
+          </p>
+        </div>
+        <a
+          href="/meetup"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors shrink-0">
+          Join a meetup
+        </a>
+      </div>
+    </div>
+  </section>
 </main>

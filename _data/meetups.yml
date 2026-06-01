@@ -1,0 +1,28 @@
+# Upcoming Solano Creative Tech Meetup dates
+# Add new dates here as they are scheduled.
+# Jekyll renders all dates; client-side JS highlights the next upcoming one.
+
+- date: "2026-03-16"
+  time: "6:00 PM"
+  location: "Journey Coffee, Vacaville"
+  topic: "Unfunded Liabilities Study Group — Session 1: What Is an Unfunded Liability?"
+
+- date: "2026-03-23"
+  time: "6:00 PM"
+  location: "Journey Coffee, Vacaville"
+  topic: "Peer-to-peer tools for local data sharing"
+
+- date: "2026-03-30"
+  time: "6:00 PM"
+  location: "NavigateRE, downtown Vacaville"
+  topic: "Unfunded Liabilities Study Group — Session 2: How Did We Get Here?"
+
+- date: "2026-04-07"
+  time: "6:00 PM"
+  location: "Journey Coffee, Vacaville"
+  topic: "Open agenda — bring your ideas"
+
+- date: "2026-04-14"
+  time: "6:00 PM"
+  location: "Journey Coffee, Vacaville"
+  topic: "Unfunded Liabilities Study Group — Session 3: The Macro-Economics You Need"

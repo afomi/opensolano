@@ -1,0 +1,82 @@
+<section
+  class="park-events mt-8"
+  data-park="{{ include.park_name | escape }}">
+  <h2 class="text-xl font-semibold text-gray-900 mb-4">Community Events</h2>
+
+  <a
+    class="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 transition-colors"
+    href="https://commons.app/admin/events/new?title=Park+Cleanup&location_name={{ include.park_name | url_encode }}&location_lat={{ include.lat }}&location_lng={{ include.lng }}&external_location_url={{ page.url | absolute_url | url_encode }}">
+    <svg
+      class="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+    </svg>
+    Schedule a park cleanup
+  </a>
+
+  <div
+    class="park-events__list mt-6"
+    hidden>
+    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Upcoming events here</h3>
+    <ul class="space-y-2"></ul>
+  </div>
+</section>
+
+<script>
+(function () {
+  var section = document.currentScript.previousElementSibling;
+  var parkName = section.dataset.park.toLowerCase();
+  var listEl = section.querySelector(".park-events__list");
+  var ul = section.querySelector("ul");
+
+  var CACHE_KEY = "commons_events_v1";
+  var cached = sessionStorage.getItem(CACHE_KEY);
+  var promise = cached
+    ? Promise.resolve(JSON.parse(cached))
+    : fetch("https://commons.app/api/events?limit=100")
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
+          return data;
+        });
+
+  promise
+    .then(function (events) {
+      var matching = events.filter(function (e) {
+        return e.location_name &&
+          e.location_name.toLowerCase().indexOf(parkName) !== -1;
+      });
+
+      if (!matching.length) return;
+
+      matching.forEach(function (e) {
+        var li = document.createElement("li");
+        li.className = "flex items-center gap-2 text-sm";
+        var a = document.createElement("a");
+        a.className = "text-green-700 hover:text-green-800 hover:underline";
+        a.href = "https://commons.app" + e.url;
+        a.textContent =
+          e.title +
+          " — " +
+          new Date(e.starts_at).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          });
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+
+      listEl.removeAttribute("hidden");
+    })
+    .catch(function () {
+      /* Network failure — CTA still shows, widget stays hidden */
+    });
+})();
+</script>
