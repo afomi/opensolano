@@ -7,3 +7,16 @@
 @source "../_posts/*.md";
 @source "../*.md";
 @source "../*.html";
+
+/* Design tokens (see DESIGN.md for full system, rollout, rationale).
+   Font strategy (per user decision resolving open question):
+   - Use system defaults (no self-hosted font files, no @font-face, no web font downloads).
+   - system-ui (and platform fallbacks) is suitable and preferred: leans on web style standards / OS UI fonts.
+   - Typography is explicitly NOT a source of distinctiveness or branding. Distinctiveness comes from content, layout restraint, data presentation, and pragmatic structure (clean Swiss, utilitarian, obvious, civic-suitable).
+   - This keeps payload at zero for fonts, avoids FOUT/FOIT, ensures native rendering and accessibility.
+   - Other tokens (colors, radius, type ramp, prose) per DESIGN.md PR1/PR2; font locked early as it is safe/additive and matches current Tailwind default direction.
+*/
+@theme {
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  /* (Explicit system stack for consistency with DESIGN.md; equivalent in spirit to Tailwind v4 default ui-sans-serif/system-ui. No custom assets.) */
+}

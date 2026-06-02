@@ -1,9 +1,68 @@
 ---
 layout: default
 title: "Parcels — Vacaville"
-description: "20 opportunity parcels in Vacaville, California. Explore on the map, share your ideas for what you'd like to see, and get involved."
+description: "Opportunity parcels in Vacaville, California. Explore on the map, share your ideas for what you'd like to see, and get involved."
 permalink: /parcels/
 ---
+
+<!-- Project overview modal -->
+<div
+  id="intro-modal"
+  class="fixed inset-0 z-50 overflow-y-auto"
+  style="display: none;">
+  <div class="flex min-h-full items-center justify-center p-4">
+    <div
+      id="intro-backdrop"
+      class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity">
+    </div>
+    <div class="relative rounded-lg bg-white shadow-2xl max-w-lg w-full overflow-hidden">
+      <div class="relative bg-gradient-to-br from-teal-600 to-cyan-700 px-6 py-8 text-white">
+        <button
+          id="intro-close-x"
+          aria-label="Close"
+          class="absolute top-3 right-3 rounded-md p-1 text-white/70 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <h2 class="text-2xl font-bold tracking-tight">
+          Parcels
+        </h2>
+        <p class="mt-1 text-teal-100 text-sm">
+          Exploring feedback, information, and action
+        </p>
+      </div>
+      <div class="px-6 py-6 space-y-4 text-gray-700 text-[15px] leading-relaxed">
+        <p>
+          Every city has parcels sitting idle — vacant lots, empty storefronts, underused spaces.
+          Information about them exists in public records, but it's not connected to the people who can do something about it.
+        </p>
+        <p>
+          This project surfaces that latent information, collects public feedback, and connects places to people whose interests can bring a parcel to life.
+        </p>
+        <p class="text-xl font-semibold text-gray-900">
+          Pick a parcel. Tell us what you'd like to see there.
+        </p>
+      </div>
+      <div class="px-6 pb-6 space-y-3">
+        <button
+          id="intro-close"
+          class="w-full rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-500 transition-colors">
+          Explore parcels
+        </button>
+        <div class="bg-gray-50 border border-gray-200 rounded px-4 py-3 text-xs text-gray-500 leading-relaxed">
+          <p>
+            Not endorsed by the City of Vacaville or property owners.
+            Built from public assessor records as a civic interest project.
+          </p>
+          <p class="mt-1">
+            A project by <a href="https://civic.studio" target="_blank" rel="noopener" class="font-medium text-gray-700 underline hover:text-gray-900">Civic Studio</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <main class="isolate pt-28">
   <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-amber-100/20">
@@ -359,6 +418,29 @@ permalink: /parcels/
       btn.textContent = 'Copied!';
       setTimeout(function() { btn.innerHTML = original; }, 2000);
     });
+  });
+
+  // Intro modal — show once per session
+  var introModal = document.getElementById('intro-modal');
+  var introClose = document.getElementById('intro-close');
+  var introBackdrop = document.getElementById('intro-backdrop');
+
+  if (!sessionStorage.getItem('parcels-intro-seen')) {
+    introModal.style.display = '';
+  }
+
+  function dismissIntro() {
+    introModal.style.display = 'none';
+    sessionStorage.setItem('parcels-intro-seen', '1');
+  }
+
+  introClose.addEventListener('click', dismissIntro);
+  document.getElementById('intro-close-x').addEventListener('click', dismissIntro);
+  introBackdrop.addEventListener('click', dismissIntro);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && introModal.style.display !== 'none') {
+      dismissIntro();
+    }
   });
 })();
 </script>

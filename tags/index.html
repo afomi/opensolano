@@ -24,61 +24,58 @@ permalink: /topics/
 
   {% if tag_names and tag_names != empty %}
   <section class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl lg:mx-0 mb-10">
+    <div class="mx-auto max-w-2xl lg:mx-0 mb-6">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Civics, by Topic</h1>
       <p class="mt-2 text-lg leading-8 text-gray-600">Explore the issues and topics you're interested in.</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      <!-- Left Sidebar: Topics List -->
-      <div class="lg:col-span-1">
-        <div class="bg-white rounded-xl border border-gray-200 p-6 sticky top-8">
-          <h2 class="text-lg font-semibold text-gray-900 mb-4">Topics</h2>
-          <nav class="space-y-2">
-            {% for tag_name in tag_names %}
-            {% assign posts = site.tags[tag_name] %}
-            <a href="#{{ tag_name | slugify }}-topic" class="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
-              <div class="flex items-center gap-3">
-                <span class="text-lg">
-                  {% if tag_name == 'energy' %}⚡
-                  {% elsif tag_name == 'education' %}🎓
-                  {% elsif tag_name == 'healthcare' %}🏥
-                  {% elsif tag_name == 'transportation' %}🚌
-                  {% elsif tag_name == 'housing' %}🏠
-                  {% elsif tag_name == 'environment' %}🌱
-                  {% elsif tag_name == 'economic-development' %}💼
-                  {% elsif tag_name == 'public-safety' %}🚨
-                  {% elsif tag_name == 'agriculture' %}🌾
-                  {% elsif tag_name == 'infrastructure' %}🏗️
-                  {% elsif tag_name == 'parks-recreation' %}🏞️
-                  {% elsif tag_name == 'governance' %}🏛️
-                  {% elsif tag_name == 'budgets' %}💰
-                  {% elsif tag_name == 'development' %}🏘️
-                  {% elsif tag_name == 'impact-fees' %}💵
-                  {% elsif tag_name == 'zoning' %}📋
-                  {% elsif tag_name == 'meetings' %}👥
-                  {% elsif tag_name == 'elections' %}🗳️
-                  {% elsif tag_name == 'data' %}📊
-                  {% elsif tag_name == 'analysis' %}📈
-                  {% else %}📄{% endif %}
-                </span>
-                <span class="text-sm font-medium text-gray-900 group-hover:text-indigo-600">{{ tag_name | capitalize | replace: '-', ' ' }}</span>
-              </div>
-              <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ posts | size }}</span>
-            </a>
-            {% endfor %}
-          </nav>
-        </div>
+    <!-- Sticky horizontal topic nav -->
+    <nav
+      id="topic-nav"
+      class="sticky top-[73px] z-40 -mx-6 px-6 lg:-mx-8 lg:px-8 py-3 bg-white/90 backdrop-blur-sm border-b border-gray-200 mb-8">
+      <div
+        class="flex gap-2 overflow-x-auto scrollbar-hide"
+        id="topic-nav-scroll">
+        {% for tag_name in tag_names %}
+        {% assign posts = site.tags[tag_name] %}
+        <a
+          href="#{{ tag_name | slugify }}-topic"
+          class="topic-nav-link flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border border-gray-200 text-gray-700 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors"
+          data-topic="{{ tag_name | slugify }}">
+          <span class="text-base">
+            {% if tag_name == 'energy' %}⚡
+            {% elsif tag_name == 'education' %}🎓
+            {% elsif tag_name == 'healthcare' %}🏥
+            {% elsif tag_name == 'transportation' %}🚌
+            {% elsif tag_name == 'housing' %}🏠
+            {% elsif tag_name == 'environment' %}🌱
+            {% elsif tag_name == 'economic-development' %}💼
+            {% elsif tag_name == 'public-safety' %}🚨
+            {% elsif tag_name == 'agriculture' %}🌾
+            {% elsif tag_name == 'infrastructure' %}🏗️
+            {% elsif tag_name == 'parks-recreation' %}🏞️
+            {% elsif tag_name == 'governance' %}🏛️
+            {% elsif tag_name == 'budgets' %}💰
+            {% elsif tag_name == 'development' %}🏘️
+            {% elsif tag_name == 'impact-fees' %}💵
+            {% elsif tag_name == 'zoning' %}📋
+            {% elsif tag_name == 'meetings' %}👥
+            {% elsif tag_name == 'elections' %}🗳️
+            {% elsif tag_name == 'data' %}📊
+            {% elsif tag_name == 'analysis' %}📈
+            {% else %}📄{% endif %}
+          </span>
+          <span>{{ tag_name | capitalize | replace: '-', ' ' }}</span>
+        </a>
+        {% endfor %}
       </div>
+    </nav>
 
-      <!-- Right Content: Topic and Timeline Pairs -->
-      <div class="lg:col-span-3">
-        <div class="space-y-8">
-          {% for tag_name in tag_names %}
-            {% include topic-with-timeline.html topic=tag_name %}
-          {% endfor %}
-        </div>
-      </div>
+    <!-- Topic sections -->
+    <div class="space-y-8">
+      {% for tag_name in tag_names %}
+        {% include topic-with-timeline.html topic=tag_name %}
+      {% endfor %}
     </div>
 
   </section>
@@ -94,3 +91,85 @@ permalink: /topics/
   </section>
   {% endif %}
 </main>
+
+<style>
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .topic-nav-link.active {
+    background-color: rgb(238 242 255);
+    border-color: rgb(165 180 252);
+    color: rgb(67 56 202);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  (function() {
+    var links = document.querySelectorAll('.topic-nav-link');
+    var sections = [];
+    var scrollContainer = document.getElementById('topic-nav-scroll');
+
+    links.forEach(function(link) {
+      var id = link.getAttribute('data-topic') + '-topic';
+      var section = document.getElementById(id);
+      if (section) {
+        sections.push({ id: id, el: section, link: link });
+      }
+    });
+
+    function updateActive() {
+      var scrollY = window.scrollY + 160;
+      var active = null;
+
+      for (var i = sections.length - 1; i >= 0; i--) {
+        if (sections[i].el.offsetTop <= scrollY) {
+          active = sections[i];
+          break;
+        }
+      }
+
+      links.forEach(function(l) { l.classList.remove('active'); });
+
+      if (active) {
+        active.link.classList.add('active');
+        // Scroll the nav strip to keep active pill visible
+        var container = scrollContainer;
+        var linkLeft = active.link.offsetLeft;
+        var linkWidth = active.link.offsetWidth;
+        var containerWidth = container.offsetWidth;
+        var scrollLeft = linkLeft - (containerWidth / 2) + (linkWidth / 2);
+        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+      }
+    }
+
+    // Smooth scroll on click
+    links.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var id = link.getAttribute('data-topic') + '-topic';
+        var target = document.getElementById(id);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          updateActive();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    updateActive();
+  })();
+</script>

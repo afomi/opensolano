@@ -670,13 +670,47 @@ layout: default
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  L.circleMarker([lat, lng], {
-    radius: 14,
-    fillColor: color,
-    color: '#fff',
-    weight: 3,
-    fillOpacity: 0.9
-  }).addTo(map).bindPopup('<strong>' + address + '</strong>').openPopup();
+  var apn = {{ page.apn | jsonify }};
+
+  // Load parcel boundary from active GeoJSON
+  fetch('/assets/data/geojson/vacaville-parcels-active.geojson')
+    .then(function(r) { return r.json(); })
+    .then(function(geojson) {
+      var parcelFeature = geojson.features.find(function(f) {
+        return f.properties.APN === apn;
+      });
+      if (parcelFeature) {
+        var layer = L.geoJSON(parcelFeature, {
+          style: {
+            color: color,
+            weight: 3,
+            fillColor: color,
+            fillOpacity: 0.3
+          }
+        }).addTo(map);
+        layer.bindPopup('<strong>' + address + '</strong>').openPopup();
+        map.fitBounds(layer.getBounds(), { padding: [40, 40] });
+      } else {
+        // Fallback to circle marker if no polygon found
+        L.circleMarker([lat, lng], {
+          radius: 14,
+          fillColor: color,
+          color: '#fff',
+          weight: 3,
+          fillOpacity: 0.9
+        }).addTo(map).bindPopup('<strong>' + address + '</strong>').openPopup();
+      }
+    })
+    .catch(function() {
+      // Fallback on fetch error
+      L.circleMarker([lat, lng], {
+        radius: 14,
+        fillColor: color,
+        color: '#fff',
+        weight: 3,
+        fillOpacity: 0.9
+      }).addTo(map).bindPopup('<strong>' + address + '</strong>').openPopup();
+    });
 
   // -- Share buttons --
   var pageUrl = encodeURIComponent(window.location.href);

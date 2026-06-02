@@ -1,6 +1,19 @@
 {
-  "count": 9,
+  "count": 7,
   "parcels": [
+    {
+      "slug": "main-st-549",
+      "address": "549 Main St",
+      "city": "Vacaville",
+      "lat": 38.356898,
+      "lng": -121.986727,
+      "description": "Vacant commercial parcel on Main Street in downtown Vacaville.",
+      "acres": 0.07,
+      "zoning": "Commercial",
+      "type": "vacant",
+      "apn": "0130102020",
+      "images": []
+    },
     {
       "slug": "merchant-st-359",
       "address": "359 Merchant St",
@@ -77,45 +90,6 @@
       "zoning": "Commercial",
       "type": "vacant",
       "apn": "0130181110",
-      "images": []
-    },
-    {
-      "slug": "peabody-rd-148",
-      "address": "148 Peabody Rd",
-      "city": "Vacaville",
-      "lat": 38.351967,
-      "lng": -121.976801,
-      "description": "Vacant commercial parcel on the Peabody Road corridor, near retail and services.",
-      "acres": 5.09,
-      "zoning": "Commercial",
-      "type": "land",
-      "apn": "0131060310",
-      "images": []
-    },
-    {
-      "slug": "pinecrest-ct-2060",
-      "address": "2060 Pinecrest Ct",
-      "city": "Vacaville",
-      "lat": 38.380277,
-      "lng": -121.992995,
-      "description": "Vacant residential lot in an established neighborhood in west Vacaville.",
-      "acres": 1.15,
-      "zoning": "Residential",
-      "type": "land",
-      "apn": "0123441120",
-      "images": []
-    },
-    {
-      "slug": "cotting-ln-3355",
-      "address": "3355 Cotting Ln",
-      "city": "Vacaville",
-      "lat": 38.397772,
-      "lng": -121.952846,
-      "description": "Vacant industrial parcel in the Vaca Valley Business Park area.",
-      "acres": 4.87,
-      "zoning": "Industrial",
-      "type": "land",
-      "apn": "0133020600",
       "images": []
     }
   ]
