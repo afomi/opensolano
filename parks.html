@@ -32,7 +32,7 @@ permalink: /parks/
     </div>
 
     <!-- Summary stats -->
-    <div class="grid gap-4 sm:grid-cols-3 mb-8">
+    <div class="grid gap-4 sm:grid-cols-2 mb-8">
       {% assign neighborhood_count = 0 %}
       {% assign community_count = 0 %}
       {% assign regional_count = 0 %}
@@ -50,20 +50,6 @@ permalink: /parks/
       <div class="bg-white border border-gray-200 rounded-xl p-5">
         <div class="text-sm font-medium text-gray-500">Total Acreage</div>
         <div class="text-2xl font-bold text-gray-900 mt-1">{{ total_acres | round }} acres</div>
-      </div>
-      <div class="bg-white border border-gray-200 rounded-xl p-5">
-        <div class="text-sm font-medium text-gray-500">Park Types</div>
-        <div class="mt-1 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10">
-            {{ neighborhood_count }} Neighborhood
-          </span>
-          <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-            {{ community_count }} Community
-          </span>
-          <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">
-            {{ regional_count }} Regional
-          </span>
-        </div>
       </div>
       <div class="bg-white border border-gray-200 rounded-xl p-5">
         <div class="text-sm font-medium text-gray-500">Explore</div>
