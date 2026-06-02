@@ -1,6 +1,84 @@
 {
-  "count": 3,
+  "count": 9,
   "parcels": [
+    {
+      "slug": "merchant-st-359",
+      "address": "359 Merchant St",
+      "city": "Vacaville",
+      "lat": 38.355571,
+      "lng": -121.989001,
+      "description": "Vacant retail space on Merchant Street in downtown Vacaville.",
+      "acres": 0.18,
+      "zoning": "Commercial",
+      "type": "vacant",
+      "apn": "0130185200",
+      "images": []
+    },
+    {
+      "slug": "merchant-st-359-adj",
+      "address": "Merchant St (near 359)",
+      "city": "Vacaville",
+      "lat": 38.355868,
+      "lng": -121.988577,
+      "description": "Vacant commercial lot for sale on Merchant Street. Cocktail bar, anyone?",
+      "acres": 0.14,
+      "zoning": "Commercial",
+      "type": "land",
+      "apn": "0130185160",
+      "images": []
+    },
+    {
+      "slug": "parker-st-306",
+      "address": "306 Parker St",
+      "city": "Vacaville",
+      "lat": 38.356019,
+      "lng": -121.990181,
+      "description": "Commercial parcel on Parker Street in downtown Vacaville.",
+      "acres": 0.26,
+      "zoning": "Commercial",
+      "type": "vacant",
+      "apn": "0130182050",
+      "images": []
+    },
+    {
+      "slug": "parker-st-306-adj",
+      "address": "306 Parker St (adjacent)",
+      "city": "Vacaville",
+      "lat": 38.355827,
+      "lng": -121.990181,
+      "description": "Adjacent commercial parcel on Parker Street in downtown Vacaville.",
+      "acres": 0.13,
+      "zoning": "Commercial",
+      "type": "land",
+      "apn": "0130182060",
+      "images": []
+    },
+    {
+      "slug": "cernon-st-319",
+      "address": "319 Cernon St",
+      "city": "Vacaville",
+      "lat": 38.355855,
+      "lng": -121.990652,
+      "description": "Vacant commercial lot on Cernon Street, part of the Parker Street lot deal.",
+      "acres": 0.13,
+      "zoning": "Commercial",
+      "type": "land",
+      "apn": "0130182170",
+      "images": []
+    },
+    {
+      "slug": "cernon-st-340",
+      "address": "340 Cernon St",
+      "city": "Vacaville",
+      "lat": 38.355265,
+      "lng": -121.991273,
+      "description": "Vacant office building on Cernon Street in downtown Vacaville.",
+      "acres": 0.13,
+      "zoning": "Commercial",
+      "type": "vacant",
+      "apn": "0130181110",
+      "images": []
+    },
     {
       "slug": "peabody-rd-148",
       "address": "148 Peabody Rd",
@@ -10,6 +88,7 @@
       "description": "Vacant commercial parcel on the Peabody Road corridor, near retail and services.",
       "acres": 5.09,
       "zoning": "Commercial",
+      "type": "land",
       "apn": "0131060310",
       "images": []
     },
@@ -22,6 +101,7 @@
       "description": "Vacant residential lot in an established neighborhood in west Vacaville.",
       "acres": 1.15,
       "zoning": "Residential",
+      "type": "land",
       "apn": "0123441120",
       "images": []
     },
@@ -34,6 +114,7 @@
       "description": "Vacant industrial parcel in the Vaca Valley Business Park area.",
       "acres": 4.87,
       "zoning": "Industrial",
+      "type": "land",
       "apn": "0133020600",
       "images": []
     }

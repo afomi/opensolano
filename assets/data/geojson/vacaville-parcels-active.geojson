@@ -206,6 +206,281 @@
     {
       "type": "Feature",
       "properties": {
+        "OBJECTID": 406867,
+        "APN": "0130185160",
+        "govOwn": "NO",
+        "areaAcres": 0.14,
+        "parcelUse": "VACANT COMMERCIAL LAND",
+        "subdiv": "",
+        "yearBuilt": 0,
+        "structDesc": "",
+        "siteNumb": "",
+        "siteStreet": "",
+        "siteAddr": "",
+        "siteCity": "VACAVILLE",
+        "siteState": "CA",
+        "siteZip": "95688",
+        "census": "2531.010",
+        "supDist": "4th Supervisorial District",
+        "senDist": "FIFTH SENATE DISTRICT",
+        "congDist": "3rd Congressional DISTRIC",
+        "commColl": "SOLANO COM COLLEGE DISTRICT",
+        "boardEdu": "BOARD OF ED, FIRST DISTRICT",
+        "assembDist": "11 th Assembly District",
+        "genPlan": "Incorporated Area",
+        "genPlanDes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.9886524,
+              38.3560066
+            ],
+            [
+              -121.9883443,
+              38.3557584
+            ],
+            [
+              -121.9884541,
+              38.3556497
+            ],
+            [
+              -121.988781,
+              38.3559166
+            ],
+            [
+              -121.9886524,
+              38.3560066
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 407118,
+        "APN": "0130181110",
+        "govOwn": "NO",
+        "areaAcres": 0.13,
+        "parcelUse": "GENERAL OFFICE, MED., & DENT.",
+        "subdiv": "",
+        "yearBuilt": 0,
+        "structDesc": "",
+        "siteNumb": "340",
+        "siteStreet": "CERNON STREET",
+        "siteAddr": "340 CERNON STREET",
+        "siteCity": "VACAVILLE",
+        "siteState": "CA",
+        "siteZip": "95688",
+        "census": "2531.010",
+        "supDist": "4th Supervisorial District",
+        "senDist": "FIFTH SENATE DISTRICT",
+        "congDist": "3rd Congressional DISTRIC",
+        "commColl": "SOLANO COM COLLEGE DISTRICT",
+        "boardEdu": "BOARD OF ED, FIRST DISTRICT",
+        "assembDist": "11 th Assembly District",
+        "genPlan": "Incorporated Area",
+        "genPlanDes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.9911123,
+              38.3552101
+            ],
+            [
+              -121.9915133,
+              38.3552101
+            ],
+            [
+              -121.9915133,
+              38.3553474
+            ],
+            [
+              -121.9911123,
+              38.3553474
+            ],
+            [
+              -121.9911123,
+              38.3552101
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 412703,
+        "APN": "0130182170",
+        "govOwn": "NO",
+        "areaAcres": 0.13,
+        "parcelUse": "VACANT COMMERCIAL LAND",
+        "subdiv": "",
+        "yearBuilt": 0,
+        "structDesc": "",
+        "siteNumb": "319",
+        "siteStreet": "CERNON STREET",
+        "siteAddr": "319 CERNON STREET",
+        "siteCity": "VACAVILLE",
+        "siteState": "CA",
+        "siteZip": "95688",
+        "census": "2531.010",
+        "supDist": "4th Supervisorial District",
+        "senDist": "FIFTH SENATE DISTRICT",
+        "congDist": "3rd Congressional DISTRIC",
+        "commColl": "SOLANO COM COLLEGE DISTRICT",
+        "boardEdu": "BOARD OF ED, FIRST DISTRICT",
+        "assembDist": "11 th Assembly District",
+        "genPlan": "Incorporated Area",
+        "genPlanDes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.9904916,
+              38.3559097
+            ],
+            [
+              -121.9904916,
+              38.3557724
+            ],
+            [
+              -121.9908926,
+              38.3557724
+            ],
+            [
+              -121.9908926,
+              38.3559097
+            ],
+            [
+              -121.9904916,
+              38.3559097
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 415360,
+        "APN": "0130182060",
+        "govOwn": "NO",
+        "areaAcres": 0.13,
+        "parcelUse": "COMMERCIAL SALES & SERVICES",
+        "subdiv": "",
+        "yearBuilt": 0,
+        "structDesc": "",
+        "siteNumb": "",
+        "siteStreet": "",
+        "siteAddr": "",
+        "siteCity": "VACAVILLE",
+        "siteState": "CA",
+        "siteZip": "95688",
+        "census": "2531.010",
+        "supDist": "4th Supervisorial District",
+        "senDist": "FIFTH SENATE DISTRICT",
+        "congDist": "3rd Congressional DISTRIC",
+        "commColl": "SOLANO COM COLLEGE DISTRICT",
+        "boardEdu": "BOARD OF ED, FIRST DISTRICT",
+        "assembDist": "11 th Assembly District",
+        "genPlan": "Incorporated Area",
+        "genPlanDes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.9900208,
+              38.3557723
+            ],
+            [
+              -121.9904219,
+              38.3557724
+            ],
+            [
+              -121.9904219,
+              38.3559097
+            ],
+            [
+              -121.9900208,
+              38.3559096
+            ],
+            [
+              -121.9900208,
+              38.3557723
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 418409,
+        "APN": "0130182050",
+        "govOwn": "NO",
+        "areaAcres": 0.26,
+        "parcelUse": "COMMERCIAL SALES & SERVICES",
+        "subdiv": "",
+        "yearBuilt": 0,
+        "structDesc": "",
+        "siteNumb": "306",
+        "siteStreet": "PARKER STREET",
+        "siteAddr": "306 PARKER STREET",
+        "siteCity": "VACAVILLE",
+        "siteState": "CA",
+        "siteZip": "95688",
+        "census": "2531.010",
+        "supDist": "4th Supervisorial District",
+        "senDist": "FIFTH SENATE DISTRICT",
+        "congDist": "3rd Congressional DISTRIC",
+        "commColl": "SOLANO COM COLLEGE DISTRICT",
+        "boardEdu": "BOARD OF ED, FIRST DISTRICT",
+        "assembDist": "11 th Assembly District",
+        "genPlan": "Incorporated Area",
+        "genPlanDes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.9900208,
+              38.3559096
+            ],
+            [
+              -121.9904219,
+              38.3559097
+            ],
+            [
+              -121.9904218,
+              38.3561842
+            ],
+            [
+              -121.9900208,
+              38.3561842
+            ],
+            [
+              -121.9900208,
+              38.3559096
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "OBJECTID": 420196,
         "APN": "0131060310",
         "govOwn": "NO",
@@ -313,6 +588,65 @@
             [
               -121.9790807,
               38.3520689
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "OBJECTID": 422282,
+        "APN": "0130185200",
+        "govOwn": "NO",
+        "areaAcres": 0.18,
+        "parcelUse": "GENERAL RETAIL COMMERCIAL",
+        "subdiv": "",
+        "yearBuilt": 0,
+        "structDesc": "",
+        "siteNumb": "359",
+        "siteStreet": "MERCHANT STREET",
+        "siteAddr": "359 MERCHANT STREET",
+        "siteCity": "VACAVILLE",
+        "siteState": "CA",
+        "siteZip": "95688",
+        "census": "2531.010",
+        "supDist": "4th Supervisorial District",
+        "senDist": "FIFTH SENATE DISTRICT",
+        "congDist": "3rd Congressional DISTRIC",
+        "commColl": "SOLANO COM COLLEGE DISTRICT",
+        "boardEdu": "BOARD OF ED, FIRST DISTRICT",
+        "assembDist": "11 th Assembly District",
+        "genPlan": "Incorporated Area",
+        "genPlanDes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.9891668,
+              38.3556029
+            ],
+            [
+              -121.9891518,
+              38.3556152
+            ],
+            [
+              -121.9889885,
+              38.3557409
+            ],
+            [
+              -121.9886819,
+              38.3554979
+            ],
+            [
+              -121.9888474,
+              38.355364
+            ],
+            [
+              -121.9891668,
+              38.3556029
             ]
           ]
         ]

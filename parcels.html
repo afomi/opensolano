@@ -43,14 +43,14 @@ permalink: /parcels/
     <!-- Summary stats -->
     <div class="grid gap-4 sm:grid-cols-3 mb-8">
       {% assign commercial_count = 0 %}
-      {% assign mixed_count = 0 %}
+      {% assign industrial_count = 0 %}
       {% assign residential_count = 0 %}
       {% assign total_acres = 0 %}
       {% for parcel in site.data.vacaville_parcels.parcels %}
         {% if parcel.zoning == "Commercial" %}
           {% assign commercial_count = commercial_count | plus: 1 %}
-        {% elsif parcel.zoning == "Mixed Use" %}
-          {% assign mixed_count = mixed_count | plus: 1 %}
+        {% elsif parcel.zoning == "Industrial" %}
+          {% assign industrial_count = industrial_count | plus: 1 %}
         {% elsif parcel.zoning == "Residential" %}
           {% assign residential_count = residential_count | plus: 1 %}
         {% endif %}
@@ -69,7 +69,7 @@ permalink: /parcels/
             {{ commercial_count }} Commercial
           </span>
           <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
-            {{ mixed_count }} Mixed Use
+            {{ industrial_count }} Industrial
           </span>
           <span class="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-700/10">
             {{ residential_count }} Residential
@@ -106,9 +106,9 @@ permalink: /parcels/
       </button>
       <button
         class="parcel-filter inline-flex items-center gap-1.5 rounded-lg border border-indigo-300 bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-800 hover:bg-indigo-100 transition-colors"
-        data-filter="Mixed Use">
+        data-filter="Industrial">
         <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
-        Mixed Use ({{ mixed_count }})
+        Industrial ({{ industrial_count }})
       </button>
       <button
         class="parcel-filter inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
@@ -226,7 +226,7 @@ permalink: /parcels/
     <!-- Attribution -->
     <div class="mt-4 bg-gray-50 border border-gray-200 rounded-xl p-4">
       <p class="text-xs text-gray-500">
-        Parcel data is placeholder and will be updated with verified addresses and boundaries.
+        Parcel data sourced from Solano County assessor records.
         <a
           href="/2026/05/15/vacaville-parcels-activating-dormant-spaces/"
           class="underline hover:text-gray-700">Read about this project</a> or
@@ -268,7 +268,7 @@ permalink: /parcels/
 
   var ZONING_COLORS = {
     'Commercial': '#f59e0b',
-    'Mixed Use': '#6366f1',
+    'Industrial': '#6366f1',
     'Residential': '#10b981'
   };
 
