@@ -20,9 +20,9 @@ Parcels that sit, year after year, while the city grows around them.
 
 In Vacaville, we've started mapping them.
 
-## What /parcels is
+## What Parcels is
 
-[/parcels](/parcels/) is an experiment in public attention.
+[Parcels](/parcels/) is an experiment in public attention.
 It lists opportunity parcels in Vacaville -- vacant or underutilized sites where something could happen if enough people cared about what went there.
 
 Each parcel has a map pin, a description, and a feedback form.
