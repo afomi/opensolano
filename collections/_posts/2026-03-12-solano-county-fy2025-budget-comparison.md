@@ -2,9 +2,7 @@
 layout: post
 title: "FY2025 Budget Comparison: Fairfield, Vallejo, and Vacaville"
 date: 2026-03-12
-author:
-  name: Ryan Wold
-  title: Civic Data Analyst
+author: ryan_wold
 tags:
   - budgets
   - transparency

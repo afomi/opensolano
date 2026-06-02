@@ -2,9 +2,7 @@
 layout: post
 title: City of Vacaville - State of the City 2023 - Video
 date: 2023-03-13
-author:
-  name: Ryan Wold
-  title: Participant
+author: ryan_wold
 tags:
   - vacaville
   - 2023

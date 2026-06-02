@@ -35,7 +35,7 @@ The parcel data is **placeholder**.
 Addresses are approximate, APNs are generic, boundaries aren't drawn.
 This is a working prototype to test whether the format invites participation before investing in verified data.
 
-The feedback forms are live and functional, powered by [Touchpoints](https://touchpoints.app), a federal open-source tool for public input.
+The feedback forms are live and functional, powered by [Touchpoints](https://touchpoints.app), an open-source platform for public feedback.
 
 ## Volunteer: Parcel Photographer
 

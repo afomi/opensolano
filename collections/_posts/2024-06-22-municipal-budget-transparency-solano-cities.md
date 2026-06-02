@@ -2,9 +2,7 @@
 layout: post
 title: "Municipal Budget Transparency Across Solano County Cities"
 date: 2024-06-22
-author:
-  name: Ryan Wold
-  title: Civic Data Analyst
+author: ryan_wold
 tags:
   - budgets
   - transparency

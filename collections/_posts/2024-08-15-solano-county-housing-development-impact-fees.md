@@ -2,9 +2,7 @@
 layout: post
 title: "Understanding Solano County's Housing Development Impact Fees"
 date: 2024-08-15
-author:
-  name: Ryan Wold
-  title: Civic Data Analyst
+author: ryan_wold
 tags:
   - housing
   - impact fees

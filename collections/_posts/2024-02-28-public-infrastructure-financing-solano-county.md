@@ -2,9 +2,7 @@
 layout: post
 title: "Public Infrastructure Financing in Solano County: Bonds, Taxes, and User Fees"
 date: 2024-02-28
-author:
-  name: Ryan Wold
-  title: Civic Data Analyst
+author: ryan_wold
 tags:
   - infrastructure
   - bonds

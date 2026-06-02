@@ -2,9 +2,7 @@
 layout: post
 title: "Renewing Measure T: What Journalists Should Know"
 date: 2024-09-06
-author:
-  name: Ryan Wold
-  title: Civic Data Analyst
+author: ryan_wold
 tags:
   - measure t
   - sales tax

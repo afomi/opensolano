@@ -2,9 +2,7 @@
 layout: post
 title: "Assessing the Public Sector: Stewardship, Service, and the Tax Recirculation Loop"
 date: 2026-04-12
-author:
-  name: Ryan Wold
-  title: Civic Data Analyst
+author: ryan_wold
 tags:
   - municipal finance
   - pensions

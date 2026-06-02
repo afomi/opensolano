@@ -2,9 +2,7 @@
 layout: post
 title: "About Open Solano"
 date: 2023-11-01
-author:
-  name: Ryan Wold
-  title: Participant
+author: ryan_wold
 tags:
  - local
  - opendata

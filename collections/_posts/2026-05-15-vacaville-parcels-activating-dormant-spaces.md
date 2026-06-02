@@ -2,9 +2,7 @@
 layout: post
 title: "Vacaville Parcels: Activating Dormant Spaces Through Public Dialogue"
 date: 2026-05-15
-author:
-  name: Ryan Wold
-  title: Participant
+author: ryan_wold
 tags:
   - parcels
   - participation
@@ -87,7 +85,7 @@ If you want to help make it real, here's what we need:
 
 /parcels is part of [OpenSolano](https://www.opensolano.org), a Jekyll static site focused on civic data for Solano County.
 The parcel data lives in a JSON file.
-Each parcel gets its own page with a map and feedback form powered by [Touchpoints](https://touchpoints.app), a federal open-source tool for collecting public input.
+Each parcel gets its own page with a map and feedback form powered by [Touchpoints](https://touchpoints.app), an open-source platform for collecting public feedback.
 
 The code is open source.
 If you're technical and want to contribute data, fix something, or extend the concept to other jurisdictions, the repo is on GitHub.

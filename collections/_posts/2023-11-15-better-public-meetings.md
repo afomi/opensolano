@@ -2,9 +2,7 @@
 layout: post
 title: Better public meetings
 date: 2023-11-2
-author:
-  name: Ryan Wold
-  title: Participant
+author: ryan_wold
 tags:
   - public meetings
   - automation
