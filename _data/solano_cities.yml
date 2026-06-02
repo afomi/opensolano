@@ -23,7 +23,7 @@ cities:
   - slug: riovista
     name: Rio Vista
     website: https://www.riovistacity.com/
-    logo:
+    logo: /assets/images/rio-vista-logo.png
     newsroom: https://www.riovistacity.com/news
     feed:
   - slug: suisun-city
