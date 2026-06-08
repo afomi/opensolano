@@ -26,6 +26,12 @@
     <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Upcoming events here</h3>
     <ul class="space-y-2"></ul>
   </div>
+
+  <div
+    class="park-events__empty mt-6 rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-sm text-gray-500"
+    hidden>
+    No community events are scheduled here yet. Be the first — use the button above to organize a park cleanup.
+  </div>
 </section>
 
 <script>
@@ -33,7 +39,13 @@
   var section = document.currentScript.previousElementSibling;
   var parkName = section.dataset.park.toLowerCase();
   var listEl = section.querySelector(".park-events__list");
+  var emptyEl = section.querySelector(".park-events__empty");
   var ul = section.querySelector("ul");
+
+  function showEmpty() {
+    listEl.setAttribute("hidden", "");
+    emptyEl.removeAttribute("hidden");
+  }
 
   var CACHE_KEY = "commons_events_v1";
   var cached = sessionStorage.getItem(CACHE_KEY);
@@ -53,7 +65,10 @@
           e.location_name.toLowerCase().indexOf(parkName) !== -1;
       });
 
-      if (!matching.length) return;
+      if (!matching.length) {
+        showEmpty();
+        return;
+      }
 
       matching.forEach(function (e) {
         var li = document.createElement("li");
@@ -76,7 +91,8 @@
       listEl.removeAttribute("hidden");
     })
     .catch(function () {
-      /* Network failure — CTA still shows, widget stays hidden */
+      /* Network failure — CTA still shows; fall back to the empty state. */
+      showEmpty();
     });
 })();
 </script>

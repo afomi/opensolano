@@ -599,7 +599,7 @@ permalink: /public-funds/checkbook/
             (<a href="https://cityofvacaville-ca.spending.socrata.com/" rel="noreferrer">cityofvacaville-ca.spending.socrata.com</a>),
             a Socrata-hosted checkbook of vendor payments by fund. Columns: Vendor, Fund, Check #, Date, Amount.
           </p>
-          <a href="{{ '/checkbook_data_2026-04-08.csv' | relative_url }}">Open the raw CSV</a>
+          <a href="{{ '/assets/data/checkbook_data_2026-04-08.csv' | relative_url }}">Open the raw CSV</a>
           <span id="cbx-status" class="cbx-status">Loading data...</span>
         </aside>
       </div>
@@ -764,7 +764,7 @@ permalink: /public-funds/checkbook/
 
 <script>
   (() => {
-    const sourceUrl = "{{ '/checkbook_data_2026-04-08.csv' | relative_url }}";
+    const sourceUrl = "{{ '/assets/data/checkbook_data_2026-04-08.csv' | relative_url }}";
     const currency = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",

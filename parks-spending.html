@@ -46,17 +46,17 @@ permalink: /parks-spending/
       </div>
       <div class="bg-white border border-gray-200 rounded-xl p-5">
         <div class="text-sm font-medium text-gray-500">Cost per Park</div>
-        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.cost_per_park | round }}</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.cost_per_park | number_with_delimiter }}</div>
         <div class="text-xs text-gray-400 mt-1">{{ m.totals.active_parks }} developed parks</div>
       </div>
       <div class="bg-white border border-gray-200 rounded-xl p-5">
         <div class="text-sm font-medium text-gray-500">Cost per Acre (all-in)</div>
-        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.cost_per_acre | round }}</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.cost_per_acre | number_with_delimiter }}</div>
         <div class="text-xs text-gray-400 mt-1">{{ m.totals.active_acres | round }} developed acres</div>
       </div>
       <div class="bg-white border border-gray-200 rounded-xl p-5">
         <div class="text-sm font-medium text-gray-500">Maintenance per Acre</div>
-        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.maintenance_per_acre | round }}</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.maintenance_per_acre | number_with_delimiter }}</div>
         <div class="text-xs text-gray-400 mt-1">grounds upkeep only</div>
       </div>
     </div>
@@ -82,13 +82,28 @@ permalink: /parks-spending/
       shared salaries and indirect costs, so use it for comparing parks to each other, not for absolute cost.
     </p>
     <div class="overflow-x-auto bg-white border border-gray-200 rounded-xl mb-2">
-      <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <table id="parks-cost-table" class="w-full divide-y divide-gray-200 text-sm">
         <thead class="bg-gray-50">
           <tr>
-            <th class="px-4 py-3 text-left font-semibold text-gray-700">Park / Zone</th>
-            <th class="px-4 py-3 text-right font-semibold text-gray-700">Direct cost</th>
-            <th class="px-4 py-3 text-right font-semibold text-gray-700">Acres</th>
-            <th class="px-4 py-3 text-right font-semibold text-gray-700">$ / acre</th>
+            <th class="w-full px-4 py-3 text-left font-semibold text-gray-700">Park / Zone</th>
+            <th class="px-6 py-3 text-right font-semibold text-gray-700 whitespace-nowrap min-w-[8rem]">
+              <button type="button" class="ps-sort group inline-flex items-center gap-1 ml-auto" data-sort-col="1" data-sort-dir="desc">
+                Direct cost
+                <span class="ps-arrow text-gray-400 group-hover:text-gray-600" aria-hidden="true">↓</span>
+              </button>
+            </th>
+            <th class="px-4 py-3 text-right font-semibold text-gray-700">
+              <button type="button" class="ps-sort group inline-flex items-center gap-1 ml-auto" data-sort-col="2" data-sort-dir="desc">
+                Acres
+                <span class="ps-arrow text-gray-300 group-hover:text-gray-500" aria-hidden="true">↕</span>
+              </button>
+            </th>
+            <th class="px-4 py-3 text-right font-semibold text-gray-700 whitespace-nowrap">
+              <button type="button" class="ps-sort group inline-flex items-center gap-1 ml-auto" data-sort-col="3" data-sort-dir="desc">
+                $ / acre
+                <span class="ps-arrow text-gray-300 group-hover:text-gray-500" aria-hidden="true">↕</span>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
@@ -97,24 +112,75 @@ permalink: /parks-spending/
           <tr class="hover:bg-gray-50">
             <td class="px-4 py-3 text-gray-900">
               {% if z.is_park %}
-              <span class="font-medium">{{ z.name }}</span>
+                {% if z.slug %}
+                <a href="{{ '/parks/' | append: z.slug | append: '/' | relative_url }}" class="font-medium text-teal-700 hover:text-teal-800 hover:underline">{{ z.name }}</a>
+                {% else %}
+                <span class="font-medium">{{ z.name }}</span>
+                {% endif %}
               {% else %}
               <span class="text-gray-500">{{ z.name }}</span>
               <span class="ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-500">non-park</span>
               {% endif %}
             </td>
-            <td class="px-4 py-3 text-right tabular-nums text-gray-900">${{ z.cost }}</td>
-            <td class="px-4 py-3 text-right tabular-nums text-gray-600">
+            <td class="px-6 py-3 text-right tabular-nums text-gray-900 whitespace-nowrap" data-sort="{{ z.cost }}">${{ z.cost | number_with_delimiter }}</td>
+            <td class="px-4 py-3 text-right tabular-nums text-gray-600" data-sort="{% if z.acres %}{{ z.acres }}{% else %}-1{% endif %}">
               {% if z.acres %}{{ z.acres }}{% else %}—{% endif %}
             </td>
-            <td class="px-4 py-3 text-right tabular-nums text-gray-600">
-              {% if z.cost_per_acre %}${{ z.cost_per_acre | round }}{% else %}—{% endif %}
+            <td class="px-4 py-3 text-right tabular-nums text-gray-600 whitespace-nowrap" data-sort="{% if z.cost_per_acre %}{{ z.cost_per_acre }}{% else %}-1{% endif %}">
+              {% if z.cost_per_acre %}${{ z.cost_per_acre | number_with_delimiter }}{% else %}—{% endif %}
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
+    <script>
+      (function () {
+        var table = document.getElementById("parks-cost-table");
+        if (!table) return;
+        var tbody = table.querySelector("tbody");
+        var buttons = table.querySelectorAll(".ps-sort");
+
+        function cellValue(row, col) {
+          var cell = row.children[col];
+          var raw = cell ? cell.getAttribute("data-sort") : null;
+          var num = parseFloat(raw);
+          return isNaN(num) ? -1 : num;
+        }
+
+        function sortBy(col, dir) {
+          var rows = Array.prototype.slice.call(tbody.querySelectorAll("tr"));
+          rows.sort(function (a, b) {
+            var diff = cellValue(a, col) - cellValue(b, col);
+            return dir === "asc" ? diff : -diff;
+          });
+          rows.forEach(function (r) { tbody.appendChild(r); });
+        }
+
+        buttons.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var col = parseInt(btn.getAttribute("data-sort-col"), 10);
+            // Toggle this column's direction; default first click to desc.
+            var dir = btn.getAttribute("data-sort-dir") === "desc" ? "asc" : "desc";
+            // Reset every header's arrow, then mark the active one.
+            buttons.forEach(function (b) {
+              var arrow = b.querySelector(".ps-arrow");
+              if (b === btn) {
+                b.setAttribute("data-sort-dir", dir);
+                arrow.textContent = dir === "asc" ? "↑" : "↓";
+                arrow.className = "ps-arrow text-gray-600";
+              } else {
+                b.setAttribute("data-sort-dir", "desc");
+                arrow.textContent = "↕";
+                arrow.className = "ps-arrow text-gray-300 group-hover:text-gray-500";
+              }
+            });
+            sortBy(col, dir);
+          });
+        });
+      })();
+    </script>
 
     <!-- Caveats -->
     <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8">
