@@ -1,0 +1,86 @@
+# Canonical entity registry for OpenSolano
+# Maps entity slugs to display names and prose-text variants.
+# Used by post-entities.html include and (future) entity_linker.rb plugin.
+# Name arrays ordered longest-first for greedy matching.
+
+cities:
+  fairfield:
+    names: ["City of Fairfield", "Fairfield"]
+    url: "/jurisdictions#fairfield"
+  vallejo:
+    names: ["City of Vallejo", "Vallejo"]
+    url: "/jurisdictions#vallejo"
+  vacaville:
+    names: ["City of Vacaville", "Vacaville"]
+    url: "/jurisdictions#vacaville"
+  benicia:
+    names: ["City of Benicia", "Benicia"]
+    url: "/jurisdictions#benicia"
+  dixon:
+    names: ["City of Dixon", "Dixon"]
+    url: "/jurisdictions#dixon"
+  suisun-city:
+    names: ["Suisun City"]
+    url: "/jurisdictions#suisun-city"
+  riovista:
+    names: ["City of Rio Vista", "Rio Vista"]
+    url: "/jurisdictions#riovista"
+
+bodies:
+  vallejo-city-council:
+    names: ["Vallejo City Council"]
+    url: "/bodies/vallejo-city-council"
+  solano-county-board-of-supervisors:
+    names: ["Solano County Board of Supervisors", "Board of Supervisors"]
+    url: "/bodies/solano-county-board-of-supervisors"
+  fairfield-city-council:
+    names: ["Fairfield City Council"]
+    url: "/bodies/fairfield-city-council"
+  juvenile-justice-delinquency-prevention-commission:
+    names: ["Juvenile Justice Delinquency Prevention Commission"]
+    url: "/bodies/juvenile-justice-delinquency-prevention-commission"
+  solano-county-airport-land-use-commission:
+    names: ["Solano County Airport Land Use Commission"]
+    url: "/bodies/solano-county-airport-land-use-commission"
+  local-agency-formation-commission:
+    names: ["Local Agency Formation Commission", "LAFCO"]
+    url: "/bodies/local-agency-formation-commission"
+  solano-county-children-and-families-commission:
+    names: ["Solano County Children and Families Commission"]
+    url: "/bodies/solano-county-children-and-families-commission"
+  solano-county-commission-on-medical-care:
+    names: ["Solano County Commission on Medical Care"]
+    url: "/bodies/solano-county-commission-on-medical-care"
+
+agencies:
+  solano-county:
+    names: ["Solano County"]
+    url: "/agencies/solano-county"
+  vacaville-unified-school-district:
+    names: ["Vacaville Unified School District", "VUSD"]
+    url: "/agencies/vacaville-unified-school-district"
+  fairfield:
+    names: ["City of Fairfield"]
+    url: "/agencies/fairfield"
+
+measures:
+  measure-b:
+    names: ["Measure B"]
+    url: "/topics/#measure-b"
+  measure-t:
+    names: ["Measure T"]
+    url: "/topics/#measure-t"
+  prop-13:
+    names: ["Proposition 13", "Prop 13"]
+    url: null
+
+programs:
+  calpers:
+    names: ["CalPERS"]
+    url: null
+  vision-zero:
+    names: ["Vision Zero"]
+    url: null
+  safe-routes-to-school:
+    names: ["Safe Routes to School"]
+    url: null

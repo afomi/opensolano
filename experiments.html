@@ -1,0 +1,97 @@
+---
+layout: default
+title: "Experiments — OpenSolano"
+description: "One-off civic data experiments and prototypes for Solano County — interactive tools, visualizations, and analyses that explore a single idea each."
+permalink: /experiments/
+---
+
+{% comment %}
+  Experiments are standalone, single-idea pages. To add one, copy an <a> card in
+  the grid below and update its href, emoji, title, and blurb.
+{% endcomment %}
+
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-amber-100/20">
+  </div>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-white text-3xl shadow-lg">
+        🧪
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Experiments</h1>
+        <p class="mt-2 text-lg leading-8 text-gray-600">One-off tools and visualizations, each exploring a single civic idea.</p>
+      </div>
+    </div>
+
+    <!-- Intent -->
+    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-8">
+      <p class="text-base text-gray-700 leading-relaxed">
+        These are prototypes, not polished products.
+        Each one takes a single question — what does my tax dollar buy, what does a park cost, how is the city organized — and tries to make it intuitive.
+        Some will graduate into permanent pages; others are here to test an idea in public.
+      </p>
+    </div>
+
+    <!-- Experiment cards -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+      <a
+        href="/experiments/taxpayer-receipt.html"
+        class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-amber-300 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🧾</div>
+        <h2 class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">Taxpayer Receipt</h2>
+        <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+          An itemized "receipt" showing where a Vacaville resident's tax dollars went in FY2024-25, broken down line by line like a store receipt.
+        </p>
+        <span class="inline-flex items-center mt-3 text-xs font-medium text-gray-400">Vacaville · FY2024-25</span>
+      </a>
+
+      <a
+        href="/parks-spending/"
+        class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-amber-300 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🌳</div>
+        <h2 class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">Parks Spending Metrics</h2>
+        <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+          What it costs to run Vacaville's parks — total spending, cost per park, and cost per acre — built from the FY2025-26 budget and the city's own GIS acreage.
+        </p>
+        <span class="inline-flex items-center mt-3 text-xs font-medium text-gray-400">Vacaville · FY2025-26</span>
+      </a>
+
+      <a
+        href="/experiments/org-strategy.html"
+        class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-amber-300 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🗺️</div>
+        <h2 class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">Organizational Strategy Map</h2>
+        <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+          An interactive map of how the City of Vacaville is organized — departments, divisions, and strategic priorities — rendered as a navigable diagram.
+        </p>
+        <span class="inline-flex items-center mt-3 text-xs font-medium text-gray-400">Vacaville · FY2025-26</span>
+      </a>
+
+      <a
+        href="/public-funds/checkbook/"
+        class="group block bg-white border border-gray-200 rounded-xl p-6 hover:border-amber-300 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">📒</div>
+        <h2 class="font-semibold text-gray-900 group-hover:text-amber-700 transition-colors">Checkbook Explorer</h2>
+        <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+          Browse individual public payments — vendors, amounts, and categories — to trace where money actually flows through local government.
+        </p>
+        <span class="inline-flex items-center mt-3 text-xs font-medium text-gray-400">Solano County</span>
+      </a>
+
+    </div>
+
+    <!-- Footer note -->
+    <div class="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
+      <p class="text-xs text-gray-500 leading-relaxed">
+        Experiments are exploratory and may change or disappear.
+        For ongoing efforts, see <a href="/projects" class="underline hover:text-gray-700">Projects</a>;
+        for tracked spending, see <a href="/public-funds" class="underline hover:text-gray-700">Public Funds</a>.
+      </p>
+    </div>
+  </section>
+</main>

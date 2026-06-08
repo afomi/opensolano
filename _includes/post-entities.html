@@ -1,0 +1,84 @@
+{% if page.entities %}
+<aside
+  class="post-entities border-y border-gray-200 py-4 my-8"
+  aria-label="Referenced entities"
+>
+  <div class="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+
+    {% if page.entities.cities and page.entities.cities.size > 0 %}
+    <dl class="flex items-baseline gap-x-2">
+      <dt class="text-[11px] uppercase tracking-wide text-gray-500 font-medium shrink-0">Jurisdictions</dt>
+      <dd class="flex flex-wrap gap-x-2 gap-y-1">
+        {% for slug in page.entities.cities %}
+          {% assign city = site.data.solano_cities.cities | where: "slug", slug | first %}
+          {% if city %}
+            <a
+              href="{{ site.data.entities.cities[slug].url | default: '#' }}"
+              data-entity="jurisdiction"
+            >{{ city.name }}</a>{% unless forloop.last %}<span class="text-gray-300">/</span>{% endunless %}
+          {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+    {% endif %}
+
+    {% if page.entities.bodies and page.entities.bodies.size > 0 %}
+    <dl class="flex items-baseline gap-x-2">
+      <dt class="text-[11px] uppercase tracking-wide text-gray-500 font-medium shrink-0">Bodies</dt>
+      <dd class="flex flex-wrap gap-x-2 gap-y-1">
+        {% for slug in page.entities.bodies %}
+          {% assign body_item = site.bodies | where: "slug", slug | first %}
+          {% if body_item %}
+            <a
+              href="/bodies/{{ slug }}"
+              data-entity="body"
+            >{{ body_item.name }}</a>{% unless forloop.last %}<span class="text-gray-300">/</span>{% endunless %}
+          {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+    {% endif %}
+
+    {% if page.entities.agencies and page.entities.agencies.size > 0 %}
+    <dl class="flex items-baseline gap-x-2">
+      <dt class="text-[11px] uppercase tracking-wide text-gray-500 font-medium shrink-0">Agencies</dt>
+      <dd class="flex flex-wrap gap-x-2 gap-y-1">
+        {% for slug in page.entities.agencies %}
+          {% assign agency_item = site.agencies | where: "slug", slug | first %}
+          {% if agency_item %}
+            <a
+              href="/agencies/{{ slug }}"
+              data-entity="agency"
+            >{{ agency_item.name }}</a>{% unless forloop.last %}<span class="text-gray-300">/</span>{% endunless %}
+          {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+    {% endif %}
+
+    {% if page.entities.measures and page.entities.measures.size > 0 %}
+    <dl class="flex items-baseline gap-x-2">
+      <dt class="text-[11px] uppercase tracking-wide text-gray-500 font-medium shrink-0">Measures</dt>
+      <dd class="flex flex-wrap gap-x-2 gap-y-1">
+        {% for slug in page.entities.measures %}
+          {% assign measure = site.data.entities.measures[slug] %}
+          {% if measure %}
+            {% if measure.url %}
+              <a
+                href="{{ measure.url }}"
+                data-entity="measure"
+              >{{ measure.names | first }}</a>{% unless forloop.last %}<span class="text-gray-300">/</span>{% endunless %}
+            {% else %}
+              <span
+                data-entity="measure"
+              >{{ measure.names | first }}</span>{% unless forloop.last %}<span class="text-gray-300">/</span>{% endunless %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+    {% endif %}
+
+  </div>
+</aside>
+{% endif %}

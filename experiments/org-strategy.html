@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organizational Strategy Map — City of Vacaville FY2025-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Libre+Franklin:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+:root {
+  --internal: #2e4057;
+  --internal-light: #4a6a8a;
+  --internal-fill: rgba(46, 64, 87, 0.15);
+  --internal-stroke: rgba(46, 64, 87, 0.5);
+  --external: #3a7d5e;
+  --external-light: #5aad7e;
+  --external-fill: rgba(58, 125, 94, 0.15);
+  --external-stroke: rgba(58, 125, 94, 0.5);
+  --mixed: #b5651d;
+  --mixed-light: #d4884a;
+  --mixed-fill: rgba(181, 101, 29, 0.15);
+  --mixed-stroke: rgba(181, 101, 29, 0.5);
+  --bg: #f6f3ee;
+  --bg-warm: #ece8e1;
+  --text: #1a1a1a;
+  --text-secondary: #5a5550;
+  --text-muted: #8a8580;
+  --accent: #c44b2b;
+  --glass: rgba(246, 243, 238, 0.88);
+  --glass-border: rgba(180, 175, 168, 0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Libre Franklin', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Topographic background texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(160, 150, 135, 0.015) 1deg,
+      transparent 2deg
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-header {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 2.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.page-header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.page-header .subtitle {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.header-stats {
+  display: flex;
+  gap: 2rem;
+  align-items: baseline;
+  flex-shrink: 0;
+}
+
+.header-stat {
+  text-align: right;
+}
+
+.header-stat .value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--text);
+  line-height: 1;
+}
+
+.header-stat .label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.2rem;
+}
+
+.main-container {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  min-height: calc(100vh - 100px);
+}
+
+/* Circle packing area */
+.viz-area {
+  position: relative;
+  padding: 1rem;
+}
+
+#pack-svg {
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+}
+
+.node-circle {
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.node-circle:hover {
+  opacity: 0.9 !important;
+}
+
+.node-label {
+  pointer-events: none;
+  font-family: 'Libre Franklin', sans-serif;
+  fill: var(--text);
+}
+
+.node-label-name {
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.node-label-count {
+  font-weight: 400;
+  font-size: 10px;
+  fill: var(--text-secondary);
+}
+
+.root-circle {
+  fill: none;
+  stroke: rgba(160, 150, 135, 0.2);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+/* Side panel */
+.side-panel {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border-left: 1px solid var(--glass-border);
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+}
+
+.panel-section {
+  margin-bottom: 1.75rem;
+}
+
+.panel-section-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* Legend */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.internal { background: var(--internal); }
+.legend-dot.external { background: var(--external); }
+.legend-dot.mixed { background: var(--mixed); }
+
+.legend-count {
+  margin-left: auto;
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Toggle controls */
+.toggle-group {
+  display: flex;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.45rem 0.5rem;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.toggle-btn.active {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.toggle-btn:not(.active):hover {
+  background: rgba(0,0,0,0.04);
+}
+
+/* Department detail */
+.dept-detail {
+  background: white;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.35s ease;
+}
+
+.dept-detail.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dept-detail-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.dept-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.dept-metric {
+  padding: 0.4rem 0;
+}
+
+.dept-metric .metric-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.dept-metric .metric-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dept-facing-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  margin-bottom: 0.6rem;
+}
+
+.dept-facing-badge.internal {
+  background: var(--internal-fill);
+  color: var(--internal);
+  border: 1px solid var(--internal-stroke);
+}
+
+.dept-facing-badge.external {
+  background: var(--external-fill);
+  color: var(--external);
+  border: 1px solid var(--external-stroke);
+}
+
+.dept-facing-badge.mixed {
+  background: var(--mixed-fill);
+  color: var(--mixed);
+  border: 1px solid var(--mixed-stroke);
+}
+
+/* Trend sparklines */
+.trend-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  font-size: 0.72rem;
+}
+
+.trend-row:last-child { border-bottom: none; }
+
+.trend-dept-name {
+  width: 90px;
+  flex-shrink: 0;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trend-spark {
+  flex: 1;
+  height: 20px;
+}
+
+.trend-values {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  width: 65px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.trend-change {
+  font-weight: 600;
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+}
+
+.trend-change.up { color: var(--external); }
+.trend-change.down { color: var(--accent); }
+.trend-change.flat { color: var(--text-muted); }
+
+/* Callout boxes */
+.callout {
+  background: white;
+  border: 1px solid var(--glass-border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.callout strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.callout .callout-number {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+/* What-if slider */
+.what-if-area {
+  background: white;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.what-if-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.what-if-subtitle {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  line-height: 1.45;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.slider-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.slider-row input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-warm);
+  outline: none;
+}
+
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.slider-value {
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  width: 20px;
+  text-align: right;
+}
+
+.what-if-cost {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  font-variant-numeric: tabular-nums;
+}
+
+.what-if-cost strong {
+  color: var(--accent);
+}
+
+/* Position list in detail */
+.position-list {
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.position-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.2rem 0;
+  font-size: 0.68rem;
+}
+
+.position-item .pos-title {
+  color: var(--text-secondary);
+}
+
+.position-item .pos-count {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: rgba(26, 26, 26, 0.92);
+  backdrop-filter: blur(8px);
+  color: white;
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  max-width: 220px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.tooltip.visible { opacity: 1; }
+
+.tooltip .tt-name {
+  font-weight: 600;
+  font-size: 0.78rem;
+  margin-bottom: 0.25rem;
+}
+
+.tooltip .tt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tooltip .tt-label { opacity: 0.7; }
+.tooltip .tt-value { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Bottom bar */
+.bottom-bar {
+  position: relative;
+  z-index: 10;
+  padding: 1rem 2.5rem 1.5rem;
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.bottom-card {
+  flex: 1;
+  background: white;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.bottom-card-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.cost-per-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  font-size: 0.72rem;
+}
+
+.cost-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-warm);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.cost-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.cost-dept-name {
+  width: 80px;
+  flex-shrink: 0;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cost-value {
+  width: 55px;
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.68rem;
+  flex-shrink: 0;
+}
+
+/* Staggered entrance animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.page-header { animation-delay: 0s; }
+.main-container { animation-delay: 0.1s; }
+.bottom-bar { animation-delay: 0.2s; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+  .side-panel {
+    border-left: none;
+    border-top: 1px solid var(--glass-border);
+    max-height: none;
+  }
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 1.25rem 0;
+  }
+  .header-stats { gap: 1.5rem; }
+  .bottom-bar {
+    flex-direction: column;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+  .viz-area { padding: 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header animate-in">
+  <div>
+    <h1>Organizational Strategy Map</h1>
+    <div class="subtitle">City of Vacaville &mdash; FY 2025&ndash;26 Adopted Budget</div>
+  </div>
+  <div class="header-stats">
+    <div class="header-stat">
+      <div class="value">669</div>
+      <div class="label">Full-Time Positions</div>
+    </div>
+    <div class="header-stat">
+      <div class="value">$293.6M</div>
+      <div class="label">Gross Operating</div>
+    </div>
+    <div class="header-stat">
+      <div class="value">103,000</div>
+      <div class="label">Residents Served</div>
+    </div>
+  </div>
+</header>
+
+<div class="main-container animate-in">
+  <div class="viz-area">
+    <svg id="pack-svg"></svg>
+  </div>
+
+  <aside class="side-panel">
+    <!-- View toggle -->
+    <div class="panel-section">
+      <div class="panel-section-title">Size By</div>
+      <div class="toggle-group" id="size-toggle">
+        <button class="toggle-btn active" data-mode="headcount">Headcount</button>
+        <button class="toggle-btn" data-mode="budget">Budget $</button>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="panel-section">
+      <div class="panel-section-title">Classification</div>
+      <div class="legend-item">
+        <span class="legend-dot internal"></span>
+        Internal-Facing
+        <span class="legend-count">83</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot external"></span>
+        External-Facing
+        <span class="legend-count">383</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot mixed"></span>
+        Mixed / Infrastructure
+        <span class="legend-count">203</span>
+      </div>
+    </div>
+
+    <!-- Department detail (populated on click) -->
+    <div class="panel-section">
+      <div class="panel-section-title">Department Detail</div>
+      <div id="dept-detail" class="dept-detail">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">
+          Click a department circle to inspect
+        </div>
+      </div>
+    </div>
+
+    <!-- What-if -->
+    <div class="panel-section">
+      <div class="panel-section-title">Scenario: New Positions</div>
+      <div class="what-if-area">
+        <div class="what-if-title">Where do 7 new FTEs go?</div>
+        <div class="what-if-subtitle">
+          $50K initial + $1.5M recurring = ~7 positions at $216K all-in per FTE
+        </div>
+        <div id="what-if-sliders"></div>
+        <div class="what-if-cost" id="what-if-cost">
+          Allocated: <strong>0 of 7</strong> positions &mdash; $0 of $1.5M
+        </div>
+      </div>
+    </div>
+
+    <!-- Key callouts -->
+    <div class="panel-section">
+      <div class="panel-section-title">Context</div>
+      <div class="callout">
+        <span class="callout-number">1 : 154</span>
+        One city employee for every 154 residents. Staffing has been flat at ~669 while demand grew 26% over 4 years.
+      </div>
+      <div class="callout">
+        <strong>Overtime vs. Full-Time</strong><br>
+        Adding a position eliminates OT (1.5x hourly) but locks in a pension obligation (~30% of salary, perpetual). At $216K all-in cost, roughly $65K per position is pension + OPEB.
+      </div>
+      <div class="callout">
+        <strong>Frozen Positions</strong><br>
+        Information Security Manager (IT) and Apprentice Program Fire Captain (Fire) &mdash; budgeted but unfilled. Not eliminated, not funded.
+      </div>
+    </div>
+
+    <!-- 3-year trend -->
+    <div class="panel-section">
+      <div class="panel-section-title">3-Year Headcount Trend</div>
+      <div id="trend-area"></div>
+    </div>
+  </aside>
+</div>
+
+<div class="bottom-bar animate-in">
+  <div class="bottom-card">
+    <div class="bottom-card-title">Cost Per Position (Budget / FTE)</div>
+    <div id="cost-per-chart"></div>
+  </div>
+  <div class="bottom-card">
+    <div class="bottom-card-title">Budget Share by Classification</div>
+    <div id="budget-share-chart"></div>
+  </div>
+  <div class="bottom-card">
+    <div class="bottom-card-title">The $1.5M Question</div>
+    <div style="font-size: 0.78rem; line-height: 1.6; color: var(--text-secondary);">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+        <div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text); font-family: 'DM Serif Display', serif;">7 FTEs</div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;">New Full-Time</div>
+        </div>
+        <div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text); font-family: 'DM Serif Display', serif;">~10,400 hrs</div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;">Overtime Equivalent</div>
+        </div>
+      </div>
+      7 positions at $216K each covers salary, benefits, pension, and OPEB. The same $1.5M buys ~10,400 overtime hours at $144/hr blended rate &mdash; but without the 30-year pension tail.
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────
+var departments = [
+  {
+    name: 'Police',
+    shortName: 'Police',
+    fte: 194,
+    budget: 59724,
+    facing: 'external',
+    trend: [193, 194, 194],
+    positions: [
+      { title: 'Sworn Officers', count: 92 },
+      { title: 'Dispatchers', count: 19 },
+      { title: 'Sergeants', count: 15 },
+      { title: 'Community Services Officers', count: 10 },
+      { title: 'Lieutenants', count: 7 },
+      { title: 'Admin/Support', count: 51 }
+    ]
+  },
+  {
+    name: 'Fire',
+    shortName: 'Fire',
+    fte: 120,
+    budget: 45100,
+    facing: 'external',
+    trend: [120, 121, 120],
+    positions: [
+      { title: 'Firefighter/Paramedics', count: 63 },
+      { title: 'Fire Engineers', count: 18 },
+      { title: 'Fire Captains', count: 18 },
+      { title: 'Battalion Chiefs', count: 5 },
+      { title: 'Code Compliance', count: 3 },
+      { title: 'Admin/Support', count: 13 }
+    ]
+  },
+  {
+    name: 'Public Works',
+    shortName: 'PW',
+    fte: 104,
+    budget: 36840,
+    facing: 'mixed',
+    trend: [104, 104, 104],
+    positions: [
+      { title: 'Maintenance Ops', count: 65 },
+      { title: 'Engineering Services', count: 22 },
+      { title: 'Admin', count: 9 },
+      { title: 'Traffic Engineering', count: 8 }
+    ]
+  },
+  {
+    name: 'Utilities',
+    shortName: 'Utilities',
+    fte: 99,
+    budget: 68554,
+    facing: 'mixed',
+    trend: [99, 99, 99],
+    positions: [
+      { title: 'Water/Wastewater Ops', count: 52 },
+      { title: 'Engineering/Lab', count: 22 },
+      { title: 'Maintenance', count: 20 },
+      { title: 'Admin', count: 5 }
+    ]
+  },
+  {
+    name: 'Finance',
+    shortName: 'Finance',
+    fte: 30,
+    budget: 5818,
+    facing: 'internal',
+    trend: [30, 30, 30],
+    positions: [
+      { title: 'Finance Assistants', count: 8 },
+      { title: 'Finance Technicians', count: 5 },
+      { title: 'Finance Supervisors', count: 3 },
+      { title: 'Accountants', count: 2 },
+      { title: 'Management/Directors', count: 4 },
+      { title: 'Other', count: 8 }
+    ]
+  },
+  {
+    name: 'Parks & Recreation',
+    shortName: 'Parks',
+    fte: 26,
+    budget: 11331,
+    facing: 'external',
+    trend: [26, 26, 26],
+    positions: [
+      { title: 'Recreation Coordinators', count: 8 },
+      { title: 'Recreation Supervisors', count: 4 },
+      { title: 'Admin Technicians', count: 4 },
+      { title: 'Recreation Managers', count: 2 },
+      { title: 'Park Planners', count: 2 },
+      { title: 'Other', count: 6 }
+    ]
+  },
+  {
+    name: 'Housing & Community Srvs',
+    shortName: 'Housing',
+    fte: 23,
+    budget: 44711,
+    facing: 'external',
+    trend: [22, 23, 23],
+    positions: [
+      { title: 'Housing Specialists', count: 5 },
+      { title: 'Housing Technicians', count: 7 },
+      { title: 'Admin/Mgmt', count: 6 },
+      { title: 'Other', count: 5 }
+    ]
+  },
+  {
+    name: 'Community Development',
+    shortName: 'CommDev',
+    fte: 20,
+    budget: 8433,
+    facing: 'external',
+    trend: [19, 20, 20],
+    positions: [
+      { title: 'Planners', count: 5 },
+      { title: 'Building Inspectors', count: 3 },
+      { title: 'Permit Technicians', count: 2 },
+      { title: 'Admin/Mgmt', count: 10 }
+    ]
+  },
+  {
+    name: 'Human Resources',
+    shortName: 'HR',
+    fte: 15,
+    budget: 3859,
+    facing: 'internal',
+    trend: [16, 16, 15],
+    positions: [
+      { title: 'HR Technicians', count: 6 },
+      { title: 'HR Analysts', count: 3 },
+      { title: 'Senior Analyst', count: 2 },
+      { title: 'Directors/Mgmt', count: 4 }
+    ]
+  },
+  {
+    name: 'Information Technology',
+    shortName: 'IT',
+    fte: 15,
+    budget: 3498,
+    facing: 'internal',
+    trend: [15, 16, 15],
+    positions: [
+      { title: 'IT Specialists', count: 5 },
+      { title: 'Systems Admins', count: 5 },
+      { title: 'GIS/Network/Ops Mgrs', count: 3 },
+      { title: 'Division Manager', count: 1 },
+      { title: 'Help Desk', count: 1 }
+    ]
+  },
+  {
+    name: "City Manager's Office",
+    shortName: 'CityMgr',
+    fte: 13,
+    budget: 3587,
+    facing: 'internal',
+    trend: [13, 13, 13],
+    positions: [
+      { title: 'Media/Production', count: 2 },
+      { title: 'Management Analysts', count: 2 },
+      { title: 'Admin Technicians', count: 2 },
+      { title: 'City Manager', count: 1 },
+      { title: 'Asst. City Manager', count: 1 },
+      { title: 'Other', count: 5 }
+    ]
+  },
+  {
+    name: 'City Attorney',
+    shortName: 'CityAtty',
+    fte: 8,
+    budget: 2793,
+    facing: 'internal',
+    trend: [8, 8, 8],
+    positions: [
+      { title: 'Asst. City Attorneys', count: 4 },
+      { title: 'City Attorney', count: 1 },
+      { title: 'Paralegal', count: 1 },
+      { title: 'Legal Services Mgr', count: 1 },
+      { title: 'Executive Assistant', count: 1 }
+    ]
+  },
+  {
+    name: 'Economic Development',
+    shortName: 'EconDev',
+    fte: 2,
+    budget: 1078,
+    facing: 'internal',
+    trend: [2, 2, 2],
+    positions: [
+      { title: 'Director', count: 1 },
+      { title: 'Manager', count: 1 }
+    ]
+  }
+];
+
+var facingColors = {
+  internal: { main: '#2e4057', light: '#4a6a8a', fill: 'rgba(46,64,87,0.14)', stroke: 'rgba(46,64,87,0.45)' },
+  external: { main: '#3a7d5e', light: '#5aad7e', fill: 'rgba(58,125,94,0.14)', stroke: 'rgba(58,125,94,0.45)' },
+  mixed:    { main: '#b5651d', light: '#d4884a', fill: 'rgba(181,101,29,0.14)', stroke: 'rgba(181,101,29,0.45)' }
+};
+
+var sizeMode = 'headcount';
+var whatIfAlloc = {};
+departments.forEach(function(d) { whatIfAlloc[d.shortName] = 0; });
+
+// ── CIRCLE PACKING ──────────────────────────────────────────────
+function buildHierarchy() {
+  return {
+    name: 'City of Vacaville',
+    children: departments.map(function(d) {
+      var val = sizeMode === 'headcount'
+        ? d.fte + (whatIfAlloc[d.shortName] || 0)
+        : d.budget;
+      return {
+        name: d.name,
+        shortName: d.shortName,
+        value: Math.max(val, 1),
+        fte: d.fte,
+        budget: d.budget,
+        facing: d.facing,
+        positions: d.positions,
+        trend: d.trend,
+        added: whatIfAlloc[d.shortName] || 0
+      };
+    })
+  };
+}
+
+var svg = d3.select('#pack-svg');
+var tooltip = d3.select('#tooltip');
+var selectedDept = null;
+
+function renderPack() {
+  var container = document.querySelector('.viz-area');
+  var w = container.clientWidth - 32;
+  var h = Math.max(container.clientHeight - 32, 480);
+
+  svg.attr('viewBox', '0 0 ' + w + ' ' + h);
+
+  var root = d3.hierarchy(buildHierarchy())
+    .sum(function(d) { return d.value; })
+    .sort(function(a, b) { return b.value - a.value; });
+
+  d3.pack()
+    .size([w, h])
+    .padding(6)(root);
+
+  // Root circle
+  var rootData = [root];
+  var rootCircle = svg.selectAll('.root-circle').data(rootData);
+  rootCircle.enter().append('circle')
+    .attr('class', 'root-circle')
+    .merge(rootCircle)
+    .transition().duration(600)
+    .attr('cx', function(d) { return d.x; })
+    .attr('cy', function(d) { return d.y; })
+    .attr('r', function(d) { return d.r; });
+
+  // Department circles
+  var leaves = root.leaves();
+  var circles = svg.selectAll('.node-circle').data(leaves, function(d) { return d.data.shortName; });
+
+  circles.enter()
+    .append('circle')
+    .attr('class', 'node-circle')
+    .attr('cx', function(d) { return d.x; })
+    .attr('cy', function(d) { return d.y; })
+    .attr('r', 0)
+    .attr('fill', function(d) { return facingColors[d.data.facing].fill; })
+    .attr('stroke', function(d) { return facingColors[d.data.facing].stroke; })
+    .attr('stroke-width', 1.5)
+    .on('mouseenter', function(event, d) { showTooltip(event, d); })
+    .on('mousemove', function(event) { moveTooltip(event); })
+    .on('mouseleave', hideTooltip)
+    .on('click', function(event, d) { selectDept(d.data); })
+    .merge(circles)
+    .transition().duration(600)
+    .attr('cx', function(d) { return d.x; })
+    .attr('cy', function(d) { return d.y; })
+    .attr('r', function(d) { return d.r; })
+    .attr('fill', function(d) {
+      if (d.data.added > 0) {
+        return d.data.facing === 'internal' ? 'rgba(46,64,87,0.25)'
+             : d.data.facing === 'external' ? 'rgba(58,125,94,0.25)'
+             : 'rgba(181,101,29,0.25)';
+      }
+      return facingColors[d.data.facing].fill;
+    })
+    .attr('stroke', function(d) {
+      if (selectedDept && d.data.shortName === selectedDept.shortName) {
+        return facingColors[d.data.facing].main;
+      }
+      return facingColors[d.data.facing].stroke;
+    })
+    .attr('stroke-width', function(d) {
+      return (selectedDept && d.data.shortName === selectedDept.shortName) ? 2.5 : 1.5;
+    });
+
+  circles.exit().transition().duration(300).attr('r', 0).remove();
+
+  // Labels
+  var labels = svg.selectAll('.node-label').data(leaves, function(d) { return d.data.shortName; });
+
+  var labelEnter = labels.enter().append('g')
+    .attr('class', 'node-label')
+    .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+
+  labelEnter.append('text')
+    .attr('class', 'node-label-name')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '-0.25em');
+
+  labelEnter.append('text')
+    .attr('class', 'node-label-count')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '0.95em');
+
+  var labelMerge = labelEnter.merge(labels);
+
+  labelMerge.transition().duration(600)
+    .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+
+  labelMerge.select('.node-label-name')
+    .text(function(d) {
+      if (d.r < 22) return '';
+      if (d.r < 35) return d.data.shortName.substring(0, 4);
+      return d.data.shortName;
+    })
+    .style('font-size', function(d) {
+      return Math.min(11, d.r * 0.28) + 'px';
+    });
+
+  labelMerge.select('.node-label-count')
+    .text(function(d) {
+      if (d.r < 28) return '';
+      var extra = d.data.added > 0 ? ' +' + d.data.added : '';
+      return d.data.fte + ' FT' + extra;
+    })
+    .style('font-size', function(d) {
+      return Math.min(10, d.r * 0.24) + 'px';
+    });
+
+  labels.exit().remove();
+}
+
+// ── TOOLTIP ─────────────────────────────────────────────────────
+function showTooltip(event, d) {
+  var costPer = Math.round(d.data.budget / d.data.fte);
+  var facingLabel = d.data.facing === 'internal' ? 'Internal-Facing'
+                  : d.data.facing === 'external' ? 'External-Facing'
+                  : 'Mixed / Infrastructure';
+  tooltip.html(
+    '<div class="tt-name">' + d.data.name + '</div>' +
+    '<div class="tt-row"><span class="tt-label">Positions</span><span class="tt-value">' + d.data.fte + ' FT</span></div>' +
+    '<div class="tt-row"><span class="tt-label">Budget</span><span class="tt-value">$' + (d.data.budget / 1000).toFixed(1) + 'M</span></div>' +
+    '<div class="tt-row"><span class="tt-label">Cost/Position</span><span class="tt-value">$' + costPer + 'K</span></div>' +
+    '<div class="tt-row"><span class="tt-label">Classification</span><span class="tt-value">' + facingLabel + '</span></div>'
+  ).classed('visible', true);
+  moveTooltip(event);
+}
+
+function moveTooltip(event) {
+  tooltip.style('left', (event.clientX + 14) + 'px')
+         .style('top', (event.clientY - 10) + 'px');
+}
+
+function hideTooltip() {
+  tooltip.classed('visible', false);
+}
+
+// ── DEPARTMENT DETAIL ───────────────────────────────────────────
+function selectDept(data) {
+  selectedDept = data;
+  var el = document.getElementById('dept-detail');
+  var costPer = Math.round(data.budget / data.fte);
+  var facingLabel = data.facing === 'internal' ? 'Internal-Facing'
+                  : data.facing === 'external' ? 'External-Facing'
+                  : 'Mixed / Infrastructure';
+
+  var posHtml = '';
+  if (data.positions) {
+    posHtml = '<div class="position-list">';
+    data.positions.forEach(function(p) {
+      posHtml += '<div class="position-item"><span class="pos-title">' + p.title + '</span><span class="pos-count">' + p.count + '</span></div>';
+    });
+    posHtml += '</div>';
+  }
+
+  el.innerHTML =
+    '<span class="dept-facing-badge ' + data.facing + '">' + facingLabel + '</span>' +
+    '<div class="dept-detail-name">' + data.name + '</div>' +
+    '<div class="dept-detail-grid">' +
+      '<div class="dept-metric"><div class="metric-value">' + data.fte + '</div><div class="metric-label">FT Positions</div></div>' +
+      '<div class="dept-metric"><div class="metric-value">$' + (data.budget / 1000).toFixed(1) + 'M</div><div class="metric-label">Budget</div></div>' +
+      '<div class="dept-metric"><div class="metric-value">$' + costPer + 'K</div><div class="metric-label">Cost / Position</div></div>' +
+      '<div class="dept-metric"><div class="metric-value">' + data.trend.join(' &rarr; ') + '</div><div class="metric-label">3yr Trend</div></div>' +
+    '</div>' +
+    posHtml;
+
+  el.classList.remove('visible');
+  requestAnimationFrame(function() { el.classList.add('visible'); });
+  renderPack();
+}
+
+// ── SIZE TOGGLE ─────────────────────────────────────────────────
+document.querySelectorAll('#size-toggle .toggle-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#size-toggle .toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+    sizeMode = this.getAttribute('data-mode');
+    renderPack();
+  });
+});
+
+// ── WHAT-IF SLIDERS ─────────────────────────────────────────────
+function buildWhatIfSliders() {
+  var container = document.getElementById('what-if-sliders');
+  var targets = ['Police', 'Fire', 'PW', 'IT', 'CommDev', 'Parks'];
+  var targetDepts = departments.filter(function(d) { return targets.indexOf(d.shortName) !== -1; });
+
+  targetDepts.forEach(function(dept) {
+    var row = document.createElement('div');
+    row.className = 'slider-row';
+    row.innerHTML =
+      '<span class="slider-label">' + dept.shortName + '</span>' +
+      '<input type="range" min="0" max="4" value="0" data-dept="' + dept.shortName + '">' +
+      '<span class="slider-value" id="wif-' + dept.shortName + '">0</span>';
+    container.appendChild(row);
+  });
+
+  container.querySelectorAll('input[type="range"]').forEach(function(slider) {
+    slider.addEventListener('input', function() {
+      var dept = this.getAttribute('data-dept');
+      var val = parseInt(this.value);
+      whatIfAlloc[dept] = val;
+      document.getElementById('wif-' + dept).textContent = val;
+      updateWhatIfCost();
+      renderPack();
+    });
+  });
+}
+
+function updateWhatIfCost() {
+  var total = 0;
+  Object.keys(whatIfAlloc).forEach(function(k) { total += whatIfAlloc[k]; });
+  var cost = total * 216;
+  var el = document.getElementById('what-if-cost');
+  var overBudget = total > 7;
+  el.innerHTML = 'Allocated: <strong>' + total + ' of 7</strong> positions &mdash; $' +
+    (cost / 1000).toFixed(1) + 'M of $1.5M' +
+    (overBudget ? ' <span style="color:var(--accent)">(over budget)</span>' : '');
+}
+
+// ── TREND SPARKLINES ────────────────────────────────────────────
+function buildTrends() {
+  var container = document.getElementById('trend-area');
+  var sorted = departments.slice().sort(function(a, b) { return b.fte - a.fte; });
+
+  sorted.forEach(function(dept) {
+    var row = document.createElement('div');
+    row.className = 'trend-row';
+
+    var change = dept.trend[2] - dept.trend[0];
+    var changeClass = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
+    var changeStr = change > 0 ? '+' + change : change === 0 ? '=' : '' + change;
+
+    row.innerHTML =
+      '<span class="trend-dept-name" title="' + dept.name + '">' + dept.shortName + '</span>' +
+      '<svg class="trend-spark" data-values="' + dept.trend.join(',') + '"></svg>' +
+      '<span class="trend-values">' + dept.trend.join(' / ') + '</span>' +
+      '<span class="trend-change ' + changeClass + '">' + changeStr + '</span>';
+
+    container.appendChild(row);
+  });
+
+  // Draw sparklines
+  container.querySelectorAll('.trend-spark').forEach(function(svgEl) {
+    var values = svgEl.getAttribute('data-values').split(',').map(Number);
+    var w = svgEl.clientWidth || 60;
+    var h = 20;
+    var allVals = [];
+    departments.forEach(function(d) { allVals = allVals.concat(d.trend); });
+    var globalMin = d3.min(allVals) - 1;
+    var globalMax = d3.max(allVals) + 1;
+
+    var x = d3.scaleLinear().domain([0, 2]).range([2, w - 2]);
+    var y = d3.scaleLinear().domain([globalMin, globalMax]).range([h - 2, 2]);
+
+    var line = d3.line()
+      .x(function(d, i) { return x(i); })
+      .y(function(d) { return y(d); })
+      .curve(d3.curveMonotoneX);
+
+    var s = d3.select(svgEl).attr('viewBox', '0 0 ' + w + ' ' + h);
+    s.append('path')
+      .datum(values)
+      .attr('d', line)
+      .attr('fill', 'none')
+      .attr('stroke', '#8a8580')
+      .attr('stroke-width', 1.5);
+
+    values.forEach(function(v, i) {
+      s.append('circle')
+        .attr('cx', x(i))
+        .attr('cy', y(v))
+        .attr('r', 2)
+        .attr('fill', i === 2 ? '#1a1a1a' : '#8a8580');
+    });
+  });
+}
+
+// ── COST PER POSITION BAR CHART ─────────────────────────────────
+function buildCostBars() {
+  var container = document.getElementById('cost-per-chart');
+  var sorted = departments.slice().sort(function(a, b) {
+    return (b.budget / b.fte) - (a.budget / a.fte);
+  });
+
+  var maxCost = d3.max(sorted, function(d) { return d.budget / d.fte; });
+
+  sorted.slice(0, 8).forEach(function(dept) {
+    var costPer = Math.round(dept.budget / dept.fte);
+    var pct = (costPer / maxCost) * 100;
+    var row = document.createElement('div');
+    row.className = 'cost-per-row';
+    row.innerHTML =
+      '<span class="cost-dept-name" title="' + dept.name + '">' + dept.shortName + '</span>' +
+      '<div class="cost-bar-track"><div class="cost-bar-fill" style="width:' + pct + '%;background:' + facingColors[dept.facing].main + '"></div></div>' +
+      '<span class="cost-value">$' + costPer + 'K</span>';
+    container.appendChild(row);
+  });
+}
+
+// ── BUDGET SHARE ────────────────────────────────────────────────
+function buildBudgetShare() {
+  var container = document.getElementById('budget-share-chart');
+  var totals = { internal: 0, external: 0, mixed: 0 };
+  var grandTotal = 0;
+  departments.forEach(function(d) {
+    totals[d.facing] += d.budget;
+    grandTotal += d.budget;
+  });
+
+  var items = [
+    { label: 'External-Facing', value: totals.external, color: facingColors.external.main },
+    { label: 'Mixed / Infrastructure', value: totals.mixed, color: facingColors.mixed.main },
+    { label: 'Internal-Facing', value: totals.internal, color: facingColors.internal.main }
+  ];
+
+  items.forEach(function(item) {
+    var pct = (item.value / grandTotal * 100).toFixed(1);
+    var row = document.createElement('div');
+    row.style.cssText = 'margin-bottom: 0.6rem;';
+    row.innerHTML =
+      '<div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.2rem;">' +
+        '<span style="font-size:0.72rem; font-weight:500; color:var(--text-secondary);">' + item.label + '</span>' +
+        '<span style="font-size:0.72rem; font-weight:700; font-variant-numeric:tabular-nums;">$' + (item.value / 1000).toFixed(1) + 'M (' + pct + '%)</span>' +
+      '</div>' +
+      '<div class="cost-bar-track" style="height:8px;"><div class="cost-bar-fill" style="width:' + pct + '%;background:' + item.color + ';height:100%;"></div></div>';
+    container.appendChild(row);
+  });
+}
+
+// ── INIT ────────────────────────────────────────────────────────
+function init() {
+  renderPack();
+  buildWhatIfSliders();
+  buildTrends();
+  buildCostBars();
+  buildBudgetShare();
+}
+
+// Resize handling
+var resizeTimer;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderPack, 150);
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>

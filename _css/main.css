@@ -20,3 +20,45 @@
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   /* (Explicit system stack for consistency with DESIGN.md; equivalent in spirit to Tailwind v4 default ui-sans-serif/system-ui. No custom assets.) */
 }
+
+/* Entity references — typed inline links for civic documents.
+   Uses data-entity attribute for type identification.
+   Kramdown syntax in Markdown:
+
+     [Vallejo](/jurisdictions#vallejo){:data-entity="jurisdiction"}
+     [Vallejo City Council](/bodies/vallejo-city-council){:data-entity="body"}
+     [Solano County](/agencies/solano-county){:data-entity="agency"}
+     [Measure B](/topics/#measure-b){:data-entity="measure"}
+
+   Renders: <a href="..." data-entity="body">Vallejo City Council</a>
+   CSS targets the attribute. Portable, explicit, decoupled from URL structure. */
+
+a[data-entity] {
+  text-decoration: none;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 150ms ease;
+  padding-bottom: 1px;
+}
+
+a[data-entity="jurisdiction"] { border-bottom-color: #0f766e; color: #0f766e; }
+a[data-entity="body"]         { border-bottom-color: #1e40af; color: #1e40af; }
+a[data-entity="agency"]       { border-bottom-color: #475569; border-bottom-style: dashed; color: #374151; }
+a[data-entity="position"]     { border-bottom-color: #7c3aed; color: #7c3aed; }
+a[data-entity="person"]       { border-bottom-color: #0f766e; color: #0f766e; }
+a[data-entity="service"]      { border-bottom-color: #475569; border-bottom-style: dotted; color: #374151; }
+a[data-entity="project"]      { border-bottom-color: #0f766e; border-bottom-style: dotted; color: #0f766e; }
+a[data-entity="measure"]      { border-bottom-color: #854d0e; color: #854d0e; }
+a[data-entity="program"]      { border-bottom-color: #854d0e; border-bottom-style: dotted; color: #854d0e; }
+
+/* Explicit classes for metadata strip (Liquid includes, not Markdown) */
+.entity {
+  text-decoration: none;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 150ms ease;
+  padding-bottom: 1px;
+}
+.entity--city    { border-bottom-color: #0f766e; color: #0f766e; }
+.entity--body    { border-bottom-color: #1e40af; color: #1e40af; }
+.entity--agency  { border-bottom-color: #475569; border-bottom-style: dashed; color: #374151; }
+.entity--measure { border-bottom-color: #854d0e; color: #854d0e; }
+.entity--project { border-bottom-color: #0f766e; border-bottom-style: dotted; color: #0f766e; }

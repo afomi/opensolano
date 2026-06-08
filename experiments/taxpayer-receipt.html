@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taxpayer Receipt — Vacaville FY2024-25</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f5f2ed;
+    --paper-warm: #efe9df;
+    --rule: #c4bdb0;
+    --muted: #7a7263;
+    --blue-deep: #1e3a5f;
+    --blue-mid: #2d6a9f;
+    --teal: #1a7a6d;
+    --teal-light: #2aa393;
+    --amber: #c4710a;
+    --amber-light: #e8940e;
+    --amber-glow: #fef3e0;
+    --pension-red: #b85430;
+    --pension-bg: rgba(184, 84, 48, 0.08);
+    --new-tax-bg: rgba(196, 113, 10, 0.06);
+    --serif: 'Source Serif 4', Georgia, serif;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--serif);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* --- HEADER --- */
+  .header {
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .header h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .header-sub {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-top: 0.35rem;
+    font-style: italic;
+  }
+
+  /* --- TOGGLE --- */
+  .toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+
+  .toggle-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.3s;
+    user-select: none;
+  }
+
+  .toggle-label.active {
+    color: var(--ink);
+  }
+
+  .toggle-label.proposed-label.active {
+    color: var(--amber);
+  }
+
+  .toggle-switch {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--blue-deep);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .toggle-switch input:checked + .toggle-track {
+    background: var(--amber);
+  }
+
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .toggle-switch input:checked + .toggle-track::after {
+    transform: translateX(24px);
+  }
+
+  .toggle-delta {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--amber);
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.4s;
+    margin-left: auto;
+  }
+
+  .toggle-delta.visible {
+    opacity: 1;
+  }
+
+  /* --- SANKEY CONTAINER --- */
+  .sankey-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .sankey-container {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.5rem 1rem;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  .sankey-container svg {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .sankey-section-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Sankey tooltip */
+  .sankey-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  /* --- PENSION OVERLAY CALLOUT --- */
+  .pension-callout {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    background: var(--pension-bg);
+    border-left: 3px solid var(--pension-red);
+    margin-top: 1rem;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .pension-callout-marker {
+    width: 12px;
+    height: 12px;
+    border: 2px dashed var(--pension-red);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .pension-callout p {
+    font-size: 0.88rem;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  .pension-callout strong {
+    font-weight: 600;
+    color: var(--pension-red);
+  }
+
+  /* --- RECEIPT --- */
+  .receipt-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .receipt {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    max-width: 520px;
+  }
+
+  .receipt-header {
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px dashed var(--rule);
+    text-align: center;
+  }
+
+  .receipt-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .receipt-city {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 0.15rem;
+  }
+
+  .receipt-fy {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+
+  .receipt-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .receipt-input-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .receipt-input {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 600;
+    width: 7rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--ink);
+    text-align: right;
+  }
+
+  .receipt-input:focus {
+    outline: none;
+    border-color: var(--blue-mid);
+    box-shadow: 0 0 0 2px rgba(45, 106, 159, 0.15);
+  }
+
+  .receipt-body {
+    padding: 0.75rem 0;
+  }
+
+  .receipt-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.45rem 1.5rem;
+    font-size: 0.88rem;
+    transition: background 0.3s;
+  }
+
+  .receipt-line:hover {
+    background: var(--paper);
+  }
+
+  .receipt-line-label {
+    color: var(--ink);
+    flex: 1;
+    padding-right: 1rem;
+  }
+
+  .receipt-line-amount {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .receipt-line-delta {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--amber);
+    font-weight: 600;
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+
+  .receipt-line-delta.visible {
+    opacity: 1;
+  }
+
+  .receipt-line.pension-line {
+    background: var(--pension-bg);
+    border-left: 2px solid var(--pension-red);
+    margin: 0.25rem 0;
+    padding-left: calc(1.5rem - 2px);
+  }
+
+  .receipt-line.pension-line .receipt-line-label {
+    color: var(--pension-red);
+    font-style: italic;
+  }
+
+  .receipt-line.pension-line .receipt-line-amount {
+    color: var(--pension-red);
+  }
+
+  .receipt-divider {
+    border: none;
+    border-top: 1px dashed var(--rule);
+    margin: 0.25rem 1.5rem;
+  }
+
+  .receipt-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-top: 2px solid var(--ink);
+    margin: 0.25rem 0 0;
+  }
+
+  .receipt-total .receipt-line-amount {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .receipt-footer {
+    padding: 0.75rem 1.5rem 1rem;
+    border-top: 1px dashed var(--rule);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* --- VENDOR FEE CALLOUT --- */
+  .vendor-callout {
+    max-width: 520px;
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--new-tax-bg);
+    border: 1px solid rgba(196, 113, 10, 0.2);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 2px 2px 0;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s, max-height 0.5s, margin 0.5s, padding 0.5s;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .vendor-callout.visible {
+    opacity: 1;
+    max-height: 300px;
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .vendor-callout-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+  }
+
+  .vendor-callout p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .vendor-callout .figure {
+    font-family: var(--mono);
+    font-weight: 600;
+  }
+
+  .vendor-callout .punchline {
+    display: block;
+    margin-top: 0.5rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  /* --- NEW TAX LINES IN RECEIPT --- */
+  .receipt-line.new-tax {
+    background: var(--new-tax-bg);
+    border-left: 2px solid var(--amber);
+    padding-left: calc(1.5rem - 2px);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: opacity 0.4s, max-height 0.4s, padding 0.4s;
+  }
+
+  .receipt-line.new-tax.visible {
+    opacity: 1;
+    max-height: 3rem;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
+
+  .receipt-line.new-tax .receipt-line-label {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  .receipt-line.new-tax .receipt-line-amount {
+    color: var(--amber);
+  }
+
+  /* --- SUMMARY STATS ROW --- */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1rem 1.25rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .stat-value .stat-delta {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--amber);
+    font-weight: 600;
+    margin-left: 0.35rem;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .stat-value .stat-delta.visible {
+    opacity: 1;
+  }
+
+  .stat-note {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* --- FOOTER --- */
+  .page-footer {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .page-footer a {
+    color: var(--blue-mid);
+    text-decoration: none;
+  }
+
+  .page-footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 640px) {
+    .page { padding: 1.25rem 1rem 3rem; }
+    .header h1 { font-size: 1.6rem; }
+    .toggle-bar { flex-wrap: wrap; gap: 0.5rem; }
+    .toggle-delta { margin-left: 0; width: 100%; text-align: center; margin-top: 0.25rem; }
+    .sankey-container { padding: 1rem 0.5rem; }
+    .receipt { max-width: 100%; }
+    .vendor-callout { max-width: 100%; }
+    .receipt-line { padding: 0.4rem 1rem; }
+    .receipt-total { padding: 0.65rem 1rem; }
+    .receipt-footer { padding: 0.75rem 1rem 1rem; }
+    .receipt-divider { margin: 0.25rem 1rem; }
+    .receipt-header { padding: 1rem 1rem 0.75rem; }
+    .receipt-input-row { padding: 0.75rem 1rem; }
+    .pension-callout { flex-direction: column; gap: 0.5rem; }
+    .receipt-line.pension-line { padding-left: calc(1rem - 2px); }
+    .receipt-line.new-tax { padding-left: calc(1rem - 2px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">OpenSolano / Civic Data</div>
+    <h1>Where Your Tax Dollars Go</h1>
+    <div class="header-sub">City of Vacaville General Fund, FY 2024 -- 25</div>
+  </div>
+
+  <!-- SUMMARY STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">General Fund Revenue</div>
+      <div class="stat-value" id="stat-revenue">$131.4M<span class="stat-delta" id="delta-revenue"></span></div>
+      <div class="stat-note">All sources, current fiscal year</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Per Capita Contribution</div>
+      <div class="stat-value" id="stat-percapita">$1,268<span class="stat-delta" id="delta-percapita"></span></div>
+      <div class="stat-note">Population: 103,590</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pension + OPEB Share</div>
+      <div class="stat-value">33.2%</div>
+      <div class="stat-note">$42.8M of $128.9M expenditures</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Unfunded Liability / Capita</div>
+      <div class="stat-value">$3,493</div>
+      <div class="stat-note">Pension $286.5M + OPEB $74.4M</div>
+    </div>
+  </div>
+
+  <!-- TOGGLE -->
+  <div class="toggle-bar">
+    <span class="toggle-label current-label active" id="label-current">Current Budget</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="toggle-proposed">
+      <span class="toggle-track"></span>
+    </label>
+    <span class="toggle-label proposed-label" id="label-proposed">With Proposed Taxes</span>
+    <span class="toggle-delta" id="toggle-delta">+$5.4M new revenue</span>
+  </div>
+
+  <!-- SANKEY -->
+  <div class="sankey-section">
+    <div class="sankey-section-title">Revenue Sources &rarr; General Fund &rarr; Expenditures</div>
+    <div class="sankey-container" id="sankey-container">
+      <div class="sankey-tooltip" id="sankey-tooltip"></div>
+    </div>
+    <div class="pension-callout">
+      <div class="pension-callout-marker"></div>
+      <p>
+        <strong>$42.8M in pension and retiree health costs</strong> are embedded across department budgets.
+        That's $413 per resident per year, flowing through every service line &mdash; not visible in any city budget summary.
+        The dashed overlay shows this hidden layer.
+      </p>
+    </div>
+  </div>
+
+  <!-- RECEIPT -->
+  <div class="receipt-section">
+    <div class="sankey-section-title">Your Personal Taxpayer Receipt</div>
+    <div class="receipt" id="receipt">
+      <div class="receipt-header">
+        <div class="receipt-title">Taxpayer Receipt</div>
+        <div class="receipt-city">City of Vacaville</div>
+        <div class="receipt-fy">Fiscal Year 2024-25</div>
+      </div>
+      <div class="receipt-input-row">
+        <span class="receipt-input-label">Your annual tax contribution</span>
+        <span style="font-family: var(--mono); font-size: 1.1rem; font-weight: 600; color: var(--muted);">$</span>
+        <input
+          type="text"
+          class="receipt-input"
+          id="tax-input"
+          value="1,268"
+          inputmode="numeric"
+          aria-label="Annual tax contribution in dollars">
+      </div>
+      <div class="receipt-body" id="receipt-body">
+        <!-- Populated by JS -->
+      </div>
+      <div class="receipt-footer">
+        Based on City of Vacaville FY2024-25 adopted budget and FY2024 ACFR.<br>
+        Pension/OPEB figures from audited financial statements (measurement date: June 30, 2023).<br>
+        Per-capita default = general fund revenue / population.
+      </div>
+    </div>
+
+    <div class="vendor-callout" id="vendor-callout">
+      <div class="vendor-callout-title">On the $125 Sidewalk Vendor Fee</div>
+      <p>
+        The proposed vendor registration generates an estimated
+        <span class="figure">$0.4M</span> annually &mdash;
+        <span class="figure">0.3%</span> of the general fund.
+        Administrative costs of collection, enforcement, and compliance
+        often approach the revenue generated by fees this small.
+        <span class="punchline">
+          At $125 per vendor, this is less a revenue instrument than a barrier to entry.
+          A registration that exists to regulate, not to fund, should cost what it costs to process &mdash; not what the market will bear.
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    Data sources: City of Vacaville FY2024-25 Adopted Budget; City of Vacaville FY2024 Annual Comprehensive Financial Report (ACFR).<br>
+    Proposed tax estimates are illustrative, based on figures discussed at the March 24, 2026 board meeting.<br>
+    Built by <a href="https://opensolano.org">OpenSolano</a>. View source data and methodology on GitHub.
+  </div>
+
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<script>
+(function() {
+  // =========================================================
+  // DATA
+  // =========================================================
+  var POPULATION = 103590;
+
+  var CURRENT_REVENUES = [
+    { name: 'Sales Tax', value: 45.2, color: '#1e3a5f' },
+    { name: 'Property Tax', value: 33.1, color: '#2d6a9f' },
+    { name: 'Other Taxes', value: 18.4, color: '#3a86c4' },
+    { name: 'Charges for Services', value: 14.2, color: '#1a7a6d' },
+    { name: 'Other Revenue', value: 20.5, color: '#2aa393' },
+  ];
+
+  var PROPOSED_NEW = [
+    { name: 'Sales Tax Increase', value: 3.2, color: '#c4710a' },
+    { name: 'Hotel Occupancy Tax Increase', value: 1.8, color: '#d4890e' },
+    { name: 'Sidewalk Vendor Fee', value: 0.4, color: '#e8a030' },
+  ];
+
+  var EXPENDITURES = [
+    { name: 'Public Safety', value: 61.8, color: '#1e3a5f' },
+    { name: 'General Government', value: 17.2, color: '#3a6b8c' },
+    { name: 'Community Services', value: 14.7, color: '#1a7a6d' },
+    { name: 'Public Works', value: 12.3, color: '#4a8c6e' },
+    { name: 'Community Development', value: 9.8, color: '#5a9a80' },
+  ];
+
+  // Pension/OPEB embedded costs (proportional to dept budgets)
+  var PENSION_TOTAL = 32.3;
+  var OPEB_TOTAL = 10.5;
+  var PENSION_OPEB_TOTAL = PENSION_TOTAL + OPEB_TOTAL;
+
+  var CURRENT_TOTAL_REV = CURRENT_REVENUES.reduce(function(s, r) { return s + r.value; }, 0);
+  var PROPOSED_TOTAL_NEW = PROPOSED_NEW.reduce(function(s, r) { return s + r.value; }, 0);
+
+  // =========================================================
+  // TOGGLE STATE
+  // =========================================================
+  var proposed = false;
+  var toggle = document.getElementById('toggle-proposed');
+  var labelCurrent = document.getElementById('label-current');
+  var labelProposed = document.getElementById('label-proposed');
+  var toggleDelta = document.getElementById('toggle-delta');
+  var vendorCallout = document.getElementById('vendor-callout');
+
+  toggle.addEventListener('change', function() {
+    proposed = this.checked;
+    labelCurrent.classList.toggle('active', !proposed);
+    labelProposed.classList.toggle('active', proposed);
+    toggleDelta.classList.toggle('visible', proposed);
+    vendorCallout.classList.toggle('visible', proposed);
+
+    // Update stats
+    updateStats();
+    renderSankey();
+    renderReceipt();
+  });
+
+  function updateStats() {
+    var totalRev = CURRENT_TOTAL_REV + (proposed ? PROPOSED_TOTAL_NEW : 0);
+    var perCapita = Math.round(totalRev * 1000000 / POPULATION);
+
+    document.getElementById('stat-revenue').innerHTML =
+      '$' + totalRev.toFixed(1) + 'M' +
+      '<span class="stat-delta ' + (proposed ? 'visible' : '') + '" id="delta-revenue">+$' + PROPOSED_TOTAL_NEW.toFixed(1) + 'M</span>';
+
+    document.getElementById('stat-percapita').innerHTML =
+      '$' + perCapita.toLocaleString() +
+      '<span class="stat-delta ' + (proposed ? 'visible' : '') + '" id="delta-percapita">+$' + Math.round(PROPOSED_TOTAL_NEW * 1000000 / POPULATION) + '</span>';
+  }
+
+  // =========================================================
+  // SANKEY
+  // =========================================================
+  function buildSankeyData() {
+    var nodes = [];
+    var links = [];
+    var nodeMap = {};
+    var idx = 0;
+
+    function addNode(name, type, color) {
+      if (!(name in nodeMap)) {
+        nodeMap[name] = idx;
+        nodes.push({ name: name, type: type, color: color });
+        idx++;
+      }
+      return nodeMap[name];
+    }
+
+    // General Fund hub
+    var gfIdx = addNode('General Fund', 'hub', '#444');
+
+    // Current revenues
+    CURRENT_REVENUES.forEach(function(r) {
+      var i = addNode(r.name, 'revenue', r.color);
+      links.push({ source: i, target: gfIdx, value: r.value, color: r.color, type: 'current' });
+    });
+
+    // Proposed revenues
+    if (proposed) {
+      PROPOSED_NEW.forEach(function(r) {
+        var i = addNode(r.name, 'proposed', r.color);
+        links.push({ source: i, target: gfIdx, value: r.value, color: r.color, type: 'proposed' });
+      });
+    }
+
+    // Expenditures
+    EXPENDITURES.forEach(function(e) {
+      var i = addNode(e.name, 'expenditure', e.color);
+      var expValue = e.value;
+      // If proposed, distribute new revenue proportionally across expenditures
+      if (proposed) {
+        expValue += PROPOSED_TOTAL_NEW * (e.value / EXPENDITURES.reduce(function(s, x) { return s + x.value; }, 0));
+      }
+      links.push({ source: gfIdx, target: i, value: expValue, color: e.color, type: 'current' });
+    });
+
+    return { nodes: nodes, links: links };
+  }
+
+  function renderSankey() {
+    var container = document.getElementById('sankey-container');
+    var tooltip = document.getElementById('sankey-tooltip');
+
+    // Remove old SVG
+    d3.select('#sankey-container svg').remove();
+
+    var containerWidth = container.clientWidth - 32;
+    var width = Math.min(containerWidth, 960);
+    var height = Math.max(400, Math.min(520, width * 0.55));
+
+    var svg = d3.select('#sankey-container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+
+    var data = buildSankeyData();
+
+    var sankey = d3.sankey()
+      .nodeId(function(d) { return d.index; })
+      .nodeWidth(18)
+      .nodePadding(14)
+      .nodeAlign(d3.sankeyJustify)
+      .extent([[1, 8], [width - 1, height - 8]]);
+
+    var graph = sankey({
+      nodes: data.nodes.map(function(d) { return Object.assign({}, d); }),
+      links: data.links.map(function(d) { return Object.assign({}, d); })
+    });
+
+    // Links
+    var link = svg.append('g')
+      .attr('fill', 'none')
+      .selectAll('g')
+      .data(graph.links)
+      .join('g');
+
+    link.append('path')
+      .attr('d', d3.sankeyLinkHorizontal())
+      .attr('stroke', function(d) { return d.color; })
+      .attr('stroke-width', function(d) { return Math.max(1, d.width); })
+      .attr('stroke-opacity', function(d) { return d.type === 'proposed' ? 0.5 : 0.35; })
+      .attr('class', function(d) { return d.type === 'proposed' ? 'proposed-link' : ''; })
+      .on('mouseover', function(event, d) {
+        d3.select(this).attr('stroke-opacity', 0.7);
+        tooltip.style.opacity = 1;
+        tooltip.textContent = d.source.name + ' \u2192 ' + d.target.name + ': $' + d.value.toFixed(1) + 'M';
+        tooltip.style.left = (event.offsetX + 10) + 'px';
+        tooltip.style.top = (event.offsetY - 28) + 'px';
+      })
+      .on('mousemove', function(event) {
+        tooltip.style.left = (event.offsetX + 10) + 'px';
+        tooltip.style.top = (event.offsetY - 28) + 'px';
+      })
+      .on('mouseout', function(event, d) {
+        d3.select(this).attr('stroke-opacity', d.type === 'proposed' ? 0.5 : 0.35);
+        tooltip.style.opacity = 0;
+      });
+
+    // Pension/OPEB overlay (dashed stripes on expenditure links)
+    svg.append('g')
+      .attr('fill', 'none')
+      .selectAll('path')
+      .data(graph.links.filter(function(d) { return d.target.type === 'expenditure'; }))
+      .join('path')
+      .attr('d', d3.sankeyLinkHorizontal())
+      .attr('stroke', '#b85430')
+      .attr('stroke-width', function(d) {
+        // Pension/OPEB proportion of this expenditure
+        var expTotal = EXPENDITURES.reduce(function(s, x) { return s + x.value; }, 0);
+        var ratio = PENSION_OPEB_TOTAL / expTotal;
+        return Math.max(1, d.width * ratio);
+      })
+      .attr('stroke-opacity', 0.25)
+      .attr('stroke-dasharray', '4,4');
+
+    // Nodes
+    var node = svg.append('g')
+      .selectAll('g')
+      .data(graph.nodes)
+      .join('g');
+
+    node.append('rect')
+      .attr('x', function(d) { return d.x0; })
+      .attr('y', function(d) { return d.y0; })
+      .attr('height', function(d) { return Math.max(1, d.y1 - d.y0); })
+      .attr('width', function(d) { return d.x1 - d.x0; })
+      .attr('fill', function(d) { return d.color; })
+      .attr('opacity', function(d) { return d.type === 'proposed' ? 0.85 : 1; })
+      .attr('rx', 1);
+
+    // Proposed nodes get an amber left border accent
+    node.filter(function(d) { return d.type === 'proposed'; })
+      .append('rect')
+      .attr('x', function(d) { return d.x0 - 3; })
+      .attr('y', function(d) { return d.y0; })
+      .attr('height', function(d) { return Math.max(1, d.y1 - d.y0); })
+      .attr('width', 3)
+      .attr('fill', '#c4710a')
+      .attr('rx', 1);
+
+    // Labels
+    node.append('text')
+      .attr('x', function(d) { return d.x0 < width / 2 ? d.x0 - 6 : d.x1 + 6; })
+      .attr('y', function(d) { return (d.y1 + d.y0) / 2; })
+      .attr('dy', '0.35em')
+      .attr('text-anchor', function(d) { return d.x0 < width / 2 ? 'end' : 'start'; })
+      .attr('font-family', "'IBM Plex Mono', monospace")
+      .attr('font-size', function(d) {
+        if (width < 500) return '8px';
+        return d.type === 'hub' ? '11px' : '10px';
+      })
+      .attr('font-weight', function(d) { return d.type === 'hub' ? 600 : 500; })
+      .attr('fill', function(d) {
+        if (d.type === 'proposed') return '#c4710a';
+        return '#1a1a1a';
+      })
+      .text(function(d) {
+        var val = d.value || 0;
+        if (d.type === 'hub') return d.name;
+        return d.name + '  $' + val.toFixed(1) + 'M';
+      });
+  }
+
+  // =========================================================
+  // RECEIPT
+  // =========================================================
+  function parseAmount(str) {
+    return parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+  }
+
+  function formatDollars(n) {
+    if (n >= 1000) return '$' + Math.round(n).toLocaleString();
+    if (n >= 100) return '$' + Math.round(n).toLocaleString();
+    if (n >= 1) return '$' + n.toFixed(2);
+    return '$' + n.toFixed(2);
+  }
+
+  function renderReceipt() {
+    var input = document.getElementById('tax-input');
+    var contribution = parseAmount(input.value);
+    var body = document.getElementById('receipt-body');
+
+    var totalRev = CURRENT_TOTAL_REV;
+    var totalRevProposed = CURRENT_TOTAL_REV + PROPOSED_TOTAL_NEW;
+    var share = contribution / (totalRev * 1000000);
+    var shareProposed = contribution / (totalRevProposed * 1000000);
+
+    var totalExpM = EXPENDITURES.reduce(function(s, x) { return s + x.value; }, 0);
+
+    var lines = [];
+
+    // Expenditure lines
+    EXPENDITURES.forEach(function(e) {
+      var pct = e.value / totalExpM;
+      var amount = contribution * pct;
+      var amountProposed = (contribution + Math.round(PROPOSED_TOTAL_NEW * 1000000 / POPULATION)) * pct;
+      var delta = amountProposed - amount;
+      lines.push({
+        label: e.name,
+        amount: amount,
+        delta: delta,
+        type: 'normal'
+      });
+    });
+
+    // Pension/OPEB as embedded overlay
+    var pensionPct = PENSION_TOTAL / totalExpM;
+    var opebPct = OPEB_TOTAL / totalExpM;
+    var pensionAmt = contribution * pensionPct;
+    var opebAmt = contribution * opebPct;
+
+    var html = '';
+
+    lines.forEach(function(line) {
+      html += '<div class="receipt-line">' +
+        '<span class="receipt-line-label">' + line.label + '</span>' +
+        '<span class="receipt-line-amount">' + formatDollars(line.amount) + '</span>' +
+        '<span class="receipt-line-delta ' + (proposed ? 'visible' : '') + '">' +
+          (line.delta > 0.005 ? '+' + formatDollars(line.delta) : '') +
+        '</span>' +
+      '</div>';
+    });
+
+    html += '<hr class="receipt-divider">';
+
+    // Pension/OPEB lines
+    html += '<div class="receipt-line pension-line">' +
+      '<span class="receipt-line-label">incl. Pension Contributions</span>' +
+      '<span class="receipt-line-amount">' + formatDollars(pensionAmt) + '</span>' +
+      '<span class="receipt-line-delta"></span>' +
+    '</div>';
+    html += '<div class="receipt-line pension-line">' +
+      '<span class="receipt-line-label">incl. Retiree Health (OPEB)</span>' +
+      '<span class="receipt-line-amount">' + formatDollars(opebAmt) + '</span>' +
+      '<span class="receipt-line-delta"></span>' +
+    '</div>';
+
+    // Proposed new tax lines
+    html += '<hr class="receipt-divider">';
+    PROPOSED_NEW.forEach(function(r) {
+      var perCapita = r.value * 1000000 / POPULATION;
+      html += '<div class="receipt-line new-tax ' + (proposed ? 'visible' : '') + '">' +
+        '<span class="receipt-line-label">' + r.name + '</span>' +
+        '<span class="receipt-line-amount">+' + formatDollars(perCapita) + '</span>' +
+        '<span class="receipt-line-delta"></span>' +
+      '</div>';
+    });
+
+    // Total
+    var total = contribution;
+    if (proposed) {
+      total += Math.round(PROPOSED_TOTAL_NEW * 1000000 / POPULATION);
+    }
+    html += '<div class="receipt-total">' +
+      '<span class="receipt-line-label">' + (proposed ? 'Total with proposed taxes' : 'Total') + '</span>' +
+      '<span class="receipt-line-amount">' + formatDollars(total) + '</span>' +
+      '<span class="receipt-line-delta ' + (proposed ? 'visible' : '') + '">' +
+        (proposed ? '+' + formatDollars(Math.round(PROPOSED_TOTAL_NEW * 1000000 / POPULATION)) : '') +
+      '</span>' +
+    '</div>';
+
+    body.innerHTML = html;
+  }
+
+  // Input handling
+  var taxInput = document.getElementById('tax-input');
+  taxInput.addEventListener('input', function() {
+    renderReceipt();
+  });
+  taxInput.addEventListener('focus', function() {
+    this.select();
+  });
+
+  // =========================================================
+  // INIT
+  // =========================================================
+  renderSankey();
+  renderReceipt();
+
+  // Responsive redraw
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      renderSankey();
+    }, 200);
+  });
+})();
+</script>
+
+</body>
+</html>

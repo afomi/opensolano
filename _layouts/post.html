@@ -66,6 +66,28 @@ title: Blog Post
       </div>
     </div>
 
+    {% if page.image %}
+    <figure class="my-8 -mx-4 sm:-mx-8">
+      <div class="border border-gray-200 bg-gray-50 overflow-hidden">
+        <img
+          src="{{ page.image }}"
+          alt="{{ page.image_alt | default: page.title | append: ' illustration' }}"
+          class="w-full h-auto block"
+          loading="eager"
+        >
+      </div>
+      {% if page.image_caption %}
+      <figcaption class="mt-2 px-4 sm:px-8 text-[11px] uppercase tracking-wide text-gray-500">
+        {{ page.image_caption }}
+      </figcaption>
+      {% endif %}
+    </figure>
+    {% endif %}
+
+    {% include post-entities.html %}
+
+    {% include key-figures.html %}
+
     <!-- Article Content -->
     <div class="mt-10 prose prose-lg prose-indigo mx-auto max-w-none">
       {{ content }}

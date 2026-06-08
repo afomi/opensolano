@@ -48,7 +48,7 @@ description: "Open-source governance analysis for Fairfield, Vallejo, Vacaville,
         {% for post in site.posts limit:3 %}
         <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
           <img
-            src="/assets/images/1-home.png"
+            src="{% if post.image %}{{ post.image }}{% else %}/assets/images/1-home.png{% endif %}"
             alt=""
             class="absolute inset-0 -z-10 h-full w-full object-cover {% if forloop.first %}{% else %}opacity-60{% endif %}">
           <div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
@@ -84,9 +84,24 @@ description: "Open-source governance analysis for Fairfield, Vallejo, Vacaville,
         {% endfor %}
       </div>
 
-      <div class="mt-10 flex justify-center">
-        <a href="/blog" class="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-          View all analysis <span aria-hidden="true">→</span>
+      <div class="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3">
+        <a
+          href="/blog"
+          class="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        >
+          View the blog <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a
+          href="/contribute"
+          class="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        >
+          Suggest a topic <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a
+          href="/contribute"
+          class="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        >
+          Contribute an article <span aria-hidden="true">&rarr;</span>
         </a>
       </div>
     </div>

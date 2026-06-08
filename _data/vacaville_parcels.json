@@ -1,6 +1,19 @@
 {
-  "count": 7,
+  "count": 8,
   "parcels": [
+    {
+      "slug": "main-st-suite-d-0130098060",
+      "address": "Main St, Suite D",
+      "city": "Vacaville",
+      "lat": 38.356482,
+      "lng": -121.987890,
+      "description": "Vacant suite in downtown Vacaville. Previously a real estate office.",
+      "acres": 0.05,
+      "zoning": "Commercial",
+      "type": "vacant",
+      "apn": "0130098060",
+      "images": []
+    },
     {
       "slug": "main-st-549",
       "address": "549 Main St",

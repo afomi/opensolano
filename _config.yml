@@ -48,3 +48,4 @@ page_gen:
 exclude:
   - package.json
   - package-lock.json
+  - tmp/

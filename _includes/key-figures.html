@@ -1,0 +1,19 @@
+{% if page.key_figures and page.key_figures.size > 0 %}
+<div
+  class="key-figures border border-gray-200 bg-gray-50 p-4 my-8"
+  aria-label="Key figures"
+>
+  <div class="grid grid-cols-2 sm:grid-cols-{{ page.key_figures.size | at_most: 4 }} gap-4 text-center">
+    {% for fig in page.key_figures %}
+    <div class="px-2">
+      <div class="text-2xl font-semibold tabular-nums text-gray-900">
+        {{ fig.value }}
+      </div>
+      <div class="mt-1 text-[11px] uppercase tracking-wide text-gray-500">
+        {{ fig.label }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
