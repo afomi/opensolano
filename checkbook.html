@@ -162,6 +162,33 @@ permalink: /public-funds/checkbook/
     z-index: 1;
   }
 
+  .cbx-date-range {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.85rem;
+    margin-top: 1.75rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cbx-date-range-label {
+    color: var(--cbx-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cbx-date-range-value {
+    color: var(--cbx-ink);
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
   .cbx-metric-grid {
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   }
@@ -190,9 +217,11 @@ permalink: /public-funds/checkbook/
 
   .cbx-metric-value,
   .cbx-story-value {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: clamp(1.7rem, 3vw, 2.4rem);
-    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     line-height: 1;
     margin: 0 0 0.45rem;
   }
@@ -565,11 +594,17 @@ permalink: /public-funds/checkbook/
           <p class="cbx-source-copy">
             Load the raw file, inspect the biggest relationships, and click any row below to spotlight that vendor or fund.
           </p>
+          <p class="cbx-source-copy">
+            Exported 2026-04-08 from the City of Vacaville's open-spending portal
+            (<a href="https://cityofvacaville-ca.spending.socrata.com/" rel="noreferrer">cityofvacaville-ca.spending.socrata.com</a>),
+            a Socrata-hosted checkbook of vendor payments by fund. Columns: Vendor, Fund, Check #, Date, Amount.
+          </p>
           <a href="{{ '/checkbook_data_2026-04-08.csv' | relative_url }}">Open the raw CSV</a>
           <span id="cbx-status" class="cbx-status">Loading data...</span>
         </aside>
       </div>
 
+      <div id="cbx-date-range" class="cbx-date-range" aria-live="polite"></div>
       <div id="cbx-metrics" class="cbx-metric-grid" aria-live="polite"></div>
     </div>
   </section>
@@ -761,6 +796,7 @@ permalink: /public-funds/checkbook/
 
     const els = {
       status: document.getElementById("cbx-status"),
+      dateRange: document.getElementById("cbx-date-range"),
       metrics: document.getElementById("cbx-metrics"),
       insights: document.getElementById("cbx-insights"),
       vendorRows: document.getElementById("cbx-vendor-rows"),
@@ -1073,12 +1109,24 @@ permalink: /public-funds/checkbook/
     }
 
     function renderAll() {
+      renderDateRange();
       renderMetrics();
       renderInsights();
       renderVendorTable();
       renderFundTable();
       renderSpotlight();
       renderTransactions();
+    }
+
+    function renderDateRange() {
+      const { dateRange } = state.data;
+      // Large textual date span shown above the metric grid. Earliest-to-latest
+      // payment date in the export. Future: make this an interactive date-range
+      // filter/selector that scopes every metric and table below.
+      els.dateRange.innerHTML = `
+        <span class="cbx-date-range-label">Payments dated</span>
+        <span class="cbx-date-range-value" title="Earliest to latest payment date in the export">${escapeHtml(formatDate(dateRange.min))} – ${escapeHtml(formatDate(dateRange.max))}</span>
+      `;
     }
 
     function renderMetrics() {
@@ -1103,11 +1151,6 @@ permalink: /public-funds/checkbook/
           label: "Funds used",
           value: integer.format(data.fundCount),
           hint: "Distinct funds represented"
-        },
-        {
-          label: "Date span",
-          value: `${formatDate(data.dateRange.min)} to ${formatDate(data.dateRange.max)}`,
-          hint: "Earliest to latest payment date"
         },
         {
           label: "Average line",

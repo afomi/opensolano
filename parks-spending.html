@@ -1,0 +1,140 @@
+---
+layout: default
+title: "Parks Spending Metrics — Vacaville"
+description: "How much does Vacaville spend on parks? Citizen-centered metrics — total parks spending, cost per park, and cost per acre — built from the FY2025-26 budget and the city's own GIS acreage."
+permalink: /parks-spending/
+---
+
+{% assign m = site.data.parks_metrics %}
+
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-green-100/20">
+  </div>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-8">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-green-600 text-white text-3xl shadow-lg">
+        🌳
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Parks Spending</h1>
+        <p class="mt-2 text-lg leading-8 text-gray-600">What it costs to run Vacaville's parks, per park and per acre.</p>
+      </div>
+    </div>
+
+    <!-- Intent -->
+    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-8">
+      <p class="text-base text-gray-700 leading-relaxed">
+        These are deliberately simple, objective metrics — not a perfect cost model.
+        The goal is to give residents and commissioners intuitive numbers they can reason about:
+        roughly what does a park cost, and how does spending compare across parks of different sizes.
+      </p>
+      <p class="text-sm text-gray-500 mt-3 leading-relaxed">
+        Parks money lives in three places in the budget, so looking at only the "Parks &amp; Recreation Department" line
+        undercounts the real cost by nearly half. The totals below combine all three.
+      </p>
+    </div>
+
+    <!-- Headline metrics -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Total Parks Spending</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.total_spending_millions }}M</div>
+        <div class="text-xs text-gray-400 mt-1">{{ m.fiscal_year }}</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Cost per Park</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.cost_per_park | round }}</div>
+        <div class="text-xs text-gray-400 mt-1">{{ m.totals.active_parks }} developed parks</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Cost per Acre (all-in)</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.cost_per_acre | round }}</div>
+        <div class="text-xs text-gray-400 mt-1">{{ m.totals.active_acres | round }} developed acres</div>
+      </div>
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-500">Maintenance per Acre</div>
+        <div class="text-2xl font-bold text-gray-900 mt-1">${{ m.totals.maintenance_per_acre | round }}</div>
+        <div class="text-xs text-gray-400 mt-1">grounds upkeep only</div>
+      </div>
+    </div>
+
+    <!-- Where the money is -->
+    <h2 class="text-xl font-bold text-gray-900 mb-3">Where the money is</h2>
+    <div class="grid gap-4 sm:grid-cols-3 mb-8">
+      {% for unit in m.budget_units %}
+      <div class="bg-white border border-gray-200 rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-900">{{ unit.name }}</div>
+        <div class="text-xl font-bold text-gray-900 mt-1">${{ unit.amount_millions }}M</div>
+        <div class="text-xs text-gray-500 mt-1">{{ unit.department }}</div>
+        <p class="text-xs text-gray-500 mt-2 leading-relaxed">{{ unit.covers }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Per-park / per-zone table -->
+    <h2 class="text-xl font-bold text-gray-900 mb-1">Per-park direct maintenance</h2>
+    <p class="text-sm text-gray-500 mb-4 leading-relaxed">
+      Direct services &amp; supplies for each Lighting &amp; Landscaping assessment zone ({{ m.fiscal_year }}),
+      joined to GIS acreage. This is the closest thing to a per-park line item the city publishes — it excludes
+      shared salaries and indirect costs, so use it for comparing parks to each other, not for absolute cost.
+    </p>
+    <div class="overflow-x-auto bg-white border border-gray-200 rounded-xl mb-2">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left font-semibold text-gray-700">Park / Zone</th>
+            <th class="px-4 py-3 text-right font-semibold text-gray-700">Direct cost</th>
+            <th class="px-4 py-3 text-right font-semibold text-gray-700">Acres</th>
+            <th class="px-4 py-3 text-right font-semibold text-gray-700">$ / acre</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          {% assign sorted_zones = m.zones | sort: "cost" | reverse %}
+          {% for z in sorted_zones %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-gray-900">
+              {% if z.is_park %}
+              <span class="font-medium">{{ z.name }}</span>
+              {% else %}
+              <span class="text-gray-500">{{ z.name }}</span>
+              <span class="ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-500">non-park</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-3 text-right tabular-nums text-gray-900">${{ z.cost }}</td>
+            <td class="px-4 py-3 text-right tabular-nums text-gray-600">
+              {% if z.acres %}{{ z.acres }}{% else %}—{% endif %}
+            </td>
+            <td class="px-4 py-3 text-right tabular-nums text-gray-600">
+              {% if z.cost_per_acre %}${{ z.cost_per_acre | round }}{% else %}—{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Caveats -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8">
+      <h3 class="text-base font-semibold text-amber-900 mb-2">How to read these numbers</h3>
+      <ul class="text-sm text-amber-900/90 space-y-1.5 list-disc pl-5 leading-relaxed">
+        <li><strong>Cost per park hides size.</strong> A pocket park and a regional park both count as one. Cost per acre is the fairer peer comparison.</li>
+        <li><strong>Not every assessment zone is a park.</strong> Some are business-park or drainage districts, marked "non-park" above and excluded from the park metrics.</li>
+        <li><strong>Per-zone direct cost is not fully loaded.</strong> Shared staff salaries and indirect costs aren't pushed down to individual parks, so these figures understate true per-park cost.</li>
+        <li><strong>Acreage is computed from the city's GIS</strong> polygon geometry, not a published park inventory, so a few parks may differ slightly from signage.</li>
+      </ul>
+    </div>
+
+    <!-- Sources -->
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+      <h3 class="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">Sources</h3>
+      <ul class="text-xs text-gray-500 space-y-1 leading-relaxed">
+        <li>Budget figures: City of Vacaville <em>FY2025-26 Final Budget Document</em> — Parks &amp; Recreation Department, Parks Maintenance Division (Public Works), and Lighting &amp; Landscaping Districts (printed p.123).</li>
+        <li>Acreage: City of Vacaville GIS parks shapefile, areas computed from polygon geometry (State Plane CA Zone II, US survey feet).</li>
+        <li>Reproducible: parsing scripts in <code>scripts/</code> regenerate <code>_data/parks_metrics.yml</code> each budget cycle.</li>
+      </ul>
+    </div>
+  </section>
+</main>

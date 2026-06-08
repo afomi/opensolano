@@ -1,15 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Organizational Strategy Map — City of Vacaville FY2025-26</title>
+---
+layout: default
+title: "Organizational Strategy Map — City of Vacaville FY2025-26"
+description: "An interactive map of how the City of Vacaville is organized — departments, divisions, and strategic priorities — for the FY2025-26 adopted budget."
+permalink: /experiments/org-strategy.html
+---
+
+<!-- Standalone experiment adapted to the OpenSolano site layout.
+     All of this page's CSS is scoped under .org-strategy-page so the
+     experiment's reset/background/typography cannot leak onto the shared
+     site header, footer, or other pages. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Libre+Franklin:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
-:root {
+.org-strategy-page {
   --internal: #2e4057;
   --internal-light: #4a6a8a;
   --internal-fill: rgba(46, 64, 87, 0.15);
@@ -32,20 +37,23 @@
   --glass-border: rgba(180, 175, 168, 0.35);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+.org-strategy-page * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
+.org-strategy-page {
+  position: relative;
   font-family: 'Libre Franklin', sans-serif;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
   min-height: 100vh;
+  /* top padding clears the site's fixed/overlay header (~7rem) */
+  padding-top: 6rem;
 }
 
 /* Topographic background texture */
-body::before {
+.org-strategy-page::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background:
     repeating-conic-gradient(
@@ -58,9 +66,9 @@ body::before {
   z-index: 0;
 }
 
-body::after {
+.org-strategy-page::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
@@ -658,8 +666,8 @@ body::after {
   .viz-area { padding: 0.5rem; }
 }
 </style>
-</head>
-<body>
+
+<div class="org-strategy-page">
 
 <header class="page-header animate-in">
   <div>
@@ -850,6 +858,7 @@ var departments = [
     shortName: 'Utilities',
     fte: 99,
     budget: 68554,
+    nonPayroll: true, // budget is mostly capital + purchased water/power, not staff pay
     facing: 'mixed',
     trend: [99, 99, 99],
     positions: [
@@ -896,6 +905,7 @@ var departments = [
     shortName: 'Housing',
     fte: 23,
     budget: 44711,
+    nonPayroll: true, // budget is mostly pass-through (vouchers, grants, subsidies), not staff pay
     facing: 'external',
     trend: [22, 23, 23],
     positions: [
@@ -1318,17 +1328,34 @@ function buildCostBars() {
 
   var maxCost = d3.max(sorted, function(d) { return d.budget / d.fte; });
 
+  var hasNonPayroll = false;
   sorted.slice(0, 8).forEach(function(dept) {
     var costPer = Math.round(dept.budget / dept.fte);
     var pct = (costPer / maxCost) * 100;
+    var flagged = !!dept.nonPayroll;
+    if (flagged) hasNonPayroll = true;
+    // Flagged departments spend most of their budget on pass-through dollars
+    // (grants, vouchers, capital, purchased commodities) rather than payroll,
+    // so budget/FTE is not a meaningful "cost per position" — mark it as such.
+    var barColor = flagged ? 'var(--text-muted, #9aa6ab)' : facingColors[dept.facing].main;
+    var caption = flagged
+      ? dept.name + ' — budget is mostly pass-through (grants/capital), not staff pay; budget ÷ FTE overstates cost per position'
+      : dept.name;
     var row = document.createElement('div');
     row.className = 'cost-per-row';
     row.innerHTML =
-      '<span class="cost-dept-name" title="' + dept.name + '">' + dept.shortName + '</span>' +
-      '<div class="cost-bar-track"><div class="cost-bar-fill" style="width:' + pct + '%;background:' + facingColors[dept.facing].main + '"></div></div>' +
-      '<span class="cost-value">$' + costPer + 'K</span>';
+      '<span class="cost-dept-name" title="' + caption + '">' + dept.shortName + (flagged ? ' *' : '') + '</span>' +
+      '<div class="cost-bar-track"><div class="cost-bar-fill" style="width:' + pct + '%;background:' + barColor + (flagged ? ';opacity:0.55' : '') + '"></div></div>' +
+      '<span class="cost-value"' + (flagged ? ' style="color:var(--text-muted, #9aa6ab)"' : '') + '>$' + costPer + 'K</span>';
     container.appendChild(row);
   });
+
+  if (hasNonPayroll) {
+    var note = document.createElement('p');
+    note.style.cssText = 'font-size:0.68rem; line-height:1.5; color:var(--text-secondary); margin:0.7rem 0 0;';
+    note.innerHTML = '* Budget is mostly pass-through dollars (grants, vouchers, capital, purchased water/power), not payroll, so budget ÷ FTE overstates true cost per position.';
+    container.appendChild(note);
+  }
 }
 
 // ── BUDGET SHARE ────────────────────────────────────────────────
@@ -1383,5 +1410,6 @@ if (document.readyState === 'loading') {
   init();
 }
 </script>
-</body>
-</html>
+
+</div>
+<!-- /.org-strategy-page -->
