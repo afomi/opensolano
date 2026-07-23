@@ -1,14 +1,153 @@
 ---
 layout: default
 title: Services
+description: "Public services in Solano County — including Vacaville's free Saturday e-waste drop-off. When a service is available now, OpenSolano surfaces a timely heads-up."
 permalink: /services/
 ---
 
-<main class="isolate">
-  <!-- Hero section -->
-  <div
-    class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-indigo-100/20 pt-14"
-  >
+{% assign ewaste = site.data.services.services | where: "slug", "e-waste-dropoff" | first %}
 
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-indigo-100/20">
   </div>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 text-white text-3xl shadow-lg">
+        🧭
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Services</h1>
+        <p class="mt-2 text-lg leading-8 text-gray-600">Public services across Solano County, surfaced when you need them.</p>
+      </div>
+    </div>
+
+    <!-- Dynamic Saturday nudge — revealed by JS only inside the nudge window. -->
+    {% if ewaste %}
+    <div
+      id="ewaste-nudge"
+      class="hidden mb-8 rounded-xl border border-teal-200 bg-teal-50 px-5 py-4"
+      data-nudge-day="{{ ewaste.nudge.day_of_week }}"
+      data-nudge-start="{{ ewaste.nudge.start }}"
+      data-nudge-end="{{ ewaste.nudge.end }}">
+      <div class="flex items-start gap-3">
+        <span class="text-xl" aria-hidden="true">♻️</span>
+        <div>
+          <p class="text-sm font-semibold text-teal-900">Today in Vacaville</p>
+          <p class="text-sm text-teal-800 leading-relaxed mt-0.5">{{ ewaste.nudge.message }}</p>
+          <a
+            href="#e-waste-dropoff"
+            class="inline-block mt-2 text-sm font-medium text-teal-700 hover:text-teal-800 hover:underline">Details &amp; what's accepted →</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- E-Waste service card -->
+    {% if ewaste %}
+    <article
+      id="e-waste-dropoff"
+      class="bg-white border border-gray-200 rounded-xl p-6 mb-6 scroll-mt-28">
+      <div class="flex items-start justify-between gap-4 mb-3">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">{{ ewaste.name }}</h2>
+          <p class="text-sm text-gray-500 mt-0.5">{{ ewaste.jurisdiction }} · {{ ewaste.provider }}</p>
+        </div>
+        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10 shrink-0">{{ ewaste.cost }}</span>
+      </div>
+
+      <p class="text-gray-700 leading-relaxed mb-5 max-w-prose">{{ ewaste.summary }}</p>
+
+      <dl class="grid gap-5 sm:grid-cols-2 mb-5">
+        <div class="border-l-2 border-teal-700 pl-4">
+          <dt class="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">When</dt>
+          <dd class="text-gray-900 font-medium">{{ ewaste.hours.label }}</dd>
+        </div>
+        <div class="border-l-2 border-slate-200 pl-4">
+          <dt class="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500 mb-1">Where</dt>
+          <dd class="text-gray-900 font-medium">{{ ewaste.location_name }}</dd>
+          {% if ewaste.address %}
+          {%- comment -%}
+            Address is always in the HTML (crawlers, no-JS, provenance) but only
+            shown during the drop-off heads-up window — useful exactly when you're
+            about to make the trip.
+          {%- endcomment -%}
+          <dd
+            id="ewaste-address"
+            class="hidden text-sm text-gray-600 mt-0.5">{{ ewaste.address }}</dd>
+          {% endif %}
+          {% if ewaste.phone %}
+          <dd class="text-sm text-gray-600 mt-0.5">{{ ewaste.phone }}</dd>
+          {% endif %}
+        </div>
+      </dl>
+
+      <div class="mb-4">
+        <h3 class="text-sm font-semibold text-gray-900 mb-2">What's accepted</h3>
+        <ul class="grid gap-1.5 sm:grid-cols-2 text-sm text-gray-700">
+          {% for item in ewaste.accepted_items %}
+          <li class="flex items-start gap-2">
+            <span class="text-green-600 mt-0.5 text-xs">✓</span>
+            <span>{{ item }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% if ewaste.notes %}
+      <ul class="text-sm text-gray-500 space-y-1 list-disc pl-5 mb-4 leading-relaxed">
+        {% for note in ewaste.notes %}
+        <li>{{ note }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <p class="text-xs text-gray-400">
+        Source:
+        <a href="{{ ewaste.source.url }}" class="underline hover:text-gray-600" rel="noreferrer">Recology Vacaville Solano</a>,
+        retrieved {{ ewaste.source.retrieved }}.
+      </p>
+    </article>
+    {% endif %}
+
+    <p class="text-sm text-gray-500 leading-relaxed">
+      More Solano County services will appear here over time. Service data is structured to align with the
+      <a href="https://jurisdictional.org" class="underline hover:text-gray-700" rel="noreferrer">jurisdictional.org</a>
+      public-entity data layer.
+    </p>
+  </section>
 </main>
+
+<script>
+  (function () {
+    var nudge = document.getElementById("ewaste-nudge");
+    if (!nudge) return;
+
+    // Show the heads-up only on the configured day, within [start, end) local time.
+    // Goal: surface useful info exactly when it's actionable — a small positive nudge.
+    var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var targetDay = nudge.dataset.nudgeDay;
+    var start = nudge.dataset.nudgeStart; // "HH:MM"
+    var end = nudge.dataset.nudgeEnd;
+
+    function toMinutes(hhmm) {
+      var parts = hhmm.split(":");
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
+
+    var now = new Date();
+    var isDay = DAYS[now.getDay()] === targetDay;
+    var mins = now.getHours() * 60 + now.getMinutes();
+    var inWindow = mins >= toMinutes(start) && mins < toMinutes(end);
+
+    if (isDay && inWindow) {
+      nudge.classList.remove("hidden");
+      // The exact address is always in the HTML but only surfaced during the
+      // window — shown when you're actually about to head over.
+      var address = document.getElementById("ewaste-address");
+      if (address) address.classList.remove("hidden");
+    }
+  })();
+</script>

@@ -1,0 +1,58 @@
+{% comment %}
+  Lens switcher for the budget-flow experiment pages.
+  Usage: {% include budget-flow-lens-nav.html active="gf" %}
+  active: gf | citywide | acfr
+{% endcomment %}
+<style>
+  .bfs-lens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .bfs-lens a {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #e1e0d9;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #52514e;
+    text-decoration: none;
+    background: #fcfcfb;
+  }
+  .bfs-lens a:hover {
+    border-color: #0f766e;
+    color: #0f766e;
+  }
+  .bfs-lens a.active {
+    background: #0f766e;
+    border-color: #0f766e;
+    color: #fff;
+  }
+</style>
+<nav
+  class="bfs-lens"
+  aria-label="Budget flow lenses">
+  <a
+    href="/experiments/budget-flow.html"
+    {% if include.active == "gf" %}class="active" aria-current="page"{% endif %}>
+    Vacaville · General Fund
+  </a>
+  <a
+    href="/experiments/budget-flow-citywide.html"
+    {% if include.active == "citywide" %}class="active" aria-current="page"{% endif %}>
+    Vacaville · All funds
+  </a>
+  <a
+    href="/experiments/budget-flow-acfr.html"
+    {% if include.active == "acfr" %}class="active" aria-current="page"{% endif %}>
+    Vacaville · FY2024 actuals (ACFR)
+  </a>
+  <a
+    href="/experiments/budget-flow-solano-county.html"
+    {% if include.active == "county" %}class="active" aria-current="page"{% endif %}>
+    Solano County · Governmental funds
+  </a>
+</nav>

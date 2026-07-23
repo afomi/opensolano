@@ -1,0 +1,257 @@
+---
+layout: default
+title: "Budget Flow — Vacaville General Fund FY2025-26"
+description: "An income-statement-style Sankey diagram tracing every dollar of Vacaville's FY2025-26 General Fund from revenue source to department."
+permalink: /experiments/budget-flow.html
+---
+
+<!-- Standalone experiment adapted to the OpenSolano site layout.
+     All CSS is scoped under .page so nothing leaks onto the shared chrome.
+     Chart rendering lives in _includes/budget-flow-sankey.html and is
+     parameterized by jurisdiction so Solano County and the other six
+     cities can be added as new entries in _data/budget_flows.yml. -->
+<style>
+  .page {
+    --surface: #fcfcfb;
+    --plane: #f9f9f7;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --hairline: #e1e0d9;
+    --accent: #0f766e;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--plane);
+    color: var(--ink);
+    padding: 7rem 1rem 4rem;
+  }
+  .page .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .page .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .page h1 {
+    font-size: 2rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+  }
+  .page .sub {
+    color: var(--ink-2);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+  .page .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .page .stat {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+  }
+  .page .stat .k {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .page .stat .v {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .page .stat .n {
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+  .page .card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .page .prose {
+    max-width: 65ch;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .page .prose h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 2rem 0 0.6rem;
+  }
+  .page .prose p {
+    margin: 0 0 0.9rem;
+  }
+  .page .prose ul {
+    margin: 0 0 0.9rem 1.2rem;
+  }
+  .page .prose li {
+    margin-bottom: 0.35rem;
+  }
+  .page .prose a {
+    color: var(--accent);
+  }
+  .page .footnote {
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    border-top: 1px solid var(--hairline);
+    padding-top: 1rem;
+    margin-top: 2rem;
+    max-width: 75ch;
+    line-height: 1.6;
+  }
+</style>
+
+<main
+  class="page">
+  <div
+    class="inner">
+
+    <div
+      class="eyebrow">
+      OpenSolano / Experiments
+    </div>
+    <h1>Where the Money Flows</h1>
+    <p
+      class="sub">
+      Every dollar of the City of Vacaville's FY2025-26 General Fund, traced from revenue source through the fund to the department that spends it.
+      Modeled on the income-statement flow diagrams popularized for public companies — applied here to a public budget.
+    </p>
+
+    {% include budget-flow-lens-nav.html active="gf" %}
+
+    <div
+      class="stats">
+      <div
+        class="stat">
+        <div
+          class="k">Total General Fund</div>
+        <div
+          class="v">$158.4M</div>
+        <div
+          class="n">Official FY2025-26 budget, including Measure M</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Budgeted revenue</div>
+        <div
+          class="v">$145.0M</div>
+        <div
+          class="n">$134.0M revenues + $10.9M transfers in</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Drawn from reserves</div>
+        <div
+          class="v">~$13.4M</div>
+        <div
+          class="n">Spending exceeds revenue; the gap comes from fund balance</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Public safety share</div>
+        <div
+          class="v">66.2%</div>
+        <div
+          class="n">Police + Fire, of departmental spending</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Per resident</div>
+        <div
+          class="v">$1,529</div>
+        <div
+          class="n">Total General Fund &divide; 103,590 population</div>
+      </div>
+    </div>
+
+    <div
+      class="card">
+      {% include budget-flow-sankey.html jurisdiction="vacaville" %}
+    </div>
+
+    <div
+      class="prose">
+      <h2>How to read this</h2>
+      <p>
+        Money flows left to right.
+        The left side is every revenue line the city publishes for the General Fund — taxes, fees, and transfers — grouped by type.
+        The center is the General Fund itself.
+        The right side is where it goes: departments, grouped by function, plus transfers out to capital and equipment funds.
+        Ribbon width is proportional to dollars.
+        Hover any ribbon or bar for exact figures; small lines are bundled in the diagram but itemized in the table above.
+      </p>
+      <p>
+        Two things the shape makes obvious.
+        First, sales taxes (Bradley-Burns plus Measure M) are the city's largest revenue engine at $48.9M — Vacaville is the most sales-tax-dependent of the big Solano cities.
+        Second, Police and Fire together consume $104.0M, about two-thirds of all departmental spending, and more than every tax the city collects except sales and property taxes combined.
+      </p>
+
+      <h2>Methodology &amp; sources</h2>
+      <p>
+        All figures are the FY 2025/26 budget column of the
+        <strong>City of Vacaville FY2025-26 Final Budget Document</strong>
+        (<a href="https://www.ci.vacaville.ca.us/government/finance">Finance Department</a>):
+        the Schedule of General Fund Revenue (p. 9), the Summary of Expenditures by Fund (p. 13), and the Sources and Uses schedules (pp. 14-15).
+        Revenue detail reconciles exactly to the printed $134,038,755 subtotal; department detail reconciles to the printed $157,225,012 subtotal.
+        The data behind this chart lives in
+        <a href="https://github.com/afomi/opensolano">the site repository</a>
+        as a structured file with per-line provenance.
+      </p>
+      <ul>
+        <li>
+          The diagram balances on a gross basis: departmental spending plus transfers out, matched by revenues, transfers in, overhead the General Fund recovers from utility funds ($6.6M), and a balancing draw on reserves (~$13.4M).
+        </li>
+        <li>
+          The city's own Sources and Uses schedule, which nets transfers differently, states the planned use of fund balance as $8.9M.
+          Either way the structural fact is the same: FY2025-26 spending exceeds revenue.
+        </li>
+        <li>
+          "Excise taxes" combines Measure I (utility-bill, hotel, and per-employee excise, ~$3.0M) and Measure G (utility franchise excise, ~$6.4M).
+        </li>
+      </ul>
+
+      <h2>Other lenses on the same money</h2>
+      <p>
+        The General Fund is about half the city's total budget.
+        The <a href="/experiments/budget-flow-citywide.html">all-funds lens</a> shows the full $301M and which fund pays for what;
+        the <a href="/experiments/budget-flow-acfr.html">ACFR lens</a> shows audited FY2024 actuals and the net cost of each city function.
+      </p>
+
+      <h2>What's next</h2>
+      <p>
+        This is the first jurisdiction in a series.
+        The data schema is jurisdiction-agnostic, so the same diagrams can render Solano County's budget next, then each of the seven Solano cities, from their adopted budget documents.
+        The longer arc is to generalize the pattern for any U.S. public jurisdiction.
+      </p>
+    </div>
+
+    <div
+      class="footnote">
+      Built from the adopted budget, not audited actuals — actuals land later in the ACFR and will differ.
+      Figures are budget-year appropriations as published by the city; the reserve-draw line is derived and marked as such in the data file.
+      Questions or corrections: <a href="mailto:ryan@civic.studio">ryan@civic.studio</a>.
+    </div>
+
+  </div>
+</main>

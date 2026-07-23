@@ -1,0 +1,781 @@
+# Budget flow data for "Where the Money Flows" Sankey diagrams.
+#
+# Schema (designed to generalize: Vacaville -> Solano County -> each Solano
+# city -> any U.S. jurisdiction via jurisdictional.org):
+#
+#   jurisdictions:          list; one entry per jurisdiction + fund + fiscal year
+#     slug                  stable key used by the include param
+#     name / fund / fiscal_year / population
+#     hub_label             center node label (e.g. "General Fund")
+#     total_official        the jurisdiction's own published total for the fund
+#     source:               provenance block (required — every figure traceable)
+#     groups:               ordered list; display + color-slot order.
+#                           side: revenue | spending. Color slots are assigned
+#                           by list order (validated 8-slot categorical palette),
+#                           so keep total colored groups <= 8; groups with
+#                           neutral: true render gray (flow-through, not a series).
+#     flows:                detail line items; each belongs to a group.
+#                           amount in exact dollars as published.
+#                           derived: true marks a balancing figure computed from
+#                           published schedules rather than printed directly —
+#                           always pair with a note.
+#
+# All Vacaville FY2025-26 figures are the "FY 2025/26 Proposed Budget" column
+# of the Final Budget Document summary schedules, cross-checked against the
+# printed subtotals (they reconcile to the dollar; see notes).
+
+jurisdictions:
+  - slug: vacaville
+    name: City of Vacaville
+    fund: General Fund (including Measure M)
+    fiscal_year: FY2025-26
+    population: 103590
+    hub_label: General Fund
+    total_official: 158392508
+    source:
+      title: City of Vacaville FY2025-26 Final Budget Document
+      publisher: City of Vacaville Finance Department
+      url: https://www.ci.vacaville.ca.us/government/finance
+      pages: >-
+        Schedule of General Fund Revenue (p. 9); Summary of Expenditures by
+        Department (p. 11); Summary of Expenditures by Fund (p. 13); Sources
+        and Uses — General Fund Operations (pp. 14-15)
+      basis: FY 2025/26 Proposed Budget column, Final (adopted) budget
+      retrieved: "2026-07-22"
+      notes: >-
+        Revenue detail sums to the printed $134,038,755 subtotal exactly.
+        General Fund department detail sums to the printed $157,225,012
+        subtotal (within $1 of printed rounding). Official total General Fund
+        budget: $158,392,508 = departments $157,225,012 + transfers out
+        $7,742,416 - internal cost allocation $6,574,920.
+
+    groups:
+      - key: taxes
+        label: Taxes
+        side: revenue
+      - key: fees
+        label: Fees & charges
+        side: revenue
+      - key: other-revenue
+        label: Other revenue
+        side: revenue
+      - key: transfers-reserves
+        label: Transfers & reserves
+        side: revenue
+      - key: public-safety
+        label: Public safety
+        side: spending
+      - key: public-works
+        label: Public works
+        side: spending
+      - key: community
+        label: Community services
+        side: spending
+      - key: administration
+        label: Administration
+        side: spending
+      - key: transfers-out
+        label: Transfers out
+        side: spending
+        neutral: true
+        direct: true
+
+    flows:
+      # ---- Revenue side (Schedule of General Fund Revenue, FY 2025/26 column)
+      - name: Sales tax (Bradley-Burns)
+        amount: 27506262
+        group: taxes
+      - name: Measure M sales tax
+        amount: 21348950
+        group: taxes
+      - name: Property tax
+        amount: 21100471
+        group: taxes
+      - name: Property tax in lieu of VLF
+        amount: 15057016
+        group: taxes
+      - name: Excise taxes (Measures I & G)
+        amount: 9409983
+        group: taxes
+        note: >-
+          Measure I (1989/2012) utility-bill, hotel, and per-employee excise
+          (~$3.0M) plus Measure G (2005) utility franchise/excise (~$6.4M).
+      - name: Paramedic tax
+        amount: 7312900
+        group: taxes
+      - name: RDA pass-through / TI excess
+        amount: 6152400
+        group: taxes
+      - name: Franchise tax
+        amount: 5705593
+        group: taxes
+      - name: Transient lodging tax
+        amount: 2087102
+        group: taxes
+      - name: Public safety sales tax (Prop 172)
+        amount: 540000
+        group: taxes
+      - name: Real property transfer tax
+        amount: 527100
+        group: taxes
+      - name: Business license tax
+        amount: 435000
+        group: taxes
+
+      - name: Emergency medical fees
+        amount: 6000000
+        group: fees
+      - name: Recreation & facilities fees
+        amount: 4954456
+        group: fees
+      - name: Police & fire fees
+        amount: 1145635
+        group: fees
+      - name: Other departmental fees
+        amount: 457618
+        group: fees
+
+      - name: GEMT program (intergovernmental)
+        amount: 1442000
+        group: other-revenue
+      - name: Partnership Health transport
+        amount: 1000000
+        group: other-revenue
+      - name: In-lieu development impact fees
+        amount: 509394
+        group: other-revenue
+      - name: Cell tower leases
+        amount: 486875
+        group: other-revenue
+      - name: Interest, penalties & rents
+        amount: 382000
+        group: other-revenue
+      - name: Homeowners subvention
+        amount: 180000
+        group: other-revenue
+      - name: State reimbursements
+        amount: 145000
+        group: other-revenue
+      - name: Miscellaneous
+        amount: 153000
+        group: other-revenue
+
+      - name: Transfers in (CFDs & traffic fines)
+        amount: 10925235
+        group: transfers-reserves
+      - name: Overhead recovered from other funds
+        amount: 6574920
+        group: transfers-reserves
+        note: >-
+          Internal cost allocation — General Fund overhead charged to utility
+          and special revenue funds, shown in the budget as a negative
+          expenditure (-$6,574,920); presented here as an inflow so the
+          diagram balances gross.
+      - name: Drawn from reserves & one-time sources
+        amount: 13428517
+        group: transfers-reserves
+        derived: true
+        note: >-
+          Balancing figure: gross uses ($164,967,427) minus budgeted revenues
+          and other inflows ($151,538,910). The budget's own Sources and Uses
+          schedule, which nets transfers differently, states a planned "use of
+          fund balance" of $8,892,389 — either way, FY2025-26 spending exceeds
+          revenue and the gap is covered from fund balance.
+
+      # ---- Spending side (Summary of Expenditures by Fund — General Fund,
+      # ---- FY 2025/26 column)
+      - name: Police Department
+        amount: 58947980
+        group: public-safety
+      - name: Fire Department
+        amount: 45099727
+        group: public-safety
+
+      - name: Public Works (general)
+        amount: 12267906
+        group: public-works
+      - name: Park maintenance
+        amount: 4125868
+        group: public-works
+
+      - name: Parks & Recreation
+        amount: 11330706
+        group: community
+      - name: Housing & Community Services
+        amount: 159661
+        group: community
+
+      - name: Finance
+        amount: 5817527
+        group: administration
+      - name: Non-departmental
+        amount: 4760870
+        group: administration
+      - name: Human Resources
+        amount: 3858986
+        group: administration
+      - name: Information Technology
+        amount: 3497528
+        group: administration
+      - name: City Manager's Office / Clerk
+        amount: 3358373
+        group: administration
+      - name: City Attorney
+        amount: 2793011
+        group: administration
+      - name: Economic Development
+        amount: 1078113
+        group: administration
+      - name: City Council / Treasurer
+        amount: 128755
+        group: administration
+
+      - name: Transfers out (capital, equipment, districts)
+        amount: 7742416
+        group: transfers-out
+        note: >-
+          Support to community development, park maintenance districts,
+          vehicle/equipment replacement, technology projects, and capital
+          improvement projects.
+
+  # ==========================================================================
+  # Vacaville — all city funds, FY2025-26 adopted budget.
+  # The budget publishes citywide detail on the spending side only (by fund
+  # and by department), so this view shows which fund pays for what.
+  # Revenue side = the four published fund totals plus the internal-cost
+  # add-back; spending side = the Summary of Expenditures by Department.
+  # Reconciliation: funds $301,383,523 + ICA add-back $6,574,920 =
+  # $307,958,443 in; departments (gross) $300,216,026 + transfers out
+  # $7,742,416 = $307,958,442 out ($1 printed-rounding difference between
+  # the two schedules).
+  # ==========================================================================
+  - slug: vacaville-citywide
+    name: City of Vacaville
+    fund: All city funds (including Successor Agency)
+    fiscal_year: FY2025-26
+    population: 103590
+    hub_label: City Budget
+    total_official: 301383523
+    source:
+      title: City of Vacaville FY2025-26 Final Budget Document
+      publisher: City of Vacaville Finance Department
+      url: https://www.ci.vacaville.ca.us/government/finance
+      pages: >-
+        Summary of Expenditures by Department (p. 11); Summary of
+        Expenditures by Fund (p. 13)
+      basis: FY 2025/26 Proposed Budget column, Final (adopted) budget
+      retrieved: "2026-07-22"
+      notes: >-
+        Fund totals are net of internal cost allocation; department figures
+        are gross. City Grand Total as published: $301,383,523 ($294,849,960
+        operating + $6,533,563 Successor Agency). The two summary schedules
+        differ by $1 of printed rounding.
+
+    groups:
+      - key: funds
+        label: Funds
+        side: revenue
+        neutral: true
+        direct: true
+      - key: public-safety
+        label: Public safety
+        side: spending
+      - key: utilities
+        label: Utilities
+        side: spending
+      - key: housing
+        label: Housing & redevelopment
+        side: spending
+      - key: public-works
+        label: Public works & engineering
+        side: spending
+      - key: administration
+        label: Administration
+        side: spending
+      - key: community
+        label: Community dev. & recreation
+        side: spending
+      - key: transfers-out
+        label: Transfers out
+        side: spending
+        neutral: true
+        direct: true
+
+    flows:
+      # ---- Which fund pays (Summary of Expenditures by Fund)
+      - name: General Fund
+        amount: 158392508
+        group: funds
+        note: >-
+          The discretionary fund — includes Measure M and $7.7M of transfers
+          out; net of internal cost allocation.
+      - name: Enterprise funds
+        amount: 73471719
+        group: funds
+        note: >-
+          Sewer, water, and transit — funded by ratepayers and riders, not
+          taxes.
+      - name: Special revenue funds
+        amount: 62985733
+        group: funds
+        note: >-
+          Restricted money — gas tax, state/federal grants, housing programs,
+          park maintenance districts. Can be large and still unavailable for
+          police or parks.
+      - name: Successor Agency (former RDA)
+        amount: 6533563
+        group: funds
+        note: Winding down the dissolved Redevelopment Agency's obligations.
+      - name: Overhead add-back (internal cost allocation)
+        amount: 6574920
+        group: funds
+        derived: true
+        note: >-
+          Department budgets are gross; fund totals are net of $6,574,920 of
+          overhead charged between funds. Added back so the two published
+          schedules balance.
+
+      # ---- What it buys (Summary of Expenditures by Department, gross)
+      - name: Police Department
+        amount: 59724191
+        group: public-safety
+      - name: Fire Department
+        amount: 45099727
+        group: public-safety
+
+      - name: Sewer utility
+        amount: 39584213
+        group: utilities
+      - name: Water utility
+        amount: 28970113
+        group: utilities
+
+      - name: Housing & Community Services
+        amount: 28816238
+        group: housing
+      - name: Successor Housing Agency
+        amount: 9361541
+        group: housing
+      - name: Successor Agency (RDA wind-down)
+        amount: 6533563
+        group: housing
+
+      - name: Public Works (general)
+        amount: 13277582
+        group: public-works
+      - name: Park maintenance districts
+        amount: 6958254
+        group: public-works
+      - name: Engineering services
+        amount: 5502168
+        group: public-works
+      - name: Transit
+        amount: 4917393
+        group: public-works
+      - name: Parks division
+        amount: 4125868
+        group: public-works
+      - name: Development engineering
+        amount: 2059233
+        group: public-works
+
+      - name: Finance
+        amount: 5817527
+        group: administration
+      - name: Non-departmental
+        amount: 4760870
+        group: administration
+      - name: Human Resources / Risk
+        amount: 3858986
+        group: administration
+      - name: City Manager's Office / Clerk
+        amount: 3587154
+        group: administration
+      - name: Information Technology
+        amount: 3497528
+        group: administration
+      - name: City Attorney
+        amount: 2793011
+        group: administration
+      - name: Economic Development
+        amount: 1078113
+        group: administration
+      - name: City Council / Treasurer
+        amount: 128755
+        group: administration
+
+      - name: Parks & Recreation
+        amount: 11330706
+        group: community
+      - name: Community Development
+        amount: 8433292
+        group: community
+
+      - name: Transfers out (capital & equipment funds)
+        amount: 7742416
+        group: transfers-out
+        note: >-
+          General Fund support to capital improvement, vehicle/equipment
+          replacement, technology projects, and districts.
+
+  # ==========================================================================
+  # Vacaville — FY2024 audited actuals, government-wide (ACFR).
+  # Full-accrual Statement of Activities: includes depreciation and
+  # actuarially measured pension expense; capital purchases are capitalized,
+  # not expensed. Balances exactly: revenues $317,148,027 = expenses
+  # $288,060,946 + $29,087,081 added to net position.
+  # program_revenue on each function = charges + operating grants + capital
+  # grants earned by that function (drives the net-cost-of-services table).
+  # ==========================================================================
+  - slug: vacaville-acfr
+    name: City of Vacaville
+    fund: Government-wide actuals (accrual basis)
+    fiscal_year: FY2023-24
+    population: 103590
+    hub_label: Citywide Actuals
+    total_official: 317148027
+    source:
+      title: City of Vacaville Annual Comprehensive Financial Report, FY ended June 30, 2024
+      publisher: City of Vacaville Finance Department (audited)
+      url: https://www.ci.vacaville.ca.us/government/finance
+      pages: >-
+        Statement of Activities (p. 24); Management's Discussion and
+        Analysis (pp. 7-9)
+      basis: Audited actuals, full accrual, government-wide
+      retrieved: "2026-07-22"
+      notes: >-
+        Interfund transfers ($3,172,297 governmental-to-business-type) net
+        to zero government-wide and are excluded. The $1,840,436 error
+        correction (Note 21) is a restatement of beginning net position, not
+        a current-year flow. "Added to net position" is the published change
+        in net position ($7,784,208 governmental + $21,302,873
+        business-type).
+
+    groups:
+      - key: charges
+        label: Charges for services
+        side: revenue
+      - key: grants
+        label: Grants & contributions
+        side: revenue
+      - key: taxes
+        label: Taxes
+        side: revenue
+      - key: investment
+        label: Investment & other
+        side: revenue
+      - key: governmental
+        label: Governmental activities
+        side: spending
+      - key: business
+        label: Business-type activities
+        side: spending
+      - key: surplus
+        label: Added to net position
+        side: spending
+        neutral: true
+        direct: true
+
+    flows:
+      # ---- Program revenues: charges for services (by function)
+      - name: Sewer charges
+        amount: 35824988
+        group: charges
+      - name: Water charges
+        amount: 24048742
+        group: charges
+      - name: Community services charges
+        amount: 9222144
+        group: charges
+      - name: Public safety charges
+        amount: 8482210
+        group: charges
+      - name: General government charges
+        amount: 5283880
+        group: charges
+      - name: Public works charges
+        amount: 4529941
+        group: charges
+      - name: Transit charges
+        amount: 283930
+        group: charges
+      - name: Housing charges
+        amount: 36919
+        group: charges
+
+      # ---- Grants & contributions
+      - name: Operating grants & contributions
+        amount: 45165889
+        group: grants
+        note: >-
+          Largest recipients — housing $26.2M, public works $6.7M (includes
+          gas tax), transit $3.9M.
+      - name: Capital grants & contributions
+        amount: 44879901
+        group: grants
+        note: >-
+          Largest recipients — public works $21.6M, transit $9.5M, water
+          $5.0M, sewer $4.7M.
+
+      # ---- General revenues: taxes
+      - name: Property taxes
+        amount: 60596937
+        group: taxes
+      - name: Sales taxes
+        amount: 49941242
+        group: taxes
+      - name: Franchise taxes
+        amount: 5669167
+        group: taxes
+      - name: Excise tax
+        amount: 2924066
+        group: taxes
+        note: >-
+          Smaller than the budget's $9.4M excise line because Measure G is
+          largely a charge on the City's own utility funds, reclassified in
+          consolidation.
+      - name: Transient lodging tax
+        amount: 2051656
+        group: taxes
+      - name: Business license tax
+        amount: 429993
+        group: taxes
+
+      # ---- Investment & other
+      - name: Investment income
+        amount: 16270321
+        group: investment
+      - name: Miscellaneous
+        amount: 1506101
+        group: investment
+
+      # ---- Expenses: governmental activities (accrual)
+      - name: Public safety
+        amount: 94818159
+        group: governmental
+        program_revenue: 12091622
+        note: "Earns $12.1M of program revenue — 12.8% self-funded; net cost $82.7M."
+      - name: Public works
+        amount: 51452385
+        group: governmental
+        program_revenue: 32834073
+        note: "Earns $32.8M of program revenue — 63.8% self-funded; net cost $18.6M."
+      - name: General government
+        amount: 26759850
+        group: governmental
+        program_revenue: 9083545
+        note: "Earns $9.1M of program revenue — 33.9% self-funded; net cost $17.7M."
+      - name: Housing
+        amount: 25319854
+        group: governmental
+        program_revenue: 26239686
+        note: "Grant-funded: program revenue exceeds expense by $0.9M."
+      - name: Community services
+        amount: 20638013
+        group: governmental
+        program_revenue: 13462117
+        note: "Earns $13.5M of program revenue — 65.2% self-funded; net cost $7.2M."
+      - name: Interest on long-term debt
+        amount: 596564
+        group: governmental
+        program_revenue: 0
+
+      # ---- Expenses: business-type activities (accrual)
+      - name: Sewer
+        amount: 38360766
+        group: business
+        program_revenue: 41000481
+        note: "Fully ratepayer/grant funded; earned $2.6M more than it spent."
+      - name: Water
+        amount: 25892107
+        group: business
+        program_revenue: 29449516
+        note: "Fully ratepayer/grant funded; earned $3.6M more than it spent."
+      - name: Transit
+        amount: 4223248
+        group: business
+        program_revenue: 13597504
+        note: "Capital grants drove $9.4M of net position growth."
+
+      # ---- Balancing: the accrual surplus
+      - name: Added to net position (surplus)
+        amount: 29087081
+        group: surplus
+        note: >-
+          Revenues exceeded expenses — mostly restricted capital grants and
+          enterprise-fund results, not spendable General Fund cash.
+
+  # ==========================================================================
+  # Solano County — governmental funds, FY2026-27 Recommended Budget.
+  # Built entirely from the standardized State Controller summary schedules;
+  # every figure is printed, nothing derived, and the two sides reconcile to
+  # the dollar: sources $201,366,460 fund balance + $20,621,141 released
+  # reserves + $1,489,272,674 revenues = $1,711,260,275 = uses
+  # $1,524,085,443 by function + $187,174,832 contingencies.
+  # Excludes internal service funds ($106.5M, would double-count charges),
+  # enterprise funds ($2.9M), and special districts ($0.3M) — Schedule 1's
+  # "Other Funds".
+  # Gross-basis caveat: "Other Financing Sources" is largely interfund
+  # transfers, which also sit inside functional spending (mostly General
+  # Government) — the county's own gross presentation counts money again as
+  # it moves between funds.
+  # ==========================================================================
+  - slug: solano-county
+    name: County of Solano
+    fund: Governmental funds
+    fiscal_year: FY2026-27
+    population: 452050
+    hub_label: Governmental Funds
+    total_official: 1711260275
+    source:
+      title: County of Solano FY2026/27 Recommended Budget
+      publisher: Solano County Administrator's Office
+      url: https://www.solanocounty.gov/government/county-administrators-office/financial-documents/budget-documents
+      pages: >-
+        Summary Budget Schedules, section E — Schedule 1 (All Funds Summary,
+        E-1); Schedule 5 (Additional Financing Sources by Source, E-9);
+        Schedule 7 (Financing Uses by Function, E-49ff). Population from the
+        Statistical Profile (DOF January 1, 2026 estimate).
+      basis: FY2026/27 Recommended Budget (not yet adopted)
+      retrieved: "2026-07-22"
+      notes: >-
+        Governmental funds only. Schedule 1 all-funds total including
+        internal service, enterprise, and special district funds is
+        $1,821,001,036.
+
+    groups:
+      - key: sources
+        label: Sources
+        side: revenue
+        neutral: true
+        direct: true
+      - key: general-government
+        label: General government
+        side: spending
+        direct: true
+      - key: public-protection
+        label: Public protection
+        side: spending
+        direct: true
+      - key: health
+        label: Health & sanitation
+        side: spending
+        direct: true
+      - key: public-assistance
+        label: Public assistance
+        side: spending
+        direct: true
+      - key: education
+        label: Education
+        side: spending
+        direct: true
+      - key: public-ways
+        label: Public ways & facilities
+        side: spending
+        direct: true
+      - key: debt
+        label: Debt service
+        side: spending
+        direct: true
+      - key: rec-cultural
+        label: Recreation & cultural
+        side: spending
+        direct: true
+      - key: contingencies
+        label: Contingencies & reserves
+        side: spending
+        neutral: true
+        direct: true
+
+    flows:
+      # ---- Sources (Schedule 5 categories + Schedule 1 fund balance)
+      - name: Intergovernmental revenues
+        amount: 650236762
+        group: sources
+        note: >-
+          State (~25% of the budget) and federal (~12%) aid — realignment,
+          Medi-Cal, social services allocations. Mostly restricted to
+          specific programs.
+      - name: Other financing sources
+        amount: 324323236
+        group: sources
+        note: >-
+          Largely transfers between county budgets — General Fund transfers
+          alone are ~15% of the budget. Gross presentation counts this money
+          again as it moves between funds.
+      - name: Taxes
+        amount: 306542596
+        group: sources
+        note: Property tax is the dominant local tax for the county.
+      - name: Fund balance available
+        amount: 201366460
+        group: sources
+        note: Estimated fund balance available June 30, 2026 (Schedule 1).
+      - name: Charges for services
+        amount: 148531040
+        group: sources
+      - name: Use of money & property
+        amount: 26451456
+        group: sources
+      - name: Released from obligated reserves
+        amount: 20621141
+        group: sources
+        note: Decreases to obligated fund balances (Schedule 1).
+      - name: Miscellaneous revenues
+        amount: 15345319
+        group: sources
+      - name: Licenses, permits & franchises
+        amount: 13108345
+        group: sources
+      - name: Fines, forfeitures & penalties
+        amount: 4733920
+        group: sources
+
+      # ---- Uses by function (Schedule 7) + contingencies
+      - name: General government
+        amount: 391999537
+        group: general-government
+        note: >-
+          Inflated by interfund transfers (~15% of the budget flows out of
+          the General Fund to other county funds through this function) plus
+          countywide administration, assessor, elections, and IT.
+      - name: Public protection
+        amount: 387173380
+        group: public-protection
+        note: >-
+          Sheriff, jails, probation, district attorney, public defender,
+          courts support, fire districts — the largest true program area at
+          22.6% of the budget.
+      - name: Health & sanitation
+        amount: 370420934
+        group: health
+        note: >-
+          Health & Social Services — behavioral health, public health,
+          family health services; heavily state/federal funded.
+      - name: Public assistance
+        amount: 279280378
+        group: public-assistance
+        note: >-
+          CalWORKs, CalFresh administration, foster care, In-Home Supportive
+          Services, general assistance — the safety-net function.
+      - name: Education
+        amount: 43246237
+        group: education
+        note: County library system (dedicated sales tax) and cooperative extension.
+      - name: Public ways & facilities
+        amount: 39047762
+        group: public-ways
+        note: Roads, bridges, and public works in the unincorporated county.
+      - name: Debt service
+        amount: 9876877
+        group: debt
+      - name: Recreation & cultural
+        amount: 3040338
+        group: rec-cultural
+      - name: Contingencies & reserve additions
+        amount: 187174832
+        group: contingencies
+        note: >-
+          Appropriations for contingencies across funds — General Fund
+          $14.0M, capital outlay $20.0M, library $27.2M, roads $15.5M, ARPA,
+          and dozens of special funds (Schedule 7).

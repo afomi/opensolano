@@ -1,0 +1,329 @@
+---
+layout: default
+title: "Budget Flow — Vacaville FY2024 Actuals, Government-Wide (ACFR)"
+description: "Audited, accrual-basis actuals from Vacaville's FY2024 ACFR — $317M of revenue, $288M of expense, and the net cost of every city function."
+permalink: /experiments/budget-flow-acfr.html
+---
+
+<!-- ACFR (audited actuals) lens of the budget-flow series.
+     Shares _includes/budget-flow-sankey.html with the budget lenses.
+     The net-cost table below the chart is computed in Liquid from the
+     program_revenue fields in _data/budget_flows.yml. -->
+<style>
+  .page {
+    --surface: #fcfcfb;
+    --plane: #f9f9f7;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --hairline: #e1e0d9;
+    --accent: #0f766e;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--plane);
+    color: var(--ink);
+    padding: 7rem 1rem 4rem;
+  }
+  .page .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .page .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .page h1 {
+    font-size: 2rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+  }
+  .page .sub {
+    color: var(--ink-2);
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.55;
+  }
+  .page .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .page .stat {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+  }
+  .page .stat .k {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .page .stat .v {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .page .stat .n {
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+  .page .card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .page .card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+  .page .netcost {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .page .netcost th,
+  .page .netcost td {
+    text-align: left;
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .page .netcost th {
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+  .page .netcost .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .page .netcost .surplus {
+    color: #006300;
+    font-weight: 600;
+  }
+  .page .netcost-scroll {
+    overflow-x: auto;
+  }
+  .page .prose {
+    max-width: 65ch;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .page .prose h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 2rem 0 0.6rem;
+  }
+  .page .prose p {
+    margin: 0 0 0.9rem;
+  }
+  .page .prose ul {
+    margin: 0 0 0.9rem 1.2rem;
+  }
+  .page .prose li {
+    margin-bottom: 0.35rem;
+  }
+  .page .prose a {
+    color: var(--accent);
+  }
+  .page .footnote {
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    border-top: 1px solid var(--hairline);
+    padding-top: 1rem;
+    margin-top: 2rem;
+    max-width: 75ch;
+    line-height: 1.6;
+  }
+</style>
+
+<main
+  class="page">
+  <div
+    class="inner">
+
+    <div
+      class="eyebrow">
+      OpenSolano / Experiments
+    </div>
+    <h1>Where the Money Flowed — Audited Actuals</h1>
+    <p
+      class="sub">
+      The two budget lenses show the plan.
+      This is what actually happened: Vacaville's FY2024 audited, government-wide results from the Annual Comprehensive Financial Report — full accrual, every activity, every grant.
+    </p>
+
+    {% include budget-flow-lens-nav.html active="acfr" %}
+
+    <div
+      class="stats">
+      <div
+        class="stat">
+        <div
+          class="k">Citywide revenue</div>
+        <div
+          class="v">$317.1M</div>
+        <div
+          class="n">FY2024 actuals, all activities</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Citywide expense</div>
+        <div
+          class="v">$288.1M</div>
+        <div
+          class="n">Accrual basis — includes depreciation &amp; pension expense</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Added to net position</div>
+        <div
+          class="v">+$29.1M</div>
+        <div
+          class="n">Mostly restricted capital grants, not spendable cash</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Public safety self-funded</div>
+        <div
+          class="v">12.8%</div>
+        <div
+          class="n">$12.1M earned against $94.8M of expense</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Unrestricted net position</div>
+        <div
+          class="v">~2%</div>
+        <div
+          class="n">Of $898.5M total; 81% is locked in capital assets</div>
+      </div>
+    </div>
+
+    <div
+      class="card">
+      {% include budget-flow-sankey.html jurisdiction="vacaville-acfr" %}
+    </div>
+
+    {% assign bf = site.data.budget_flows.jurisdictions | where: "slug", "vacaville-acfr" | first %}
+    <div
+      class="card">
+      <h2>The net cost of services — who actually pays for what</h2>
+      <div
+        class="netcost-scroll">
+        <table
+          class="netcost">
+          <thead>
+            <tr>
+              <th>Function</th>
+              <th
+                class="num">Expense</th>
+              <th
+                class="num">Program revenue it earns</th>
+              <th
+                class="num">Self-funded</th>
+              <th
+                class="num">Net cost, paid by taxes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for flow in bf.flows %}
+            {% assign g = bf.groups | where: "key", flow.group | first %}
+            {% if g.side == "spending" and flow.program_revenue %}
+            {% assign netcost = flow.amount | minus: flow.program_revenue %}
+            <tr>
+              <td>{{ flow.name }}</td>
+              <td
+                class="num">${{ flow.amount | divided_by: 1000000.0 | round: 1 }}M</td>
+              <td
+                class="num">${{ flow.program_revenue | divided_by: 1000000.0 | round: 1 }}M</td>
+              <td
+                class="num">{{ flow.program_revenue | times: 100.0 | divided_by: flow.amount | round: 1 }}%</td>
+              {% if netcost < 0 %}
+              <td
+                class="num surplus">+${{ netcost | times: -1 | divided_by: 1000000.0 | round: 1 }}M surplus</td>
+              {% else %}
+              <td
+                class="num">${{ netcost | divided_by: 1000000.0 | round: 1 }}M</td>
+              {% endif %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div
+      class="prose">
+      <h2>How to read this</h2>
+      <p>
+        The ACFR's Statement of Activities is built around one question the budget never answers: after counting the fees and grants each function earns for itself, what does it really cost the taxpayer?
+      </p>
+      <p>
+        The table above is that statement, made legible.
+        Sewer, water, transit, and housing fully fund themselves through charges and grants.
+        Public works and community services cover roughly two-thirds of their own cost.
+        Public safety earns almost nothing on its own — its $82.7M net cost is why property and sales taxes exist.
+        In FY2024, the city's entire $121.6M of taxes went, in effect, to cover the $125.9M net cost of governmental activities.
+      </p>
+
+      <h2>Why these numbers differ from the budget lenses</h2>
+      <ul>
+        <li>
+          <strong>Actuals vs. plan.</strong> This is what happened in FY2023-24; the budget lenses show what was appropriated for FY2025-26.
+        </li>
+        <li>
+          <strong>Accrual vs. appropriation.</strong> Accrual expense includes depreciation and actuarially measured pension expense, and capitalizes asset purchases instead of expensing them.
+          Public safety here is $94.8M against $104.0M of budgeted police + fire appropriations — different measures of the same thing.
+        </li>
+        <li>
+          <strong>Consolidation.</strong> Money the city charges itself disappears government-wide.
+          The clearest case: "excise tax" is $9.4M in the budget but $2.9M here, because Measure G is largely a charge on the city's own utility funds.
+        </li>
+        <li>
+          <strong>The surplus is not a windfall.</strong> The $29.1M added to net position is dominated by restricted capital grants and enterprise results.
+          Citywide net position is $898.5M, but 81% is capital assets and 16% is restricted — unrestricted is about 2%, and was negative from 2015 (when GASB 68 put pension liabilities on the balance sheet) until FY2021-22.
+        </li>
+      </ul>
+
+      <h2>Methodology &amp; sources</h2>
+      <p>
+        All figures are exact dollars from the audited
+        <strong>Annual Comprehensive Financial Report for the fiscal year ended June 30, 2024</strong>:
+        the Statement of Activities (p. 24) and Management's Discussion and Analysis (pp. 7-9).
+        Every function's expense, program revenue, and net cost reconciles to the statement's printed totals: $288,060,946 of expense, $317,148,027 of revenue, $29,087,081 change in net position.
+        Interfund transfers net to zero government-wide and are excluded; the Note 21 error correction is a restatement, not a current-year flow.
+      </p>
+    </div>
+
+    <div
+      class="footnote">
+      Data with per-line provenance lives in
+      <a href="https://github.com/afomi/opensolano">the site repository</a> (<code>_data/budget_flows.yml</code>).
+      Pension and retiree-health detail from the same ACFR is tracked separately in the
+      <a href="/public-funds">Public Funds</a> work.
+      Questions or corrections: <a href="mailto:ryan@civic.studio">ryan@civic.studio</a>.
+    </div>
+
+  </div>
+</main>

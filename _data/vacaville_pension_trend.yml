@@ -1,0 +1,121 @@
+# Vacaville — 10-Year Employer Retirement Contribution Trend (FY2015–FY2024)
+#
+# The "structural, not cyclical" evidence for the Measure V analysis: employer
+# contributions to CalPERS + PARS + OPEB, straight from the FY2024 ACFR's
+# Required Supplementary Information (Schedules of Plan Contributions, "Last 10
+# Years"). These are ACTUAL EMPLOYER DOLLARS PAID (the "contribution in relation
+# to the actuarially determined contribution" line), not liabilities.
+#
+# Source: City of Vacaville Annual Comprehensive Financial Report, FY ended
+#   June 30, 2024 — Required Supplementary Information, Schedules of Plan
+#   Contributions for: CalPERS Miscellaneous, CalPERS Safety, PARS Miscellaneous,
+#   PARS Safety, and OPEB. (Fiscal years are the CITY's reporting years; the
+#   pension measurement date lags one year.)
+# Retrieved: 2026-07-18 from "2024 Annual Comprehensive Financial Report.pdf"
+# Note: OPEB schedule in the ACFR shows only 6 years (2019–2024) under GASB 75
+#   (first-implemented later than the pension schedules), so pre-2019 OPEB is null.
+# Amounts in USD (whole dollars).
+
+source:
+  document: "City of Vacaville ACFR, FY ended June 30, 2024"
+  section: "Required Supplementary Information — Schedules of Plan Contributions (Last 10 Years)"
+  retrieved: "2026-07-18"
+  kind: audited_actuals
+
+# Employer contributions actually paid, by plan, by city fiscal year.
+contributions_by_year:
+  # fy = city fiscal year ending June 30
+  - fy: 2015
+    calpers_misc: 4433886
+    calpers_safety: 8632358
+    pars_misc: 2760122
+    opeb: null
+  - fy: 2016
+    calpers_misc: 5289899
+    calpers_safety: 8837204
+    pars_misc: 2709376
+    opeb: null
+  - fy: 2017
+    calpers_misc: 5511690
+    calpers_safety: 9200650
+    pars_misc: 2837184
+    opeb: null
+  - fy: 2018
+    calpers_misc: 6019753
+    calpers_safety: 10147595
+    pars_misc: 2988490
+    opeb: null
+  - fy: 2019
+    calpers_misc: 6884422
+    calpers_safety: 13506592
+    pars_misc: 3366989
+    opeb: 11150269
+  - fy: 2020
+    calpers_misc: 7795070
+    calpers_safety: 12926127
+    pars_misc: 3348558
+    opeb: 11617964
+  - fy: 2021
+    calpers_misc: 8563743
+    calpers_safety: 14154414
+    pars_misc: 3886357
+    opeb: 10996470
+  - fy: 2022
+    calpers_misc: 11685300
+    calpers_safety: 14768471
+    pars_misc: 3744851
+    opeb: 8200614
+  - fy: 2023
+    calpers_misc: 12118699
+    calpers_safety: 18332739
+    pars_misc: 3628402
+    opeb: 9487907
+  - fy: 2024
+    calpers_misc: 12576870
+    calpers_safety: 19685923
+    pars_misc: 4028181
+    opeb: 10525824
+
+# Employer contribution as a % of covered payroll (from the same schedules) —
+# the clearest "cost per dollar of salary" signal. Rising % = benefits getting
+# more expensive per employee, independent of headcount growth.
+pct_of_covered_payroll:
+  calpers_misc:
+    fy2015: 17.72
+    fy2024: 32.78   # +15.1 points in a decade
+  calpers_safety:
+    fy2015: 42.87
+    fy2024: 65.34   # +22.5 points; i.e. ~$0.65 of pension cost per $1 of safety salary
+  # PARS is a closed supplemental plan; % not the useful frame (declining payroll).
+
+# Decade deltas (FY2015 -> FY2024), for headline stats. All figures derivable
+# from contributions_by_year above; precomputed here for convenience.
+decade_growth:
+  calpers_safety:
+    fy2015: 8632358
+    fy2024: 19685923
+    pct_increase: 128.0
+  calpers_misc:
+    fy2015: 4433886
+    fy2024: 12576870
+    pct_increase: 183.7
+  # Total pension (CalPERS + PARS misc; excludes tiny PARS safety ~$183K and OPEB):
+  pension_total:
+    fy2015: 15826366   # 4433886 + 8632358 + 2760122
+    fy2024: 36290974   # 12576870 + 19685923 + 4028181
+    pct_increase: 129.3
+  # Pension + OPEB, FY2024 (OPEB has no FY2015 baseline in the ACFR):
+  pension_plus_opeb_fy2024: 46816798  # 36290974 + 10525824
+
+notes: >
+  Caveats for honest use: (1) PARS Safety (~$183K/yr) is omitted from
+  pension_total for simplicity; add it for an exact match to the ACFR aggregate
+  net-pension figures. (2) The ACFR-reported FY2024 aggregate employer pension
+  contribution is $43,801,247 (all plans, per the note-8 summary table); the
+  $36.29M pension_total here is CalPERS+PARS-misc from the RSI schedules and
+  differs because the aggregate table and the per-plan RSI schedules use slightly
+  different groupings/timing — reconcile before publishing a single headline
+  number, and state which basis you use. (3) These are EMPLOYER contributions
+  only (employees also contribute). (4) Contribution growth reflects both benefit
+  cost and CalPERS amortization of unfunded liability + assumption changes (the
+  discount rate dropped from 7.5% toward 6.8% over this period), not headcount.

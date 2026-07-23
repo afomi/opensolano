@@ -8,6 +8,8 @@ tags:
   - data visualization
   - civic engagement
   - budget transparency
+image: /assets/images/posts/building-digital-capacity-solano-county.png
+image_caption: "Ascending teal bar chart beside a slate pie chart with one teal wedge, evoking dashboard elements."
 ---
 
 Effective civic engagement requires accessible information. Too often, municipal budget data remains locked in dense PDFs or spreadsheet formats that create barriers for community members who want to understand how their tax dollars are collected and spent.
@@ -38,9 +40,9 @@ Public safety and education typically represent the largest budget categories in
 
 Perhaps most importantly, residents need to understand the complete flow from tax collection through budget categories to actual spending.
 
-{% include tax-flow-sankey.html %}
+{% include budget-flow-sankey.html jurisdiction="vacaville" %}
 
-This flow diagram shows how different revenue sources feed into budget categories, which then fund specific spending areas. Understanding these connections helps community members see how changes in tax policy or revenue streams affect the services they care about.
+This flow diagram shows how revenue sources feed the General Fund, which then funds specific departments — here using Vacaville's actual FY2025-26 adopted budget. Understanding these connections helps community members see how changes in tax policy or revenue streams affect the services they care about. An expanded, annotated version lives in the [Budget Flow experiment](/experiments/budget-flow.html).
 
 ## Building Community Capacity
 
@@ -60,7 +62,7 @@ For example, community budget advocates could use verifiable credentials to demo
 
 Building digital capacity requires ongoing collaboration between:
 
-- **Technical contributors** who create visualization tools and maintain data systems  
+- **Technical contributors** who create visualization tools and maintain data systems
 - **Community organizers** who understand resident needs and barriers to engagement
 - **Municipal staff** who can provide accurate, timely data in accessible formats
 - **Residents** who participate in testing and feedback to ensure tools meet real needs

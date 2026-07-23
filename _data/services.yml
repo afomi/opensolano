@@ -1,0 +1,58 @@
+# Public services in Solano County.
+#
+# OpenSolano is the Solano-focused layer; jurisdictional.org is the foundational
+# US-wide data substrate (jurisdictions -> agencies -> services). Model services
+# here so they can feed upstream into jurisdictional.org's schema.
+#
+# Provenance is required per service: cite the source URL and retrieved date.
+# See assets/data/SOURCES.md and the project data-provenance goal.
+
+services:
+  - slug: e-waste-dropoff
+    name: E-Waste Drop-Off
+    summary: >-
+      Free Saturday electronic-waste drop-off for Vacaville residents —
+      TVs, monitors, computers, phones, and small appliances.
+    jurisdiction: Vacaville
+    # Provider is Recology; the parent public agency is Vacaville Public Works.
+    provider: Recology Vacaville Solano
+    agency: Public Works
+    # jurisdictional.org linkage (see project memory): Vacaville place id 70118,
+    # Public Works agency id 12. No e-waste service exists upstream yet.
+    jurisdictional_org:
+      jurisdiction_id: 70118
+      agency_id: 12
+      service_exists_upstream: false
+    cost: Free for residential customers
+    location_name: Recology Vacaville Solano Recycling Center
+    address: "855 1/2 Davis St, Vacaville, CA 95687"
+    phone: "707-448-2945"
+    # Drop-off window (what the facility is actually open).
+    hours:
+      day_of_week: Saturday
+      open: "09:00"
+      close: "15:00"
+      label: "Saturdays only, 9 AM – 3 PM"
+    # Dynamic "heads-up" nudge window: surface the reminder Saturday mornings
+    # before/at opening so residents can plan the trip. A small positive nudge,
+    # not an alert. Local time. Shown only Saturday between these hours.
+    nudge:
+      day_of_week: Saturday
+      start: "07:00"
+      end: "14:00"
+      message: "E-waste drop-off is open today, 9 AM – 3 PM, at the Recology Vacaville recycling center. Free for residents."
+    accepted_items:
+      - Televisions (up to 4)
+      - Computer monitors (up to 4)
+      - Computers and peripherals (mice, keyboards)
+      - Cell phones
+      - CD / DVD players
+      - Printers and stereos
+      - Microwaves and small appliances
+    notes:
+      - Up to five e-waste items per visit.
+      - Customers must be able to lift and place items themselves.
+    source:
+      url: https://www.recology.com/recology-vacaville-solano/electronic-waste/
+      retrieved: 2026-06-10
+      kind: raw

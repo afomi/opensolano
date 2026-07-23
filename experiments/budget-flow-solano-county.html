@@ -1,0 +1,242 @@
+---
+layout: default
+title: "Budget Flow — Solano County Governmental Funds FY2026-27"
+description: "Solano County's $1.71 billion governmental funds budget as a flow diagram — intergovernmental aid, taxes, and reserves flowing to public protection, health, and the safety net."
+permalink: /experiments/budget-flow-solano-county.html
+---
+
+<!-- Solano County lens of the budget-flow series.
+     Shares _includes/budget-flow-sankey.html with the Vacaville pages.
+     Built entirely from the State Controller summary schedules
+     (Schedules 1, 5, 7) of the FY2026/27 Recommended Budget. -->
+<style>
+  .page {
+    --surface: #fcfcfb;
+    --plane: #f9f9f7;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --hairline: #e1e0d9;
+    --accent: #0f766e;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--plane);
+    color: var(--ink);
+    padding: 7rem 1rem 4rem;
+  }
+  .page .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .page .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .page h1 {
+    font-size: 2rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+  }
+  .page .sub {
+    color: var(--ink-2);
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.55;
+  }
+  .page .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .page .stat {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+  }
+  .page .stat .k {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .page .stat .v {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .page .stat .n {
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+  .page .card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .page .prose {
+    max-width: 65ch;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .page .prose h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 2rem 0 0.6rem;
+  }
+  .page .prose p {
+    margin: 0 0 0.9rem;
+  }
+  .page .prose ul {
+    margin: 0 0 0.9rem 1.2rem;
+  }
+  .page .prose li {
+    margin-bottom: 0.35rem;
+  }
+  .page .prose a {
+    color: var(--accent);
+  }
+  .page .footnote {
+    font-size: 0.82rem;
+    color: var(--ink-2);
+    border-top: 1px solid var(--hairline);
+    padding-top: 1rem;
+    margin-top: 2rem;
+    max-width: 75ch;
+    line-height: 1.6;
+  }
+</style>
+
+<main
+  class="page">
+  <div
+    class="inner">
+
+    <div
+      class="eyebrow">
+      OpenSolano / Experiments
+    </div>
+    <h1>Where the County's Money Flows</h1>
+    <p
+      class="sub">
+      Solano County's $1.71 billion governmental funds budget for FY2026-27.
+      A county is a different creature than a city: most of its money arrives from Sacramento and Washington with instructions attached, and most of it leaves as public protection, health care, and the social safety net.
+    </p>
+
+    {% include budget-flow-lens-nav.html active="county" %}
+
+    <div
+      class="stats">
+      <div
+        class="stat">
+        <div
+          class="k">Governmental funds</div>
+        <div
+          class="v">$1.71B</div>
+        <div
+          class="n">FY2026-27 Recommended Budget</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">State & federal aid</div>
+        <div
+          class="v">36.7%</div>
+        <div
+          class="n">$650.2M intergovernmental — mostly restricted</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Largest program</div>
+        <div
+          class="v">22.6%</div>
+        <div
+          class="n">Public protection, $387.2M</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Safety net</div>
+        <div
+          class="v">$649.7M</div>
+        <div
+          class="n">Health & sanitation + public assistance combined</div>
+      </div>
+      <div
+        class="stat">
+        <div
+          class="k">Per resident</div>
+        <div
+          class="v">$3,786</div>
+        <div
+          class="n">Total &divide; 452,050 population (DOF, Jan 2026)</div>
+      </div>
+    </div>
+
+    <div
+      class="card">
+      {% include budget-flow-sankey.html jurisdiction="solano-county" %}
+    </div>
+
+    <div
+      class="prose">
+      <h2>How to read this</h2>
+      <p>
+        The left side is every financing source the county publishes — revenue categories from Schedule 5 plus the fund balance and reserves the budget draws down.
+        The right side is the eight functional areas of county government from Schedule 7, plus the contingency appropriations parked across dozens of funds.
+      </p>
+      <p>
+        Compare this with <a href="/experiments/budget-flow-citywide.html">Vacaville's $301M city budget</a> and the difference in kind is obvious.
+        A city's money is mostly local — sales tax, property tax, utility rates — and buys police, fire, water, and parks.
+        The county's dominant source is intergovernmental aid ($650M, about 25% of the budget from the state and 12% federal), and its dominant uses are public protection and the health-and-welfare safety net ($1.04B combined).
+        The county is, to a first approximation, the local delivery arm of state and federal programs — with far less discretion over its budget than the headline number suggests.
+      </p>
+
+      <h2>Methodology &amp; sources</h2>
+      <p>
+        All figures are printed values from the standardized summary schedules of the
+        <strong>County of Solano FY2026/27 Recommended Budget</strong>
+        (<a href="https://www.solanocounty.gov/government/county-administrators-office/financial-documents/budget-documents">budget documents</a>):
+        Schedule 1 (All Funds Summary), Schedule 5 (Financing Sources by Source), and Schedule 7 (Financing Uses by Function).
+        Nothing is derived — the two sides reconcile to the dollar:
+        $201,366,460 fund balance + $20,621,141 released reserves + $1,489,272,674 revenues = $1,711,260,275 = $1,524,085,443 of functional spending + $187,174,832 of contingencies.
+      </p>
+      <ul>
+        <li>
+          <strong>Recommended, not adopted.</strong> This is the budget as proposed by the County Administrator; the Board of Supervisors adopts a final version with changes.
+        </li>
+        <li>
+          <strong>Governmental funds only.</strong> Internal service funds ($106.5M) are excluded because they would double-count charges between departments; enterprise funds ($2.9M) and special districts ($0.3M) are excluded for scale.
+          The Schedule 1 all-funds total is $1.82B.
+        </li>
+        <li>
+          <strong>Gross presentation double-counts transfers — on both sides.</strong> "Other financing sources" ($324M) is largely money moving between county funds, and it re-enters spending mostly inside the General government function — which is why General government ($392M) rivals Public protection.
+          The county's own summary graph splits it out: General government proper is about 8% of the budget, and General Fund transfers are another 15%.
+        </li>
+        <li>
+          <strong>Department detail is coming.</strong> Schedule 8 breaks each function into budget units (Sheriff, Probation, Behavioral Health, CalWORKs…); a future revision can add that layer to the diagram.
+        </li>
+      </ul>
+    </div>
+
+    <div
+      class="footnote">
+      Source document: FY2026-27 Recommended Budget (585 pp.), Solano County Administrator's Office.
+      Data with per-line provenance lives in
+      <a href="https://github.com/afomi/opensolano">the site repository</a> (<code>_data/budget_flows.yml</code>).
+      Questions or corrections: <a href="mailto:ryan@civic.studio">ryan@civic.studio</a>.
+    </div>
+
+  </div>
+</main>

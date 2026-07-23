@@ -1,0 +1,430 @@
+{% comment %}
+  Reusable budget-flow Sankey renderer.
+  Usage: {% include budget-flow-sankey.html jurisdiction="vacaville" %}
+  Reads the matching entry from _data/budget_flows.yml and renders a
+  five-layer flow: revenue detail -> revenue group -> fund hub -> spending
+  group -> spending detail.
+  Detail lines under $2.5M are aggregated per group in the diagram for
+  legibility; the full line-item table below the chart always shows every
+  published line.
+{% endcomment %}
+{% assign bf = site.data.budget_flows.jurisdictions | where: "slug", include.jurisdiction | first %}
+
+<style>
+  .bfs-wrap {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #0b0b0b;
+  }
+  .bfs-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    font-size: 0.82rem;
+    color: #52514e;
+    padding: 0 0.25rem 0.75rem;
+  }
+  .bfs-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .bfs-swatch {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .bfs-scroll {
+    overflow-x: auto;
+  }
+  .bfs-chart {
+    position: relative;
+    min-width: 960px;
+  }
+  .bfs-tooltip {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s;
+    background: rgba(11, 11, 11, 0.92);
+    color: #fff;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    max-width: 240px;
+    z-index: 10;
+  }
+  .bfs-tip-sub {
+    color: #c3c2b7;
+    font-size: 0.72rem;
+  }
+  .bfs-table-details {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+  }
+  .bfs-table-details summary {
+    cursor: pointer;
+    color: #0f766e;
+    font-weight: 600;
+  }
+  .bfs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.75rem;
+  }
+  .bfs-table th,
+  .bfs-table td {
+    text-align: left;
+    padding: 0.35rem 0.6rem;
+    border-bottom: 1px solid #e1e0d9;
+    vertical-align: top;
+  }
+  .bfs-table th {
+    color: #898781;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+  .bfs-table .bfs-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+</style>
+
+<div
+  class="bfs-wrap"
+  id="bfs-wrap-{{ bf.slug }}">
+  <div
+    class="bfs-legend"
+    id="bfs-legend-{{ bf.slug }}">
+  </div>
+  <div
+    class="bfs-scroll">
+    <div
+      class="bfs-chart"
+      id="bfs-chart-{{ bf.slug }}">
+      <div
+        class="bfs-tooltip"
+        id="bfs-tooltip-{{ bf.slug }}">
+      </div>
+    </div>
+  </div>
+  <details
+    class="bfs-table-details">
+    <summary>
+      View every published line item as a table
+    </summary>
+    <table
+      class="bfs-table">
+      <thead>
+        <tr>
+          <th>Side</th>
+          <th>Group</th>
+          <th>Line item</th>
+          <th
+            class="bfs-num">Amount</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flow in bf.flows %}
+        {% assign g = bf.groups | where: "key", flow.group | first %}
+        <tr>
+          <td>{{ g.side }}</td>
+          <td>{{ g.label }}</td>
+          <td>{{ flow.name }}{% if flow.derived %} <em>(derived)</em>{% endif %}</td>
+          <td
+            class="bfs-num"
+            data-amount="{{ flow.amount }}">${{ flow.amount }}</td>
+          <td>{{ flow.note | default: "" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </details>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<script>
+(function () {
+  var DATA = {{ bf | jsonify }};
+
+  // Validated 8-slot categorical palette (dataviz reference palette, light
+  // mode). Slots are assigned to colored groups in their listed order —
+  // fixed assignment, never cycled. Neutral groups and the hub render gray.
+  var SLOTS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948'];
+  var NEUTRAL = '#898781';
+  var INK = '#0b0b0b';
+  var INK_SECONDARY = '#52514e';
+  var SURFACE = '#fcfcfb';
+  var AGG_THRESHOLD = 2500000; // diagram-only aggregation; table shows all lines
+
+  var groupColor = {};
+  var slotIdx = 0;
+  DATA.groups.forEach(function (g) {
+    groupColor[g.key] = g.neutral ? NEUTRAL : SLOTS[slotIdx++ % SLOTS.length];
+  });
+
+  function fmt(n) {
+    if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
+    if (n >= 1e3) return '$' + Math.round(n / 1e3) + 'K';
+    return '$' + Math.round(n);
+  }
+  function fmtExact(n) {
+    return '$' + Math.round(n).toLocaleString();
+  }
+
+  // ---- Build the five-layer graph: detail -> group -> hub -> group -> detail
+  function buildGraph() {
+    var nodes = [];
+    var links = [];
+    function addNode(n) {
+      n.index = nodes.length;
+      nodes.push(n);
+      return n.index;
+    }
+
+    var gross = 0;
+    DATA.groups.forEach(function (g) {
+      if (g.side === 'revenue') {
+        DATA.flows.forEach(function (f) {
+          if (f.group === g.key) gross += f.amount;
+        });
+      }
+    });
+
+    var hub = addNode({ name: DATA.hub_label, kind: 'hub', color: NEUTRAL, exact: gross });
+
+    DATA.groups.forEach(function (g) {
+      var items = DATA.flows
+        .filter(function (f) { return f.group === g.key; })
+        .slice()
+        .sort(function (a, b) { return b.amount - a.amount; });
+      if (!items.length) return;
+
+      var total = items.reduce(function (s, f) { return s + f.amount; }, 0);
+
+      // direct groups: no intermediate group node — each line links straight
+      // to the hub (used for fund nodes, balancing/surplus nodes, transfers).
+      if (g.direct) {
+        items.forEach(function (f) {
+          var di = addNode({ name: f.name, kind: 'detail', side: g.side, color: groupColor[g.key], exact: f.amount, derived: f.derived, note: f.note });
+          if (g.side === 'revenue') {
+            links.push({ source: di, target: hub, value: f.amount, color: groupColor[g.key] });
+          } else {
+            links.push({ source: hub, target: di, value: f.amount, color: groupColor[g.key] });
+          }
+        });
+        return;
+      }
+
+      var gi = addNode({ name: g.label, kind: 'group', side: g.side, color: groupColor[g.key], exact: total, pct: total / gross });
+
+      // Aggregate small lines (only when 2+ fall under the threshold).
+      var small = items.filter(function (f) { return f.amount < AGG_THRESHOLD; });
+      var shown = items.filter(function (f) { return f.amount >= AGG_THRESHOLD; });
+      if (small.length >= 2) {
+        shown.push({
+          name: small.length + ' smaller lines',
+          amount: small.reduce(function (s, f) { return s + f.amount; }, 0),
+          agg: small.map(function (f) { return f.name + ' ' + fmt(f.amount); })
+        });
+      } else {
+        shown = items;
+      }
+
+      shown.forEach(function (f) {
+        var di = addNode({ name: f.name, kind: 'detail', side: g.side, color: groupColor[g.key], exact: f.amount, agg: f.agg, derived: f.derived, note: f.note });
+        if (g.side === 'revenue') {
+          links.push({ source: di, target: gi, value: f.amount, color: groupColor[g.key] });
+        } else {
+          links.push({ source: gi, target: di, value: f.amount, color: groupColor[g.key] });
+        }
+      });
+
+      if (g.side === 'revenue') {
+        links.push({ source: gi, target: hub, value: total, color: groupColor[g.key] });
+      } else {
+        links.push({ source: hub, target: gi, value: total, color: groupColor[g.key] });
+      }
+    });
+
+    return { nodes: nodes, links: links, gross: gross };
+  }
+
+  // ---- Legend (identity is never color-alone: every node is direct-labeled;
+  // ---- the legend restates the group -> color mapping).
+  function renderLegend() {
+    var el = document.getElementById('bfs-legend-' + DATA.slug);
+    var html = '';
+    DATA.groups.forEach(function (g) {
+      html += '<span class="bfs-legend-item">' +
+        '<span class="bfs-swatch" style="background:' + groupColor[g.key] + '"></span>' +
+        g.label + '</span>';
+    });
+    el.innerHTML = html;
+  }
+
+  function render() {
+    var container = document.getElementById('bfs-chart-' + DATA.slug);
+    var tooltip = document.getElementById('bfs-tooltip-' + DATA.slug);
+    d3.select(container).select('svg').remove();
+
+    var outer = container.parentNode.parentNode; // .bfs-wrap
+    var width = Math.max(960, Math.min(outer.clientWidth, 1200));
+    var height = 640;
+    var margin = { top: 56, right: 16, bottom: 16, left: 16 };
+
+    var svg = d3.select(container)
+      .insert('svg', ':first-child')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('role', 'img')
+      .attr('aria-label', DATA.name + ' ' + DATA.fiscal_year + ' budget flow diagram');
+
+    var graph = buildGraph();
+
+    var sankey = d3.sankey()
+      .nodeId(function (d) { return d.index; })
+      .nodeWidth(14)
+      .nodePadding(9)
+      .nodeSort(null)
+      .linkSort(null)
+      .extent([[margin.left, margin.top], [width - margin.right, height - margin.bottom]]);
+
+    var g = sankey({
+      nodes: graph.nodes.map(function (d) { return Object.assign({}, d); }),
+      links: graph.links.map(function (d) { return Object.assign({}, d); })
+    });
+
+    // Links
+    svg.append('g')
+      .selectAll('path')
+      .data(g.links)
+      .join('path')
+      .attr('d', d3.sankeyLinkHorizontal())
+      .attr('fill', 'none')
+      .attr('stroke', function (d) { return d.color; })
+      .attr('stroke-opacity', 0.32)
+      .attr('stroke-width', function (d) { return Math.max(1, d.width); })
+      .on('mousemove', function (event, d) {
+        d3.select(this).attr('stroke-opacity', 0.6);
+        showTip(event, '<strong>' + d.source.name + ' &rarr; ' + d.target.name + '</strong><br>' +
+          fmtExact(d.value) + ' &middot; ' + (100 * d.value / graph.gross).toFixed(1) + '% of flow');
+      })
+      .on('mouseleave', function () {
+        d3.select(this).attr('stroke-opacity', 0.32);
+        hideTip();
+      });
+
+    // Nodes
+    svg.append('g')
+      .selectAll('rect')
+      .data(g.nodes)
+      .join('rect')
+      .attr('x', function (d) { return d.x0; })
+      .attr('y', function (d) { return d.y0; })
+      .attr('width', function (d) { return d.x1 - d.x0; })
+      .attr('height', function (d) { return Math.max(1, d.y1 - d.y0); })
+      .attr('fill', function (d) { return d.color; })
+      .attr('rx', 2)
+      .attr('stroke', SURFACE)
+      .attr('stroke-width', 1)
+      .on('mousemove', function (event, d) {
+        var extra = '';
+        if (d.agg) extra = '<br><span class="bfs-tip-sub">' + d.agg.join('<br>') + '</span>';
+        if (d.note) extra += '<br><span class="bfs-tip-sub">' + d.note + '</span>';
+        if (d.derived) extra += '<br><span class="bfs-tip-sub">Derived balancing figure — see methodology</span>';
+        showTip(event, '<strong>' + d.name + '</strong><br>' +
+          fmtExact(d.exact) + ' &middot; ' + (100 * d.exact / graph.gross).toFixed(1) + '% of flow' + extra);
+      })
+      .on('mouseleave', hideTip);
+
+    // Labels — text wears ink tokens with a surface halo, never the series color.
+    var label = svg.append('g')
+      .attr('font-family', 'system-ui, -apple-system, "Segoe UI", sans-serif')
+      .selectAll('text')
+      .data(g.nodes)
+      .join('text')
+      .attr('paint-order', 'stroke')
+      .attr('stroke', SURFACE)
+      .attr('stroke-width', 3)
+      .attr('fill', INK);
+
+    label.filter(function (d) { return d.kind === 'hub'; })
+      .attr('x', function (d) { return (d.x0 + d.x1) / 2; })
+      .attr('y', function (d) { return d.y0 - 26; })
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 14)
+      .attr('font-weight', 700)
+      .text(function (d) { return d.name; })
+      .append('tspan')
+      .attr('x', function (d) { return (d.x0 + d.x1) / 2; })
+      .attr('dy', 15)
+      .attr('font-weight', 400)
+      .attr('fill', INK_SECONDARY)
+      .text(function (d) { return fmt(d.exact); });
+
+    label.filter(function (d) { return d.kind === 'group'; })
+      .attr('x', function (d) { return d.side === 'revenue' ? d.x1 + 6 : d.x0 - 6; })
+      .attr('y', function (d) { return (d.y0 + d.y1) / 2 - 2; })
+      .attr('text-anchor', function (d) { return d.side === 'revenue' ? 'start' : 'end'; })
+      .attr('font-size', 12.5)
+      .attr('font-weight', 700)
+      .text(function (d) { return d.name; })
+      .append('tspan')
+      .attr('x', function (d) { return d.side === 'revenue' ? d.x1 + 6 : d.x0 - 6; })
+      .attr('dy', 14)
+      .attr('font-weight', 400)
+      .attr('fill', INK_SECONDARY)
+      .text(function (d) { return fmt(d.exact) + ' · ' + (100 * d.pct).toFixed(1) + '%'; });
+
+    var detail = label.filter(function (d) { return d.kind === 'detail'; })
+      .attr('x', function (d) { return d.side === 'revenue' ? d.x1 + 6 : d.x0 - 6; })
+      .attr('y', function (d) { return (d.y0 + d.y1) / 2 + 4; })
+      .attr('text-anchor', function (d) { return d.side === 'revenue' ? 'start' : 'end'; })
+      .attr('font-size', 11.5)
+      .text(function (d) { return d.name + '  ' + fmt(d.exact); });
+
+    // Greedy de-overlap of detail labels within each column side.
+    ['revenue', 'spending'].forEach(function (side) {
+      var texts = detail.filter(function (d) { return d.side === side; }).nodes();
+      texts.sort(function (a, b) { return +a.getAttribute('y') - +b.getAttribute('y'); });
+      var minGap = 13;
+      for (var i = 1; i < texts.length; i++) {
+        var prev = +texts[i - 1].getAttribute('y');
+        var cur = +texts[i].getAttribute('y');
+        if (cur - prev < minGap) texts[i].setAttribute('y', prev + minGap);
+      }
+    });
+
+    function showTip(event, html) {
+      var rect = container.getBoundingClientRect();
+      tooltip.innerHTML = html;
+      tooltip.style.opacity = 1;
+      tooltip.style.left = Math.min(event.clientX - rect.left + 14, width - 240) + 'px';
+      tooltip.style.top = (event.clientY - rect.top + 14) + 'px';
+    }
+    function hideTip() {
+      tooltip.style.opacity = 0;
+    }
+  }
+
+  // Add thousands separators to the table's exact amounts.
+  document.querySelectorAll('#bfs-wrap-' + DATA.slug + ' .bfs-num[data-amount]').forEach(function (td) {
+    td.textContent = fmtExact(+td.getAttribute('data-amount'));
+  });
+
+  renderLegend();
+  render();
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(render, 150);
+  });
+})();
+</script>
