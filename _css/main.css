@@ -1,10 +1,16 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Tailwind v4 auto-detects sources project-wide (respecting .gitignore),
+   so these @source lines are explicit documentation of where classes live,
+   not the sole scan list. Posts/pages live under collections/
+   (collections_dir), experiments under experiments/. */
 @source "../_layouts/**/*.html";
 @source "../_includes/**/*.html";
 @source "../_drafts/**/*.html";
-@source "../_posts/*.md";
+@source "../collections/**/*.md";
+@source "../collections/**/*.html";
+@source "../experiments/**/*.html";
 @source "../*.md";
 @source "../*.html";
 
