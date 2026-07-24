@@ -42,7 +42,7 @@ Perhaps most importantly, residents need to understand the complete flow from ta
 
 {% include budget-flow-sankey.html jurisdiction="vacaville" %}
 
-This flow diagram shows how revenue sources feed the General Fund, which then funds specific departments — here using Vacaville's actual FY2025-26 adopted budget. Understanding these connections helps community members see how changes in tax policy or revenue streams affect the services they care about. An expanded, annotated version lives in the [Budget Flow experiment](/experiments/budget-flow.html).
+This flow diagram shows how revenue sources feed the General Fund, which then funds specific departments — here using Vacaville's actual FY2025-26 adopted budget. Understanding these connections helps community members see how changes in tax policy or revenue streams affect the services they care about. An expanded, annotated version lives in the [Budget Flow experiment](/experiments/budget-flow).
 
 ## Building Community Capacity
 
