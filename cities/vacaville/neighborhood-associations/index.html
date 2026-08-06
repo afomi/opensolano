@@ -1,0 +1,154 @@
+---
+layout: default
+title: "Neighborhood Associations — Vacaville"
+description: "All 23 registered Vacaville Neighborhood Associations (VNAs), plus a simple guide to starting or joining one — boundaries, leadership, registration, and city resources."
+---
+
+<main class="isolate pt-28">
+  <div class="relative isolate -z-10 overflow-hidden bg-gradient-to-b from-blue-100/20">
+  </div>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg">
+        <svg
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Neighborhood Associations</h1>
+        <p class="mt-2 text-lg leading-8 text-gray-600">{{ site.data.vacaville_vna.count }} registered associations in Vacaville</p>
+      </div>
+    </div>
+
+    <div class="prose prose-gray max-w-3xl">
+      <p>
+        A Vacaville Neighborhood Association (VNA) is a resident-led group with defined boundaries, a chair and co-chair, and a registration with the City.
+        Membership is free, voluntary, and open to residents, renters, property owners, and businesses inside the boundaries — it is not an HOA.
+        The program launched in 2023 under the City's COV Connect engagement effort.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-12">
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-4">Registered associations</h2>
+    <p class="text-sm text-gray-500 mb-6">
+      From the City's public GIS layer, as of {{ site.data.vacaville_vna.fetched }}.
+      The City publishes names and boundaries; leadership contacts are held by City staff.
+      Toggle association boundaries on
+      <a
+        class="text-blue-600 hover:underline"
+        href="/map/">our Solano map</a>,
+      or see the
+      <a
+        class="text-blue-600 hover:underline"
+        href="https://cov.maps.arcgis.com/apps/instant/lookup/index.html?appid=5606d449ae2b4d619f49087fa4a7cd25"
+        target="_blank"
+        rel="noopener">City's official lookup map</a>.
+    </p>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {% for a in site.data.vacaville_vna.associations %}
+      <li class="rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-900">
+        {{ a.name }}
+      </li>
+      {% endfor %}
+    </ul>
+    <p class="mt-4 text-sm text-gray-500">
+      To reach an association's leadership, contact the City's VNA team at
+      <a
+        class="text-blue-600 hover:underline"
+        href="mailto:VNA@cityofvacaville.com">VNA@cityofvacaville.com</a>
+      or (707) 449-5100 — they connect residents with the chair of the association covering their address.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-12">
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-4">Start one: five steps</h2>
+    <div class="prose prose-gray max-w-3xl">
+      <ol>
+        <li>
+          <strong>Draw your boundaries.</strong>
+          Name the streets that form the northern, southern, eastern, and western edges of your neighborhood, and sketch a simple map.
+        </li>
+        <li>
+          <strong>Pick a name and a purpose statement.</strong>
+          The name must be unique and appropriate.
+          The purpose statement should be brief and broad — for example, <em>"To provide a safe, clean neighborhood we're proud to live in."</em>
+        </li>
+        <li>
+          <strong>Choose a chair and co-chair.</strong>
+          Both must live within the boundaries.
+          The City provides standard bylaws you can adapt.
+        </li>
+        <li>
+          <strong>Register with the City.</strong>
+          Submit the
+          <a
+            href="https://CityofVacaville.formstack.com/forms/cov_neighborassoc"
+            target="_blank"
+            rel="noopener">registration form</a>
+          with your contacts, name, purpose, boundaries, and map.
+          Staff follows up, and your association is added to the official map.
+        </li>
+        <li>
+          <strong>Meet at least once a year.</strong>
+          That's the only ongoing requirement.
+          Membership must stay open to everyone within the boundaries.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-8 mb-16">
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-4">What registration unlocks</h2>
+    <div class="prose prose-gray max-w-3xl">
+      <ul>
+        <li>
+          <strong>A direct line to City Hall</strong> — a recognized channel for raising neighborhood concerns collectively.
+        </li>
+        <li>
+          <strong>Mini-grants up to $1,000</strong> for community engagement and neighborhood improvement projects.
+        </li>
+        <li>
+          <strong>The equipment loan program</strong> — free borrowed tools and supplies for cleanup and beautification events, with liability waivers already worked out.
+          (<a
+            href="https://CityofVacaville.formstack.com/forms/vnaequipmentloan"
+            target="_blank"
+            rel="noopener">application</a>)
+        </li>
+        <li>
+          <strong>The VNA toolkit</strong> — the City's organizing guide, in
+          <a
+            href="https://www.cityofvacaville.gov/home/showpublisheddocument/23795/638584502077000000"
+            target="_blank"
+            rel="noopener">English</a>
+          and
+          <a
+            href="https://www.cityofvacaville.gov/home/showpublisheddocument/23883/638599113774000000"
+            target="_blank"
+            rel="noopener">Spanish</a>.
+        </li>
+      </ul>
+      <p>
+        The City's own suggested activities for associations include block parties, cleanup projects, community picnics — and adopting a park.
+        Several registered associations are already organized around a park or green space.
+      </p>
+      <p class="text-sm">
+        Full program details are on the
+        <a
+          href="https://www.cityofvacaville.gov/residents/cov-connect/neighborhood-associations"
+          target="_blank"
+          rel="noopener">City's VNA page</a>.
+      </p>
+    </div>
+  </section>
+</main>

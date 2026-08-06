@@ -36,7 +36,7 @@ page_gen:
     template: park
     name: slug
     title: park_name
-    dir: parks
+    dir: cities/vacaville/parks
     index_files: true
   - data: vacaville_parcels.parcels
     template: parcel

@@ -113,7 +113,7 @@ permalink: /parks-spending/
             <td class="px-4 py-3 text-gray-900">
               {% if z.is_park %}
                 {% if z.slug %}
-                <a href="{{ '/parks/' | append: z.slug | append: '/' | relative_url }}" class="font-medium text-teal-700 hover:text-teal-800 hover:underline">{{ z.name }}</a>
+                <a href="{{ '/cities/vacaville/parks/' | append: z.slug | append: '/' | relative_url }}" class="font-medium text-teal-700 hover:text-teal-800 hover:underline">{{ z.name }}</a>
                 {% else %}
                 <span class="font-medium">{{ z.name }}</span>
                 {% endif %}

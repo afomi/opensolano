@@ -1,0 +1,33 @@
+# Vacaville Neighborhood Associations (VNA)
+# Source: City of Vacaville public GIS layer
+#   https://services3.arcgis.com/ceLnGXX8aWBjc5h0/arcgis/rest/services/Neighborhood_Association_Public_View/FeatureServer/0
+# Program page: https://www.cityofvacaville.gov/residents/cov-connect/neighborhood-associations
+# Fetched: 2026-08-05
+# Note: the public layer publishes association names and boundaries only.
+#   Leadership (chair/co-chair) contact info is held by the City and reachable via VNA@cityofvacaville.com.
+count: 23
+fetched: 2026-08-05
+associations:
+  - name: "Avondale at North Village"
+  - name: "Brighton Landing"
+  - name: "Browns Valley Neighborhood Association"
+  - name: "Carlton Community Watch"
+  - name: "Diamond Grove"
+  - name: "Fairmont Neighbors"
+  - name: "Foothill Park"
+  - name: "Foxboro Friends"
+  - name: "Foxboro South"
+  - name: "Golf Course Estates Neighborhood Group"
+  - name: "Haven North Village"
+  - name: "Lagoon Valley"
+  - name: "Markham Neighborhood Association"
+  - name: "Pheasant Country Community Park Group"
+  - name: "Rainier Circle Community Group"
+  - name: "Roberts' Ranch Neighborhood Association"
+  - name: "SouthTown Collaborative"
+  - name: "Southwood Meadows Association"
+  - name: "Stonegate Neighborhood Association"
+  - name: "The Hood"
+  - name: "The Roots @ North Orchard and Fruitvale"
+  - name: "Under The Oaks"
+  - name: "Woodridge Parkside Neighbors"

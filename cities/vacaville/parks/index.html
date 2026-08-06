@@ -2,7 +2,6 @@
 layout: default
 title: "Parks — Vacaville"
 description: "All 40 public parks in Vacaville, California. Browse by type, explore on the map, and see acreage for neighborhood, community, and regional parks."
-permalink: /parks/
 ---
 
 <main class="isolate pt-28">
@@ -123,7 +122,7 @@ permalink: /parks/
       {% assign sorted_parks = site.data.vacaville_parks.parks | sort: "park_name" %}
       {% for park in sorted_parks %}
       <a
-        href="/parks/{{ park.slug }}/"
+        href="/cities/vacaville/parks/{{ park.slug }}/"
         class="park-card group block bg-white border border-gray-200 rounded-xl p-5 hover:border-green-300 hover:shadow-md transition-all"
         data-type="{{ park.type }}">
         <div class="flex items-start justify-between gap-3">

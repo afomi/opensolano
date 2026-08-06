@@ -61,6 +61,15 @@ permalink: /map/
             </span>
             Labels
           </button>
+          <button
+            id="toggle-vna"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-gray-100 transition-colors"
+            data-active="false">
+            <span
+              class="h-3 w-3 rounded-sm border-2 border-dashed border-blue-500 bg-blue-100">
+            </span>
+            Neighborhood Associations
+          </button>
         </div>
       </div>
 
@@ -78,7 +87,7 @@ permalink: /map/
             All Parks
           </button>
           <a
-            href="/parks/"
+            href="/cities/vacaville/parks/"
             class="inline-flex items-center gap-1 whitespace-nowrap rounded-lg border border-green-200 bg-white px-3 py-1.5 text-sm font-medium text-green-700 hover:bg-green-50 transition-colors">
             Browse list
             <svg
@@ -175,6 +184,7 @@ permalink: /map/
           target="_blank"
           rel="noopener">Jurisdictional</a>.
         Parks data from City of Vacaville GIS (shapefile converted to GeoJSON).
+        Neighborhood association boundaries from the City's public VNA GIS layer.
       </p>
     </div>
   </section>
@@ -335,7 +345,7 @@ permalink: /map/
           var location = feature.properties.LOCATION || '';
 
           layer.bindPopup(
-            '<strong><a href="/parks/' + slug + '/" style="color:#15803d;text-decoration:none;">' + baseName + '</a></strong>' +
+            '<strong><a href="/cities/vacaville/parks/' + slug + '/" style="color:#15803d;text-decoration:none;">' + baseName + '</a></strong>' +
             (parkType ? '<br><span style="color:#6b7280;font-size:12px;">' + parkType + ' Park</span>' : '') +
             (location ? '<br><span style="color:#9ca3af;font-size:11px;">' + location + '</span>' : '')
           );
@@ -356,6 +366,44 @@ permalink: /map/
       }).addTo(parksLayer);
     });
 
+  // --- Neighborhood Associations layer (Vacaville VNA boundaries, off by default) ---
+  var vnaLayer = L.layerGroup();
+
+  fetch('/assets/data/geojson/vacaville-vna.geojson')
+    .then(function(res) { return res.json(); })
+    .then(function(geojson) {
+      L.geoJSON(geojson, {
+        style: {
+          color: '#2563eb',
+          weight: 2,
+          opacity: 0.9,
+          dashArray: '5 4',
+          fillColor: '#3b82f6',
+          fillOpacity: 0.08
+        },
+        onEachFeature: function(feature, layer) {
+          var name = feature.properties.NeighborhoodName;
+          layer.bindPopup(
+            '<strong>' + name + '</strong>' +
+            '<br><span style="color:#6b7280;font-size:12px;">Neighborhood Association</span>' +
+            '<br><a href="/cities/vacaville/neighborhood-associations/" style="color:#2563eb;font-size:11px;">About Vacaville Neighborhood Associations</a>'
+          );
+          layer.on('mouseover', function(e) {
+            e.target.setStyle({ fillOpacity: 0.2, weight: 3 });
+          });
+          layer.on('mouseout', function(e) {
+            e.target.setStyle({ fillOpacity: 0.08, weight: 2 });
+          });
+          layer.on('click', function() {
+            showFeatureInfo({
+              name: name,
+              type: 'Neighborhood Association'
+            });
+          });
+        }
+      }).addTo(vnaLayer);
+    });
+
   // --- Layer toggle controls ---
   function toggleLayer(btn, layer) {
     var active = btn.getAttribute('data-active') === 'true';
@@ -363,7 +411,8 @@ permalink: /map/
       map.removeLayer(layer);
       btn.setAttribute('data-active', 'false');
       btn.classList.remove('bg-emerald-50', 'border-emerald-300', 'text-emerald-800',
-                           'bg-green-50', 'border-green-300', 'text-green-800');
+                           'bg-green-50', 'border-green-300', 'text-green-800',
+                           'bg-blue-50', 'border-blue-300', 'text-blue-800');
       btn.classList.add('bg-gray-100', 'border-gray-300', 'text-gray-400');
     } else {
       map.addLayer(layer);
@@ -374,6 +423,8 @@ permalink: /map/
         btn.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-800');
       } else if (btn.id === 'toggle-parks') {
         btn.classList.add('bg-green-50', 'border-green-300', 'text-green-800');
+      } else if (btn.id === 'toggle-vna') {
+        btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-800');
       }
     }
   }
@@ -386,6 +437,9 @@ permalink: /map/
   });
   document.getElementById('toggle-labels').addEventListener('click', function() {
     toggleLayer(this, labelLayer);
+  });
+  document.getElementById('toggle-vna').addEventListener('click', function() {
+    toggleLayer(this, vnaLayer);
   });
 
   // --- Feature info panel ---
