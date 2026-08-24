@@ -9,6 +9,11 @@ tags:
   - vacaville
   - land use
   - community
+image: /assets/images/posts/vacaville-parcels-activating-dormant-spaces.png
+image_caption: "3x3 grid of Vacaville parcels viewed from above. Most dormant (light gray); two activated in teal with simplified tree and building markers."
+entities:
+  cities:
+    - vacaville
 ---
 
 Every city has them.
@@ -51,7 +56,7 @@ Activation doesn't require construction.
 A dormant space can come alive with a farmers market, a popup, a mural, a community garden, a conversation.
 The first step is just noticing the space exists and imagining it differently.
 
-/parcels is that first step: a public inventory of possibility.
+Parcels is that first step: a public inventory of possibility.
 
 ## How you can contribute
 
@@ -83,7 +88,7 @@ If you want to help make it real, here's what we need:
 
 ## How it's built
 
-/parcels is part of [OpenSolano](https://www.opensolano.org), a Jekyll static site focused on civic data for Solano County.
+Parcels is part of [OpenSolano](https://www.opensolano.org), a Jekyll static site focused on civic data for Solano County.
 The parcel data lives in a JSON file.
 Each parcel gets its own page with a map and feedback form powered by [Touchpoints](https://touchpoints.app), an open-source platform for collecting public feedback.
 
@@ -98,7 +103,7 @@ If feedback clusters around specific sites, we can bring that signal to city sta
 The long game is a city where participation doesn't require attending a Tuesday night meeting.
 Where the question "what do you want here?" is always open, always visible, always accumulating signal.
 
-/parcels is a small experiment toward that.
+[Parcels](/parcels/) is a small experiment toward that.
 Try it. Tell us what you think.
 
 [Browse Vacaville Parcels](/parcels/)
