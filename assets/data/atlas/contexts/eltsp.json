@@ -1,0 +1,27 @@
+{
+  "id": "eltsp",
+  "title": "East of Leisure Town Specific Plan",
+  "subtitle": "A context lens for a proposed, phased community. Draft-plan geometry is not yet represented here as authoritative GIS; this view keeps that distinction visible.",
+  "map": {"center": [38.3566, -121.955], "zoom": 12},
+  "notice": "The Atlas has not received authoritative ELTSP GIS geometry. Existing public GIS layers are shown as context; proposed boundaries, parks, trails, and phases require a published source layer before they are drawn as fact.",
+  "layers": [
+    {"id": "boundary", "label": "Vacaville boundary", "source_id": "vacaville-boundary-gis", "url": "/assets/data/geojson/vacaville.geojson", "type": "geojson", "default_visible": true, "style": {"color": "#3457D5", "fillColor": "#3457D5", "fillOpacity": 0.05, "weight": 2}},
+    {"id": "parks", "label": "Existing public parks", "source_id": "vacaville-parks-gis", "url": "/assets/data/geojson/vacaville-parks.geojson", "type": "geojson", "default_visible": true, "style": {"color": "#177B4D", "fillColor": "#4DBA75", "fillOpacity": 0.38, "weight": 1.5}},
+    {"id": "parcels", "label": "Public parcel context", "source_id": "vacaville-parcels-gis", "url": "/assets/data/geojson/vacaville-parcels-active.geojson", "type": "geojson", "default_visible": false, "style": {"color": "#7C5A2C", "fillColor": "#E6B65C", "fillOpacity": 0.11, "weight": 0.7}}
+  ],
+  "events": [
+    {"date": "2024-04-09", "title": "Planning process initiated", "summary": "City Council initiated the Specific Plan/General Plan Amendment process for the East of Leisure Town growth area.", "source_id": "eltsp-growth-page", "status": "recorded"},
+    {"date": "2024-08-13", "title": "Professional-services contracts approved", "summary": "Council approved contracts for planning support, funded by the applicant team.", "source_id": "eltsp-growth-page", "status": "recorded"},
+    {"date": "2025-06-24", "title": "Council direction on small parks", "summary": "Council considered park-size flexibility, Carroll Way alignment, and housing affordability.", "source_id": "eltsp-growth-page", "status": "recorded"},
+    {"date": "2025-11-21", "title": "EIR notice of preparation", "summary": "The City issued a notice of preparation for the project environmental impact report.", "source_id": "eltsp-growth-page", "status": "recorded"},
+    {"date": "2026-01-29", "title": "Community workshop", "summary": "The City gathered feedback on draft land use, transportation, parks, and open space.", "source_id": "eltsp-growth-page", "status": "recorded"},
+    {"date": "2026-09-09", "title": "Parks Commission context review", "summary": "Staff identified the park/detention interface, northern trail dead ends, and community-park phasing for Commission input.", "source_id": "eltsp-parks-report-2026-09-09", "status": "recorded"}
+  ],
+  "relationships": [
+    {"from": "Quality of Life", "verb": "is advanced through", "to": "park, trail, and recreation access", "kind": "strategy → outcome", "source_id": "eltsp-parks-report-2026-09-09", "status": "contextual"},
+    {"from": "General Plan policy PR-P1.8", "verb": "calls for", "to": "a linked public open-space, park, and trail system", "kind": "policy → place", "source_id": "eltsp-parks-report-2026-09-09", "status": "reported"},
+    {"from": "Draft ELTSP public parks", "verb": "are 11.34 acres below", "to": "the reported minimum neighborhood/community park requirement", "kind": "plan → standard", "source_id": "eltsp-parks-report-2026-09-09", "status": "reported"},
+    {"from": "CD–East of Leisure Town Growth", "verb": "is a fund label in", "to": "37 checkbook records totaling $348,571.94 in the indexed export", "kind": "money → project", "source_id": "vacaville-checkbook-2026-04-08", "status": "indexed"},
+    {"from": "Proposed split community park", "verb": "depends on", "to": "a pedestrian bridge and coordinated phasing", "kind": "place → delivery", "source_id": "eltsp-parks-report-2026-09-09", "status": "proposal"}
+  ]
+}

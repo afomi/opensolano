@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="/assets/css/atlas.css">
+
+<main class="atlas-page" id="atlas" data-context="{{ page.atlas_context }}">
+  <section class="atlas-intro" aria-labelledby="atlas-title">
+    <div>
+      <p class="atlas-eyebrow">OpenSolano Atlas</p>
+      <h1 id="atlas-title">A shared model of civic reality</h1>
+      <p id="atlas-subtitle">Connecting public places, plans, money, and the record over time.</p>
+    </div>
+    <div class="atlas-intro-actions">
+      <a href="/atlas/" class="atlas-link">Citywide canvas</a>
+      <a href="/atlas/eltsp/" class="atlas-link">ELTSP lens</a>
+    </div>
+  </section>
+
+  <section class="atlas-shell" aria-label="Civic context atlas">
+    <div id="atlas-map" class="atlas-map" aria-label="Interactive civic map"></div>
+
+    <aside class="atlas-panel atlas-layers" aria-label="Map layers">
+      <div class="atlas-panel-heading">
+        <p class="atlas-eyebrow">Visible model</p>
+        <h2>Layers</h2>
+      </div>
+      <div id="atlas-layer-controls" class="atlas-layer-controls"></div>
+      <p class="atlas-panel-note">Layers come from independently maintained public-source manifests.</p>
+    </aside>
+
+    <aside class="atlas-panel atlas-reader" aria-live="polite" aria-label="Context reader">
+      <button id="atlas-reader-close" class="atlas-close" type="button" aria-label="Close context reader">×</button>
+      <div id="atlas-reader-content">
+        <p class="atlas-eyebrow">Context reader</p>
+        <h2>Choose a place or record</h2>
+        <p>Click a map feature, a timeline event, or a relationship below. The reader will always show its evidence and status.</p>
+      </div>
+    </aside>
+
+    <div class="atlas-status" id="atlas-status" role="status"></div>
+  </section>
+
+  <section class="atlas-timeline" aria-labelledby="timeline-title">
+    <div class="atlas-timeline-header">
+      <div>
+        <p class="atlas-eyebrow">Time lens</p>
+        <h2 id="timeline-title">Planning record</h2>
+      </div>
+      <output id="atlas-time-label" for="atlas-timeline-input"></output>
+    </div>
+    <input id="atlas-timeline-input" type="range" min="0" value="0" step="1" aria-label="Scrub the planning timeline">
+    <div id="atlas-timeline-events" class="atlas-timeline-events"></div>
+  </section>
+
+  <section class="atlas-below-grid">
+    <section class="atlas-card" aria-labelledby="relationships-title">
+      <p class="atlas-eyebrow">Structural coherence</p>
+      <h2 id="relationships-title">Strategy → policy → place → money</h2>
+      <p class="atlas-card-lede">These are explicit, source-backed relationships—not inferred narrative. Select one to inspect its context.</p>
+      <div id="atlas-relationships" class="atlas-relationships"></div>
+    </section>
+
+    <section class="atlas-card atlas-annotations" aria-labelledby="annotations-title">
+      <div class="atlas-annotation-heading">
+        <div>
+          <p class="atlas-eyebrow">Civic working layer</p>
+          <h2 id="annotations-title">Annotations</h2>
+        </div>
+        <button id="atlas-export-annotations" type="button" class="atlas-text-button">Export</button>
+      </div>
+      <p class="atlas-card-lede">Pin a question, observation, evidence link, or commitment to the current context. In this static prototype, annotations are stored only in this browser.</p>
+      <form id="atlas-annotation-form" class="atlas-annotation-form">
+        <label>
+          Type
+          <select id="atlas-annotation-type">
+            <option value="Question">Question</option>
+            <option value="Observation">Observation</option>
+            <option value="Evidence link">Evidence link</option>
+            <option value="Commitment">Commitment</option>
+            <option value="Correction">Correction</option>
+          </select>
+        </label>
+        <label class="atlas-annotation-message">
+          Note
+          <textarea id="atlas-annotation-message" required maxlength="600" placeholder="What should a future reader understand or verify?"></textarea>
+        </label>
+        <div class="atlas-annotation-actions">
+          <span id="atlas-pin-status">Tip: click the map to attach a location.</span>
+          <button type="submit" class="atlas-primary-button">Add local annotation</button>
+        </div>
+      </form>
+      <div id="atlas-annotation-list" class="atlas-annotation-list"></div>
+    </section>
+  </section>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/assets/js/atlas.js"></script>

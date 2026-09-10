@@ -1,0 +1,20 @@
+{
+  "id": "citywide",
+  "title": "Solano civic context",
+  "subtitle": "A map-first public canvas. Add sources and contexts independently; the interface remains the same.",
+  "map": {"center": [38.3566, -121.9886], "zoom": 11},
+  "layers": [
+    {"id": "boundary", "label": "Vacaville boundary", "source_id": "vacaville-boundary-gis", "url": "/assets/data/geojson/vacaville.geojson", "type": "geojson", "default_visible": true, "style": {"color": "#3457D5", "fillColor": "#3457D5", "fillOpacity": 0.06, "weight": 2}},
+    {"id": "parks", "label": "Public parks", "source_id": "vacaville-parks-gis", "url": "/assets/data/geojson/vacaville-parks.geojson", "type": "geojson", "default_visible": true, "style": {"color": "#177B4D", "fillColor": "#4DBA75", "fillOpacity": 0.42, "weight": 1.5}},
+    {"id": "parcels", "label": "Parcels", "source_id": "vacaville-parcels-gis", "url": "/assets/data/geojson/vacaville-parcels-active.geojson", "type": "geojson", "default_visible": false, "style": {"color": "#7C5A2C", "fillColor": "#E6B65C", "fillOpacity": 0.12, "weight": 0.7}}
+  ],
+  "events": [
+    {"date": "2024-04-09", "title": "Growth-area planning initiated", "summary": "City Council initiated the East of Leisure Town planning process and adopted guiding principles.", "source_id": "eltsp-growth-page", "status": "recorded"},
+    {"date": "2026-09-09", "title": "Parks Commission study session", "summary": "Staff requested input on park location, trail connectivity, and community-park phasing.", "source_id": "eltsp-parks-report-2026-09-09", "status": "recorded"}
+  ],
+  "relationships": [
+    {"from": "Quality of Life", "verb": "is made concrete through", "to": "parks, trails, and recreation access", "kind": "strategy → place", "source_id": "eltsp-parks-report-2026-09-09", "status": "contextual"},
+    {"from": "Public parks", "verb": "are represented by", "to": "Vacaville parks GIS", "kind": "place → evidence", "source_id": "vacaville-parks-gis", "status": "loaded"},
+    {"from": "Vacaville checkbook", "verb": "can connect spending to", "to": "projects, programs, and places", "kind": "money → place", "source_id": "vacaville-checkbook-2026-04-08", "status": "available"}
+  ]
+}

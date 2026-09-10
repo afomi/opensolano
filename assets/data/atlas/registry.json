@@ -1,0 +1,56 @@
+{
+  "version": "0.1",
+  "description": "Public-source registry for the OpenSolano Atlas. Context manifests refer to source IDs rather than embedding source logic in the interface.",
+  "sources": [
+    {
+      "id": "vacaville-parks-gis",
+      "title": "Vacaville parks GIS",
+      "publisher": "City of Vacaville GIS",
+      "url": "/assets/data/geojson/vacaville-parks.geojson",
+      "kind": "GIS dataset",
+      "status": "loaded"
+    },
+    {
+      "id": "vacaville-parcels-gis",
+      "title": "Vacaville parcel dataset",
+      "publisher": "Public assessor/GIS records",
+      "url": "/assets/data/geojson/vacaville-parcels-active.geojson",
+      "kind": "GIS dataset",
+      "status": "loaded"
+    },
+    {
+      "id": "vacaville-boundary-gis",
+      "title": "Vacaville boundary",
+      "publisher": "Jurisdictional / public boundary data",
+      "url": "/assets/data/geojson/vacaville.geojson",
+      "kind": "GIS dataset",
+      "status": "loaded"
+    },
+    {
+      "id": "eltsp-growth-page",
+      "title": "East of Leisure Town Growth Area Specific Plan",
+      "publisher": "City of Vacaville Community Development",
+      "url": "https://www.cityofvacaville.gov/government/community-development/planning-and-development/growth-areas-planning",
+      "kind": "Project record",
+      "status": "linked"
+    },
+    {
+      "id": "eltsp-parks-report-2026-09-09",
+      "title": "Parks and Recreation Commission staff report, Item 3A",
+      "publisher": "City of Vacaville",
+      "url": "https://www.cityofvacaville.gov/government/community-development/planning-and-development/growth-areas-planning",
+      "kind": "Staff report",
+      "published": "2026-09-09",
+      "status": "indexed"
+    },
+    {
+      "id": "vacaville-checkbook-2026-04-08",
+      "title": "Vacaville checkbook export",
+      "publisher": "City of Vacaville",
+      "url": "/assets/data/checkbook_data_2026-04-08.csv",
+      "kind": "Financial dataset",
+      "published": "2026-04-08",
+      "status": "indexed"
+    }
+  ]
+}
