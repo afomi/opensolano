@@ -1,0 +1,291 @@
+---
+layout: default
+title: "Park Feedback — Vacaville (unofficial)"
+description: "Tell us what needs attention, what you'd change, and what's working at your Vacaville park. An independent community project, not a City of Vacaville service."
+permalink: /feedback
+---
+{% assign feedback = site.data.park_feedback %}
+{% assign parks = site.data.vacaville_parks.parks | concat: feedback.extra_parks | sort: "park_name" %}
+
+<main class="isolate pt-28">
+  <section class="mx-auto max-w-3xl px-6 lg:px-8 pb-16">
+
+    <p class="text-sm font-semibold uppercase tracking-wide text-teal-700">
+      Vacaville parks
+    </p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      Park feedback
+    </h1>
+    <p class="mt-4 text-lg leading-8 text-gray-600">
+      Scanned a sign at a park?
+      Tell us what needs attention, what you would change, or what is working.
+    </p>
+
+    <div
+      class="mt-6 border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-900"
+      role="note">
+      <p class="font-semibold">
+        {{ feedback.disclaimer }}
+      </p>
+      <p class="mt-1">
+        Feedback goes to a resident volunteer, not to City staff.
+        It may be forwarded to the City through public channels, where it becomes a public record.
+        That is the point.
+      </p>
+      <p class="mt-1">
+        For a safety hazard or anything urgent, contact
+        <a
+          class="underline"
+          href="{{ feedback.official.parks_contact_url }}"
+          rel="noopener">{{ feedback.official.parks_contact_label }}</a>
+        directly, or call 911 in an emergency.
+      </p>
+    </div>
+
+    <form
+      id="feedback-form"
+      class="mt-10"
+      method="post">
+
+      <div>
+        <label
+          for="park-select"
+          class="block text-sm font-semibold text-gray-900">
+          Which park?
+        </label>
+        <select
+          id="park-select"
+          name="park_select"
+          class="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 focus:border-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-700">
+          <option value="">
+            Choose a park…
+          </option>
+          {% for park in parks %}
+          <option
+            value="{{ park.slug }}"
+            data-slug="{{ park.slug }}">
+            {{ park.park_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <p
+          id="park-summary"
+          class="mt-2 text-sm text-gray-600"
+          hidden>
+        </p>
+      </div>
+
+      <fieldset class="mt-8">
+        <legend class="text-sm font-semibold text-gray-900">
+          What kind of feedback?
+        </legend>
+        <div class="mt-3 space-y-2">
+          <label class="flex items-start gap-3 text-sm text-gray-900">
+            <input
+              type="radio"
+              name="category"
+              value="problem"
+              class="mt-1 h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700"
+              checked="">
+            <span>
+              <span class="font-medium">Something needs attention</span>
+              <span class="block text-gray-500">Broken, unsafe, dirty, missing.</span>
+            </span>
+          </label>
+          <label class="flex items-start gap-3 text-sm text-gray-900">
+            <input
+              type="radio"
+              name="category"
+              value="idea"
+              class="mt-1 h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700">
+            <span>
+              <span class="font-medium">An idea</span>
+              <span class="block text-gray-500">Something you would add or change.</span>
+            </span>
+          </label>
+          <label class="flex items-start gap-3 text-sm text-gray-900">
+            <input
+              type="radio"
+              name="category"
+              value="working"
+              class="mt-1 h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700">
+            <span>
+              <span class="font-medium">What's working</span>
+              <span class="block text-gray-500">Something worth keeping or doing more of.</span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="mt-8">
+        <label
+          for="message"
+          class="block text-sm font-semibold text-gray-900">
+          Your feedback
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required=""
+          placeholder="Where in the park, what you noticed, and when."
+          class="mt-2 block w-full border border-gray-300 px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 focus:border-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-700">
+        </textarea>
+      </div>
+
+      <div class="mt-6">
+        <label
+          for="contact"
+          class="block text-sm font-semibold text-gray-900">
+          Contact
+          <span class="font-normal text-gray-500">(optional)</span>
+        </label>
+        <input
+          id="contact"
+          name="contact"
+          type="text"
+          autocomplete="email"
+          placeholder="Email or phone, if you want a reply"
+          class="mt-2 block w-full border border-gray-300 px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 focus:border-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-700">
+        <p class="mt-1 text-sm text-gray-500">
+          Leave this blank to stay anonymous.
+        </p>
+      </div>
+
+      <input
+        id="park-slug"
+        type="hidden"
+        name="park_slug"
+        value="">
+      <input
+        id="park-name"
+        type="hidden"
+        name="park_name"
+        value="">
+      <input
+        id="feedback-source"
+        type="hidden"
+        name="source"
+        value="web">
+      <input
+        id="feedback-page-url"
+        type="hidden"
+        name="page_url"
+        value="">
+      <input
+        type="hidden"
+        name="_subject"
+        value="Park feedback (opensolano.org/feedback)">
+      <div
+        class="hidden"
+        aria-hidden="true">
+        <label>
+          Leave this field empty
+          <input
+            type="text"
+            name="_gotcha"
+            tabindex="-1"
+            autocomplete="off">
+        </label>
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <button
+          id="submit-button"
+          type="submit"
+          class="bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700">
+          Send feedback
+        </button>
+        <span class="text-sm text-gray-500">
+          Not a City service.
+          Read by a resident volunteer.
+        </span>
+      </div>
+      <div
+        id="form-status"
+        hidden>
+      </div>
+    </form>
+
+    <section
+      id="nearby"
+      class="mt-16 border-t border-gray-200 pt-10">
+      <h2
+        id="nearby-heading"
+        class="text-xl font-semibold text-gray-900">
+        All Vacaville parks
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">
+        Straight-line distances between park centers.
+        Pick a park on the map or in the list to give feedback about it.
+      </p>
+      <div
+        id="nearby-map"
+        class="mt-4 w-full border border-gray-200"
+        style="height: 320px;">
+      </div>
+      <ul
+        id="nearby-list"
+        class="mt-4">
+      </ul>
+    </section>
+
+    <section class="mt-16 border-t border-gray-200 pt-10 text-sm leading-6 text-gray-600">
+      <h2 class="text-base font-semibold text-gray-900">
+        About this project
+      </h2>
+      <p class="mt-2">
+        These signs were posted by a Vacaville resident as a non-commercial community project.
+        The City of Vacaville did not create, fund, or endorse them.
+      </p>
+      <p class="mt-2">
+        Feedback is read by one person and, when useful, raised with City staff or in public comment at a public meeting.
+        It is never sent to Parks and Recreation Commissioners as a group.
+      </p>
+      <p class="mt-2">
+        Questions about the project:
+        <a
+          class="underline text-teal-700 hover:text-teal-900"
+          href="mailto:{{ feedback.mailto }}">{{ feedback.mailto }}</a>.
+        Park data from City of Vacaville GIS; see the
+        <a
+          class="underline text-teal-700 hover:text-teal-900"
+          href="/cities/vacaville/parks/">parks index</a>.
+      </p>
+    </section>
+
+  </section>
+</main>
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin="" />
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin="">
+</script>
+<script src="/assets/js/park-feedback.js"></script>
+<script>
+  ParkFeedback.init({
+    endpoint: {{ feedback.endpoint | jsonify }},
+    fields: {{ feedback.fields | jsonify }},
+    mailto: {{ feedback.mailto | jsonify }},
+    nearbyLimit: 5,
+    parks: [
+      {% for park in parks %}
+      {
+        slug: {{ park.slug | jsonify }},
+        park_name: {{ park.park_name | jsonify }},
+        type: {{ park.type | jsonify }},
+        acres: {{ park.acres | jsonify }},
+        location: {{ park.location | jsonify }},
+        center: {{ park.center | jsonify }},
+        has_page: {% if park.has_page == false %}false{% else %}true{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  });
+</script>

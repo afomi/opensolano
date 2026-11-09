@@ -10,7 +10,8 @@
     "build:css": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --minify",
     "watch:css": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --watch",
     "dev": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css && (npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --watch & bundle exec jekyll serve --livereload)",
-    "build": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --minify && bundle exec jekyll build"
+    "build": "npx @tailwindcss/cli -i ./_css/main.css -o ./assets/css/main.css --minify && bundle exec jekyll build",
+    "test": "node --test 'test/**/*.test.js' && python3 scripts/test_feedback_page.py"
   },
   "repository": {
     "type": "git",

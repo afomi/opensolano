@@ -49,3 +49,6 @@ exclude:
   - package.json
   - package-lock.json
   - tmp/
+  - test/
+  - scripts/test_feedback_page.py
+  - docs/PARK_FEEDBACK.md

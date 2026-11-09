@@ -1,0 +1,50 @@
+# Configuration for the unofficial park feedback page at /feedback.
+# Read by feedback.html. See docs/PARK_FEEDBACK.md for the guardrails
+# (not an official City service; never auto-distribute to Parks Commissioners).
+
+# Where submissions go. Exactly one path is active:
+#   endpoint  — a Touchpoints form submit URL:
+#               https://touchpoints.app/api/forms/<uuid>/submit
+#               When set, the page POSTs each answer as submission[question_<id>].
+#               `fields` maps the page's answers to those question ids.
+#   mailto    — used while `endpoint` is blank, and offered if a POST fails. The
+#               page composes an email to this address in the visitor's mail app
+#               (nothing is stored on the site). Must be an inbox only Ryan reads.
+endpoint: ""
+fields:
+  park:
+  category:
+  message:
+  contact:
+  source:
+  page_url:
+mailto: ryan@civic.studio
+
+# Shown at the top of the page and repeated near the submit button.
+disclaimer: "This is not an official City of Vacaville service — an independent community project."
+
+# Official channels for anything urgent. The page points people here for
+# safety hazards so this project never becomes the only route for emergencies.
+official:
+  parks_contact_url: https://www.cityofvacaville.gov/government/parks-and-recreation/contact-us
+  parks_contact_label: City of Vacaville Parks & Recreation
+
+# Parks on the printed signs that are missing from the GIS export behind
+# _data/vacaville_parks.yml. Same shape as that file's `parks` entries.
+# Provenance for each entry is in `source`.
+extra_parks:
+  - slug: little-oak-park
+    jurisdiction: Vacaville
+    type: Neighborhood
+    location: 451 Salisbury Cir. (Southtown)
+    park_name: Little Oak Park
+    center:
+      - 38.327411
+      - -121.950188
+    has_page: false
+    source: >-
+      In the May 6 2026 Parks & Rec agenda inventory but absent from the City GIS
+      export. Address 451 Salisbury Circle per the City facility directory;
+      geocoded with OpenStreetMap Nominatim on 2026-09-13. That point sits about
+      110 ft from the GIS centroid of "Southtown Pocket Park", so the two may be
+      the same park under two names.
