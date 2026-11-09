@@ -10,14 +10,14 @@
 #   mailto    — used while `endpoint` is blank, and offered if a POST fails. The
 #               page composes an email to this address in the visitor's mail app
 #               (nothing is stored on the site). Must be an inbox only Ryan reads.
-endpoint: ""
+endpoint: "https://touchpoints.app/api/forms/2411e82b-7416-4416-b297-7f8408f7882c/submit"
 fields:
-  park:
-  category:
-  message:
-  contact:
-  source:
-  page_url:
+  park: 190
+  category: 191
+  message: 192
+  contact: 193
+  source: 194
+  page_url: 195
 mailto: ryan@civic.studio
 
 # Shown at the top of the page and repeated near the submit button.
