@@ -265,15 +265,8 @@
           markers[park.slug] = marker;
         });
       }
-      Object.keys(markers).forEach(function (slug) {
-        var isCurrent = current && slug === current.slug;
-        markers[slug].setStyle({
-          radius: isCurrent ? 9 : 6,
-          fillOpacity: isCurrent ? 0.95 : 0.5,
-          color: isCurrent ? "#134e4a" : "#0f766e"
-        });
-        if (isCurrent) markers[slug].bringToFront();
-      });
+      // Set the view first: until the map has one, Leaflet hasn't drawn the
+      // markers, and bringToFront on an undrawn marker throws.
       if (current && current.center) {
         var points = [current.center];
         nearestParks(parks, current, nearbyLimit).forEach(function (entry) {
@@ -290,6 +283,15 @@
           });
         if (all.length) map.fitBounds(L.latLngBounds(all), { padding: [16, 16] });
       }
+      Object.keys(markers).forEach(function (slug) {
+        var isCurrent = current && slug === current.slug;
+        markers[slug].setStyle({
+          radius: isCurrent ? 9 : 6,
+          fillOpacity: isCurrent ? 0.95 : 0.5,
+          color: isCurrent ? "#134e4a" : "#0f766e"
+        });
+        if (isCurrent) markers[slug].bringToFront();
+      });
     }
 
     function setPark(slug, pushUrl) {
@@ -355,6 +357,7 @@
         }
 
         submitButton.disabled = true;
+        var sent = false;
         fetch(config.endpoint, {
           method: "POST",
           headers: {
@@ -365,16 +368,23 @@
         })
           .then(function (response) {
             if (!response.ok) throw new Error("HTTP " + response.status);
-            form.reset();
-            setPark(submission.park_slug, false);
+            sent = true;
             showStatus(
               "ok",
               "Thank you. Your feedback about " +
                 escapeHtml(submission.park_name) +
                 " was received."
             );
+            form.reset();
+            setPark(submission.park_slug, false);
           })
-          .catch(function () {
+          .catch(function (error) {
+            // Once the feedback is in, a problem redrawing the page must not
+            // tell the visitor to send it again.
+            if (sent) {
+              if (window.console) console.error(error);
+              return;
+            }
             showStatus(
               "error",
               "Sending failed. You can <a class=\"underline\" href=\"" +
