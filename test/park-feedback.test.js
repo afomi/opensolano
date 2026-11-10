@@ -99,6 +99,29 @@ test("buildSubmissionBody leaves out answers with no question id", () => {
   assert.equal(PF.buildSubmissionBody({ message: "Hello" }, {}), "");
 });
 
+test("successHtml shows the ticket and a status link when Touchpoints returns them", () => {
+  const html = PF.successHtml("Alamo Creek Park", {
+    ticket_id: "PK-7Q2X",
+    status_url: "https://touchpoints.app/status/abc"
+  });
+  assert.match(html, /Alamo Creek Park was received/);
+  assert.match(html, /Your ticket: <strong class="font-mono">PK-7Q2X<\/strong>/);
+  assert.match(html, /href="https:\/\/touchpoints.app\/status\/abc"/);
+  assert.match(html, /data-feedback-again/);
+});
+
+test("successHtml leaves out the ticket when there is none, and escapes what it shows", () => {
+  const html = PF.successHtml("<b>Park</b>", { response_id: 1242 });
+  assert.doesNotMatch(html, /Your ticket/);
+  assert.doesNotMatch(html, /1242/);
+  assert.match(html, /&lt;b&gt;Park&lt;\/b&gt;/);
+});
+
+test("successHtml ignores a status_url that isn't https", () => {
+  const html = PF.successHtml("Andrews Park", { ticket_id: "X1", status_url: "javascript:alert(1)" });
+  assert.doesNotMatch(html, /See your submission/);
+});
+
 test("escapeHtml neutralizes markup", () => {
   assert.equal(PF.escapeHtml('<a href="x">&</a>'), "&lt;a href=&quot;x&quot;&gt;&amp;&lt;/a&gt;");
 });

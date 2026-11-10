@@ -123,6 +123,34 @@
     return params.toString();
   }
 
+  // What replaces the form once Touchpoints has the feedback. `data` is the
+  // submit response; a ticket id shows only when Touchpoints returns one.
+  function successHtml(parkName, data) {
+    var ticket = data && data.ticket_id ? String(data.ticket_id) : "";
+    var statusUrl = data && data.status_url ? String(data.status_url) : "";
+    var html =
+      "<h2 class=\"text-lg font-semibold\">Thank you.</h2>" +
+      "<p class=\"mt-2\">Your feedback about " +
+      escapeHtml(parkName || "the park") +
+      " was received.</p>";
+    if (ticket) {
+      html +=
+        "<p class=\"mt-2\">Your ticket: <strong class=\"font-mono\">" +
+        escapeHtml(ticket) +
+        "</strong></p>";
+    }
+    if (statusUrl && /^https:\/\//.test(statusUrl)) {
+      html +=
+        "<p class=\"mt-2\"><a class=\"underline\" href=\"" +
+        escapeHtml(statusUrl) +
+        "\">See your submission</a></p>";
+    }
+    html +=
+      "<p class=\"mt-4\"><button type=\"button\" data-feedback-again " +
+      "class=\"underline\">Send more feedback</button></p>";
+    return html;
+  }
+
   function escapeHtml(text) {
     return String(text)
       .replace(/&/g, "&amp;")
@@ -159,6 +187,7 @@
     var nearbyList = doc.getElementById("nearby-list");
     var nearbyHeading = doc.getElementById("nearby-heading");
     var status = doc.getElementById("form-status");
+    var done = doc.getElementById("form-done");
     var submitButton = doc.getElementById("submit-button");
 
     var initialSlug = parkSlugFromSearch(window.location.search);
@@ -326,6 +355,29 @@
       status.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
 
+    // Replace the form with the confirmation; "Send more feedback" brings it back.
+    function showDone(parkName, data) {
+      if (!done) {
+        showStatus("ok", successHtml(parkName, data));
+        return;
+      }
+      done.innerHTML = successHtml(parkName, data);
+      if (status) status.hidden = true;
+      form.hidden = true;
+      done.hidden = false;
+      done.focus();
+      done.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      var again = done.querySelector("[data-feedback-again]");
+      if (again) {
+        again.addEventListener("click", function () {
+          done.hidden = true;
+          form.hidden = false;
+          var message = form.querySelector("#message");
+          if (message) message.focus();
+        });
+      }
+    }
+
     if (form) {
       form.addEventListener("submit", function (event) {
         var submission = submissionFromForm(form);
@@ -369,12 +421,13 @@
           .then(function (response) {
             if (!response.ok) throw new Error("HTTP " + response.status);
             sent = true;
-            showStatus(
-              "ok",
-              "Thank you. Your feedback about " +
-                escapeHtml(submission.park_name) +
-                " was received."
-            );
+            return response.json().catch(function () {
+              return {};
+            });
+          })
+          .then(function (data) {
+            if (!sent) return;
+            showDone(submission.park_name, data);
             form.reset();
             setPark(submission.park_slug, false);
           })
@@ -406,6 +459,7 @@
     parkSlugFromSearch: parkSlugFromSearch,
     findPark: findPark,
     buildSubmissionBody: buildSubmissionBody,
+    successHtml: successHtml,
     nearestParks: nearestParks,
     formatMiles: formatMiles,
     categoryLabel: categoryLabel,
