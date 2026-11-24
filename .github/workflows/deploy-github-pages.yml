@@ -51,7 +51,7 @@ jobs:
         run: npm run build:css
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Build site
         run: bundle exec jekyll build
