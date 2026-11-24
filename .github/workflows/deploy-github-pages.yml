@@ -16,6 +16,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# Install gems exactly as Gemfile.lock pins them; fail rather than re-resolve.
+env:
+  BUNDLE_FROZEN: "true"
+
 jobs:
   build:
     runs-on: ubuntu-24.04  # ruby 3.3.7 (pinned in Gemfile) is not built for ubuntu-26.04
@@ -37,7 +41,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
+          npm ci
           gem install bundler
           gem install jekyll
           bundle config path vendor/bundle
