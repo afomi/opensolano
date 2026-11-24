@@ -28,7 +28,7 @@ ENV JEKYLL_ENV=production NODE_ENV=production
 RUN bundle exec jekyll build
 
 ## Runtime stage: nginx serving the static site with HTTP Basic Auth
-FROM nginx:1.27-alpine
+FROM nginx:1.29-alpine
 
 RUN apk add --no-cache bash openssl
 
