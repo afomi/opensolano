@@ -1,5 +1,5 @@
 ## Build stage: build the Jekyll site with Node/PostCSS
-FROM ruby:3.3.6-slim AS builder
+FROM ruby:4.0.0-slim AS builder
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
