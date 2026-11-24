@@ -1,0 +1,54 @@
+# Dependabot for opensolano.org: Jekyll gems (Gemfile), Tailwind CLI and build
+# tooling (package.json), GitHub Actions workflows, and the Dockerfile base image
+# (used by the dormant Fly deploy).
+#
+# Monthly version updates, with minor and patch bumps grouped into one PR per
+# ecosystem so a solo maintainer reviews a few PRs a month, not dozens.
+# Major bumps arrive as their own PRs. Security updates stay ungrouped
+# (Dependabot's default) so each one can merge on its own, fast.
+version: 2
+updates:
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      bundler-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      docker-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
